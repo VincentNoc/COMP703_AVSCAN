@@ -14,6 +14,10 @@ public class AVSCAN {
         System.out.println("Hello World!");
         // Hello this is Misako
         System.out.println("Hello World! this is the start of COMP703");
+
         System.out.println("this is varnika signing in");
+
+        System.out.println("Hi everyone");
+
     }
 }
