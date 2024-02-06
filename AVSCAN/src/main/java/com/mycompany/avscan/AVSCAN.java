@@ -13,5 +13,6 @@ public class AVSCAN {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         // Hello this is Misako
+        System.out.println("Hello World! this is the start of COMP703");
     }
 }
