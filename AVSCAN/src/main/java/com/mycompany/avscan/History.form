@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker2">
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker1">
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -76,7 +78,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="dateTimePicker1" min="-2" max="-2" attributes="0"/>
+                          <Component id="dateTimePicker3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -120,7 +122,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="dateTimePicker1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="dateTimePicker3" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -145,8 +147,6 @@
             <Property name="text" type="java.lang.String" value="Search"/>
           </Properties>
         </Component>
-        <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker1">
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Equipment Name"/>
@@ -161,6 +161,8 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Event ID"/>
           </Properties>
+        </Component>
+        <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker3">
         </Component>
       </SubComponents>
     </Container>
