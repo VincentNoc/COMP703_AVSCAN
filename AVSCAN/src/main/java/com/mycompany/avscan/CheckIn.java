@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.JTextField;
 /**
  *
  * @author vince-kong
@@ -121,11 +122,9 @@ public class CheckIn extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addGap(143, 143, 143)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel2)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(127, 127, 127)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
@@ -155,15 +154,29 @@ public class CheckIn extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(connToParent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(48, 48, 48))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    
+    public JTextField getJTextField1(){
+        return jTextField1;
+    }  
+    
+     public JTextField getJTextField2(){
+        return jTextField2;
+    }  
+     
+      public JTextField getJTextField3(){
+        return jTextField3;
+    }  
     
     
     public void addFakeInfoRow(){ 
@@ -213,26 +226,43 @@ public class CheckIn extends javax.swing.JFrame {
     // To remove selected row
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
-               DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//               DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//
+//               // Get text from JTextFields
+//                String text1 = jTextField1.getText();
+//                String text2 = jTextField2.getText();
+//                String text3 = jTextField3.getText();
+//
+//
+//                // Add new row to the table model
+//                model.addRow(new Object[]{text1, text2, text3});
+//
+//                // Optionally, clear the text fields after adding
+//                jTextField1.setText("");
+//                jTextField2.setText("");
+//                jTextField3.setText("");
+   // Get text from JTextFields
+        String equipmentID = jTextField1.getText();
+        String equipmentName = jTextField2.getText();
+        String equipmentType = jTextField3.getText();
 
-               // Get text from JTextFields
-                String text1 = jTextField1.getText();
-                String text2 = jTextField2.getText();
-                String text3 = jTextField3.getText();
+        // Add new row to the table model
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.addRow(new Object[]{equipmentID, equipmentName, equipmentType});
 
+        // Optionally, clear the text fields after adding
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
 
-                // Add new row to the table model
-                model.addRow(new Object[]{text1, text2, text3});
-
-                // Optionally, clear the text fields after adding
-                jTextField1.setText("");
-                jTextField2.setText("");
-                jTextField3.setText("");
+        // Insert data into the MySQL table using DatabaseUtils class
+        DatabaseConnector dbConnector = new DatabaseConnector(); // Your database connection code here;
+        DatabaseUtils.insertData(dbConnector, equipmentID, equipmentName, equipmentType);
 
     }//GEN-LAST:event_addActionPerformed
 
     private void connectoToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectoToParent
-        int selectedRow = jTable1.getSelectedRow();
+  
         
     }//GEN-LAST:event_connectoToParent
 
