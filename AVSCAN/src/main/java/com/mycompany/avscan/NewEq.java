@@ -67,21 +67,12 @@ public class NewEq {
         JPanel temp = new JPanel();
         this.frame.add(temp);
 
-//        frame.getContentPane().add(showInfo, BorderLayout.CENTER);
-        //this.frame.add(this.page);
         this.frame.setResizable(false);
-        //this.frame.pack();
         this.frame.setVisible(true);
     }
 
     private void creatingInputs() {
-        /*this.inputArea = new JPanel();//new BorderLayout()
-        this.inputArea.setLayout(new BoxLayout(inputArea, BoxLayout.X_AXIS)); 
-        this.inputArea.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-        this.inputArea.setPreferredSize(new Dimension(400, 40));
         
-        this.inputSection = new JPanel[3];*/
-        //this.inputArea.setForeground(Color.BLUE);
         this.inuptLabels = new JLabel[3];
         this.inputField = new JTextField[3];
         String[] inputHeaders = {"Equipment ID", "Equipment Name", "Equipment Type"};

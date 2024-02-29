@@ -22,7 +22,7 @@ public class CheckIn extends javax.swing.JFrame {
      */
     public CheckIn() {
         initComponents();
-        myInitComponents();
+        addFakeInfoRow();
     }
 
     /**
@@ -41,6 +41,7 @@ public class CheckIn extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
+        connToParent = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,20 +69,27 @@ public class CheckIn extends javax.swing.JFrame {
         jButton1.setText("Delete");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                deleteActionPerformed(evt);
             }
         });
 
         jButton2.setText("Add");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addActionPerformed(evt);
             }
         });
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField2ActionPerformed(evt);
+            }
+        });
+
+        connToParent.setText("Connect to parent");
+        connToParent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectoToParent(evt);
             }
         });
 
@@ -107,6 +115,8 @@ public class CheckIn extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(connToParent)
+                        .addGap(119, 119, 119)
                         .addComponent(jButton2)))
                 .addContainerGap())
         );
@@ -124,7 +134,8 @@ public class CheckIn extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(connToParent))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
 
@@ -132,24 +143,24 @@ public class CheckIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     
-    public void myInitComponents(){ 
+    public void addFakeInfoRow(){ 
         //jTable1 = new javax.swing.JTable();
-       DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
        
-       final JTable table = new JTable(model);
-table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        final JTable table = new JTable(model);
+        table.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-    // Add 100 rows of dummy data
-    for (int i = 0; i < 100; i++) {
-        model.addRow(new Object[]{"ID " + i + "A", "Name " + i + "Type", "camera"});
-    }
+        // Add 100 rows of dummy data
+        for (int i = 0; i < 100; i++) {
+            model.addRow(new Object[]{"ID " + i + "A", "Name " + i + "Type", "camera"});
+        }
 
-    // Assuming jScrollPane1 is already set up to display jTable1
-    // You might need to refresh jScrollPane1 if it's not automatically updating
-    jScrollPane1.setViewportView(jTable1);
+        // Assuming jScrollPane1 is already set up to display jTable1
+        // You might need to refresh jScrollPane1 if it's not automatically updating
+        jScrollPane1.setViewportView(jTable1);
 
-    // Assuming jScrollPane1 is a JScrollPane declared elsewhere
-//    jScrollPane1.setViewportView(jTable1);
+        // Assuming jScrollPane1 is a JScrollPane declared elsewhere
+        // jScrollPane1.setViewportView(jTable1);
         
     }
     
@@ -160,25 +171,26 @@ table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-   
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+   //To remove Selected row
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
          int selectedRow = jTable1.getSelectedRow();
+        System.out.println(selectedRow);
+        // Check if a row is selected
+        if (selectedRow != -1) {
+            // Remove the selected row from the model
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.removeRow(selectedRow);
+        }
         
-    // Check if a row is selected
-    if (selectedRow != -1) {
-        // Remove the selected row from the model
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.removeRow(selectedRow);
-    }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_deleteActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    // To remove selected row
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
@@ -192,7 +204,12 @@ table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
                 // Optionally, clear the text fields after adding
                 jTextField1.setText("");
                 jTextField2.setText("");
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_addActionPerformed
+
+    private void connectoToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectoToParent
+        int selectedRow = jTable1.getSelectedRow();
+        
+    }//GEN-LAST:event_connectoToParent
 
     /**
      * @param args the command line arguments
@@ -230,6 +247,7 @@ table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton connToParent;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
