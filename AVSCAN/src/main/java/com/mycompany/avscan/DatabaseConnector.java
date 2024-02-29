@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 /**
  *
  * @author vince-kong
@@ -18,6 +19,8 @@ public class DatabaseConnector {
     private static final String URL = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
     private static final String USER = "root";
     private static final String PASSWORD = "AUT4events_";
+    
+    public ArrayList<Data> equipment = new ArrayList<>();
     
         private void connectToDatabase() {
         try {
@@ -30,8 +33,8 @@ public class DatabaseConnector {
             ResultSet rs = stmt.executeQuery("select * from EquipmentLog");
             while (rs.next()) {
                 System.out.println(rs.getLong(1) + "  " + rs.getString(2));
-                Data item = new Data(rs.getString(1), rs.getString(2));
-                this.items.add(item);
+                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+                this.equipment.add(equipment);
             }
             con.close();
         } catch (Exception e) {
