@@ -1,0 +1,7 @@
+Current database setup: 
+
+Name of table: EquipmentLog.
+
+User: root
+Password: AUT4events
+URL: "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL"
