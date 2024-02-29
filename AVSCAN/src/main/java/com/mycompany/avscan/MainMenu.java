@@ -32,16 +32,14 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        jButtonDataList = new javax.swing.JButton();
+        jButtonHelp = new javax.swing.JButton();
+        jButtonCheckIn = new javax.swing.JButton();
+        jButtonCheckOut = new javax.swing.JButton();
+        jButtonLogOut = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 700));
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         welcometxt.setFont(new java.awt.Font("Yu Gothic UI", 0, 36)); // NOI18N
         welcometxt.setText("Welcome to AVSCAN!");
@@ -69,31 +67,46 @@ public class MainMenu extends javax.swing.JFrame {
 
         jPanel4.setPreferredSize(new java.awt.Dimension(960, 265));
 
-        jButton1.setText("Data List");
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setPreferredSize(new java.awt.Dimension(260, 53));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDataList.setText("Data List");
+        jButtonDataList.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButtonDataList.setPreferredSize(new java.awt.Dimension(260, 53));
+        jButtonDataList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonDataListActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Help");
-        jButton2.setPreferredSize(new java.awt.Dimension(260, 53));
-
-        jButton3.setText("Check In");
-        jButton3.setPreferredSize(new java.awt.Dimension(260, 53));
-
-        jButton4.setText("Chech Out");
-        jButton4.setPreferredSize(new java.awt.Dimension(260, 53));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButtonHelp.setText("Help");
+        jButtonHelp.setPreferredSize(new java.awt.Dimension(260, 53));
+        jButtonHelp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButtonHelpActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Log Out");
-        jButton5.setPreferredSize(new java.awt.Dimension(260, 53));
+        jButtonCheckIn.setText("Check In");
+        jButtonCheckIn.setPreferredSize(new java.awt.Dimension(260, 53));
+        jButtonCheckIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCheckInActionPerformed(evt);
+            }
+        });
+
+        jButtonCheckOut.setText("Chech Out");
+        jButtonCheckOut.setPreferredSize(new java.awt.Dimension(260, 53));
+        jButtonCheckOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCheckOutActionPerformed(evt);
+            }
+        });
+
+        jButtonLogOut.setText("Log Out");
+        jButtonLogOut.setPreferredSize(new java.awt.Dimension(260, 53));
+        jButtonLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogOutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -101,17 +114,17 @@ public class MainMenu extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(345, 345, 345)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonDataList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(120, 120, 120))
         );
         jPanel4Layout.setVerticalGroup(
@@ -120,15 +133,15 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonDataList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -181,13 +194,45 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataListActionPerformed
+        this.dispose();
+        History historyPage = new History();
+        historyPage.setVisible(true);
+    }//GEN-LAST:event_jButtonDataListActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void jButtonCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCheckOutActionPerformed
+        this.dispose();
+        CheckOut checkOutPage = new CheckOut();
+        checkOutPage.setVisible(true);
+    }//GEN-LAST:event_jButtonCheckOutActionPerformed
+
+    private void jButtonCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCheckInActionPerformed
+       this.dispose();
+       CheckIn checkInPage = new CheckIn();
+       checkInPage.setVisible(true);
+    }//GEN-LAST:event_jButtonCheckInActionPerformed
+
+    private void jButtonHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHelpActionPerformed
+        /*
+        Comment from Misako
+        Need to create help page (help class)
+        
+        this.dispose();
+        Help helpPage = new Help();
+        helpPage.setVisible(true);
+        */
+    }//GEN-LAST:event_jButtonHelpActionPerformed
+
+    private void jButtonLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogOutActionPerformed
+        /*
+        comment from Misako
+        Need to create log in page (logIn class)
+        
+        this.dispose();
+        LogIn logInPage = new LogIn();
+        logInPage.setVisible(true);
+        */
+    }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,11 +270,11 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButtonCheckIn;
+    private javax.swing.JButton jButtonCheckOut;
+    private javax.swing.JButton jButtonDataList;
+    private javax.swing.JButton jButtonHelp;
+    private javax.swing.JButton jButtonLogOut;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
