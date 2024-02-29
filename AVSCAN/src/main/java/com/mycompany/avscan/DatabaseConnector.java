@@ -6,7 +6,9 @@ package com.mycompany.avscan;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 /**
  *
  * @author vince-kong
@@ -17,17 +19,24 @@ public class DatabaseConnector {
     private static final String USER = "root";
     private static final String PASSWORD = "AUT4events_";
     
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-    
-    public static void closeConnection(Connection connection){
-        if (connection != null){
-            try{
-                connection.close();
-            }catch (SQLException e){
-                e.printStackTrace();
+        private void connectToDatabase() {
+        try {
+            
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Connected to Database");
+//here sonoo is database name, root is username and password  
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from EquipmentLog");
+            while (rs.next()) {
+                System.out.println(rs.getLong(1) + "  " + rs.getString(2));
+                Data item = new Data(rs.getString(1), rs.getString(2));
+                this.items.add(item);
             }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Error has occurred, could not connect to database.");
         }
     }
+    
 }
