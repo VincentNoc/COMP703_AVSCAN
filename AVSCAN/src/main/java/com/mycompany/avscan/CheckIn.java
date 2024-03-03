@@ -6,14 +6,9 @@ package com.mycompany.avscan;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import javax.swing.JTextField;
-import java.sql.Connection;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
         /**
  *
@@ -240,9 +235,11 @@ public class CheckIn extends javax.swing.JFrame {
             DatabaseUtils dbUtil = new DatabaseUtils();
             //insertData method to add user input into database. 
             dbUtil.insertData(equipmentID, equipmentName, equipmentType); 
+            JOptionPane.showMessageDialog(this, "Successfully Added into the database", "Success", JOptionPane.INFORMATION_MESSAGE);
             
         }catch(SQLException e){
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_addActionPerformed
 
@@ -281,7 +278,6 @@ public class CheckIn extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CheckIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CheckIn().setVisible(true);
