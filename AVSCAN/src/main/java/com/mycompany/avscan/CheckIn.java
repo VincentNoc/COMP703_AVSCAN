@@ -61,9 +61,7 @@ public class CheckIn extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Equipment ID", "Equipment Name", "Equipment Type"
@@ -189,17 +187,13 @@ public class CheckIn extends javax.swing.JFrame {
         table.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         // Add 100 rows of dummy data
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i <= 10; i++) {
             model.addRow(new Object[]{"ID " + i + "A", "Name " + i + "Type", "camera"});
         }
 
         // Assuming jScrollPane1 is already set up to display jTable1
         // You might need to refresh jScrollPane1 if it's not automatically updating
-        jScrollPane1.setViewportView(jTable1);
-
-        // Assuming jScrollPane1 is a JScrollPane declared elsewhere
-        // jScrollPane1.setViewportView(jTable1);
-        
+        jScrollPane1.setViewportView(jTable1);    
     }
     
     
@@ -241,20 +235,11 @@ public class CheckIn extends javax.swing.JFrame {
         jTextField2.setText("");
         jTextField3.setText("");
         
-          try{
-//            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        try{
+            //creates DatabaseUtils object. 
             DatabaseUtils dbUtil = new DatabaseUtils();
-            
-//            String equipmentID = jTextField1.getText();
-//            String equipmentName = jTextField2.getText();
-//            String equipmentType = jTextField3.getText();
-            
-//            model.addRow(new Object[]{equipmentID, equipmentName, equipmentType});
-            dbUtil.insertData(equipmentID, equipmentName, equipmentType);
-            
-//            jTextField1.setText("");
-//            jTextField2.setText("");
-//            jTextField3.setText("");
+            //insertData method to add user input into database. 
+            dbUtil.insertData(equipmentID, equipmentName, equipmentType); 
             
         }catch(SQLException e){
             e.printStackTrace();
@@ -297,10 +282,6 @@ public class CheckIn extends javax.swing.JFrame {
         }
         //</editor-fold>
         
-//        DatabaseConnector dbConnector = new DatabaseConnector();
-//        Connection connection = dbConnector.connectToDatabase();
-        
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CheckIn().setVisible(true);

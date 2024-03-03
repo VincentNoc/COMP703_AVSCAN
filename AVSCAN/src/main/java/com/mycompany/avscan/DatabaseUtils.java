@@ -10,51 +10,46 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import javax.swing.JTextField;
-
 
 /**
  *
  * @author vince-kong
  */
 public class DatabaseUtils {
-    Connection con;
-    
-    
-    public DatabaseUtils() throws SQLException{
-         this.con = DatabaseConnector.connectToDatabase();
-    }
-    
-    public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType){
-        insertData(equipmentID, equipmentName, equipmentType);
-    }
+  Connection con;
 
-    public void insertData(String equipmentID, String equipmentName, String equipmentType) {
-        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
-            System.out.println("Connected to Database");
-            
-////here sonoo is database name, root is username and password  
-            Statement stmt = con.createStatement();
-            PreparedStatement prepStmt = con.prepareStatement("insert into EquipmentLog (EquipmentID, EquipmentName, EquipmentType)"+" values (?, ?, ?)");
-            prepStmt.setString(1, equipmentID);
-            prepStmt.setString(2, equipmentName);
-            prepStmt.setString(3, equipmentType);
-            prepStmt.execute();
-            ResultSet rs = stmt.executeQuery("select * from ITEMS");
-      
-            System.out.println("Information added");
-            con.close();
+  public DatabaseUtils() throws SQLException {
+    this.con = DatabaseConnector.connectToDatabase();
+  }
+  public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
+    insertData(equipmentID, equipmentName, equipmentType);
+  }
 
-        } catch (Exception e) {
-            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
-        }
+  public final void insertData(String equipmentID, String equipmentName, String equipmentType) {
+    String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
+    try {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+      System.out.println("Connected to Database");
+
+      ////here sonoo is database name, root is username and password  
+      Statement stmt = con.createStatement();
+      PreparedStatement prepStmt = con.prepareStatement("insert into EquipmentLog (EquipmentID, EquipmentName, EquipmentType)" + " values (?, ?, ?)");
+      prepStmt.setString(1, equipmentID);
+      prepStmt.setString(2, equipmentName);
+      prepStmt.setString(3, equipmentType);
+      prepStmt.execute();
+      ResultSet rs = stmt.executeQuery("select * from ITEMS");
+
+      System.out.println("Information added");
+      con.close();
+
+    } catch (Exception e) {
+      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
     }
-    
-    public void showTable(){
-        
-    }
+  }
+
+  public void showTable() {
+
+  }
 }
