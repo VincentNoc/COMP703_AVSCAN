@@ -13,13 +13,13 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.JTextField;
 import java.sql.Connection;
+import java.sql.SQLException;
 
         /**
  *
  * @author vince-kong
  */
 public class CheckIn extends javax.swing.JFrame {
-
     /**
      * Creates new form CheckIn
      */
@@ -240,21 +240,25 @@ public class CheckIn extends javax.swing.JFrame {
         jTextField1.setText("");
         jTextField2.setText("");
         jTextField3.setText("");
-
-        // Establish a connection to the database
-        DatabaseConnector dbConnector = new DatabaseConnector();
-//        Connection connection = dbConnector.connectToDatabase(); // Assuming connectToDatabase returns a Connection object
-
-        // Insert the data into the database
-//        DatabaseUtils.insertData(connection, equipmentID, equipmentName, equipmentType);
-
-        // Optionally, clear the text fields after adding
-
-        // Add new row to the table model
-    
-       // Get text from JTextFields
-        // Get text from JTextFields
-   
+        
+          try{
+//            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            DatabaseUtils dbUtil = new DatabaseUtils();
+            
+//            String equipmentID = jTextField1.getText();
+//            String equipmentName = jTextField2.getText();
+//            String equipmentType = jTextField3.getText();
+            
+//            model.addRow(new Object[]{equipmentID, equipmentName, equipmentType});
+            dbUtil.insertData(equipmentID, equipmentName, equipmentType);
+            
+//            jTextField1.setText("");
+//            jTextField2.setText("");
+//            jTextField3.setText("");
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_addActionPerformed
 
     private void connectoToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectoToParent
