@@ -20,26 +20,53 @@ public class DatabaseConnector {
     private static final String USER = "root";
     private static final String PASSWORD = "AUT4events_";
     
-    public ArrayList<Data> equipment = new ArrayList<>();
+//    public Connection connectToDatabase() {
+//      Connection con = null;
+//      try {
+//          Class.forName("com.mysql.cj.jdbc.Driver");
+//          con = DriverManager.getConnection(URL, USER, PASSWORD);
+//          System.out.println("Connected to Database");
+//      } catch (Exception e) {
+//          System.err.println("Error has occurred, could not connect to database.");
+//      }
+//      return con;
+//  }
     
-        private void connectToDatabase() {
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
         try {
-            
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connected to Database");
-//here sonoo is database name, root is username and password  
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from EquipmentLog");
-            while (rs.next()) {
-                System.out.println(rs.getLong(1) + "  " + rs.getString(2));
-                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
-                this.equipment.add(equipment);
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
-            con.close();
-        } catch (Exception e) {
-            System.out.println("Error has occurred, could not connect to database.");
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CheckOut.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
+        
+        System.out.println("connecting to database");
+        /* Create and display the form */
+       try(Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+          Class.forName("com.mysql.cj.jdbc.Driver");
+//          con = DriverManager.getConnection(URL, USER, PASSWORD);
+          System.out.println("Connected to Database");
+      } catch (Exception e) {
+          System.err.println("Error has occurred, could not connect to database.");
+          e.printStackTrace();
+      }
     }
     
 }

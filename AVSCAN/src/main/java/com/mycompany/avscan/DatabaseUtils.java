@@ -5,8 +5,11 @@
 package com.mycompany.avscan;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JTextField;
 
 
@@ -15,17 +18,55 @@ import javax.swing.JTextField;
  * @author vince-kong
  */
 public class DatabaseUtils {
+    public ArrayList<Data> items = new ArrayList<>();
+    
+    
+    
+//    public DatabaseUtils(){
+//        DatabaseConnector dbCon = dbCon.connectToDatabase();
+//    }
+    
+//    public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType){
+//        insertData(equipmentID, equipmentName, equipmentType);
+//    }
 
-    public static void insertData(Connection connection, String equipmentID, String equipmentName, String equipmentType) {
-        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, equipmentID);
-            preparedStatement.setString(2, equipmentName);
-            preparedStatement.setString(3, equipmentType);
-            preparedStatement.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
+//    public static void insertData(String equipmentID, String equipmentName, String equipmentType) {
+////        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
+//try {
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+//            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+//            System.out.println("Connected to Database");
+////here sonoo is database name, root is username and password  
+//            Statement stmt = con.createStatement();
+//            PreparedStatement prepStmt = con.prepareStatement("insert into items (EquipmentID, EquipmentName, EquipmentType)"+" values (?, ?, ?)");
+//            prepStmt.setString(1, equipmentID);
+//            prepStmt.setString(2, equipmentName);
+//            prepStmt.setString(3, equipmentType);
+//
+//            prepStmt.execute();
+//            //ResultSet rs = stmt.executeQuery("select * from ITEMS");
+//            /*while (rs.next()) {
+//                System.out.println(rs.getLong(1) + "  " + rs.getString(2));
+//                Data item = new Data(rs.getString(1), rs.getString(2));
+//                this.items.add(item);
+//            }*/
+//            System.out.println("Information added");
+//            con.close();
+////            items = new ArrayList<>();
+////            dbCon.connectToDatabase();
+//
+//        } catch (Exception e) {
+//            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+//        }
+//        
+//        
+////        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+////            preparedStatement.setString(1, equipmentID);
+////            preparedStatement.setString(2, equipmentName);
+////            preparedStatement.setString(3, equipmentType);
+////            preparedStatement.executeUpdate();
+////        } catch (SQLException ex) {
+////            ex.printStackTrace();
+////        }
+//    }
 }

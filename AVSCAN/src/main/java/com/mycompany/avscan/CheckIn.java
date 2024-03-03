@@ -12,7 +12,9 @@ import java.awt.event.ActionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.JTextField;
-/**
+import java.sql.Connection;
+
+        /**
  *
  * @author vince-kong
  */
@@ -225,29 +227,13 @@ public class CheckIn extends javax.swing.JFrame {
 
     // To remove selected row
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        // TODO add your handling code here:
-//               DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-//
-//               // Get text from JTextFields
-//                String text1 = jTextField1.getText();
-//                String text2 = jTextField2.getText();
-//                String text3 = jTextField3.getText();
-//
-//
-//                // Add new row to the table model
-//                model.addRow(new Object[]{text1, text2, text3});
-//
-//                // Optionally, clear the text fields after adding
-//                jTextField1.setText("");
-//                jTextField2.setText("");
-//                jTextField3.setText("");
-   // Get text from JTextFields
+            // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
         String equipmentID = jTextField1.getText();
         String equipmentName = jTextField2.getText();
         String equipmentType = jTextField3.getText();
-
-        // Add new row to the table model
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
         model.addRow(new Object[]{equipmentID, equipmentName, equipmentType});
 
         // Optionally, clear the text fields after adding
@@ -255,10 +241,20 @@ public class CheckIn extends javax.swing.JFrame {
         jTextField2.setText("");
         jTextField3.setText("");
 
-        // Insert data into the MySQL table using DatabaseUtils class
-        DatabaseConnector dbConnector = new DatabaseConnector(); // Your database connection code here;
-        DatabaseUtils.insertData(dbConnector, equipmentID, equipmentName, equipmentType);
+        // Establish a connection to the database
+        DatabaseConnector dbConnector = new DatabaseConnector();
+//        Connection connection = dbConnector.connectToDatabase(); // Assuming connectToDatabase returns a Connection object
 
+        // Insert the data into the database
+//        DatabaseUtils.insertData(connection, equipmentID, equipmentName, equipmentType);
+
+        // Optionally, clear the text fields after adding
+
+        // Add new row to the table model
+    
+       // Get text from JTextFields
+        // Get text from JTextFields
+   
     }//GEN-LAST:event_addActionPerformed
 
     private void connectoToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectoToParent
@@ -296,7 +292,10 @@ public class CheckIn extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CheckIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
+//        DatabaseConnector dbConnector = new DatabaseConnector();
+//        Connection connection = dbConnector.connectToDatabase();
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
