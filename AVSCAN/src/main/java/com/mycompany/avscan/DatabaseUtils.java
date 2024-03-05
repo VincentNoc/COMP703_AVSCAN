@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -53,28 +55,22 @@ public class DatabaseUtils {
     }
   }
 
-  public void fetchDataFromDatabase() {
-      
-    try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-      System.out.println("Connected to Database");
+  public List<Data> fetchDataFromDatabase() {
+    List<Data> dataList = new ArrayList<>();
+ 
+    try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        // Your code for executing queries and processing results
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from EquipmentLog");
 
-      
-      Statement stmt = con.createStatement();
-      String query ="SELECT * FROM EquipmentLog";
-      ResultSet rs = stmt.executeQuery(query);
-
-      while(rs.next()){
-          String equipmentID = rs.getString("EquipmentID");
-          String equipmentName = rs.getString("EquipmentName");
-          String equipmentType = rs.getString("EquipmentType");
-      }
+        while (rs.next()) {
+            Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+            dataList.add(equipment);
+        }
     } catch (Exception e) {
-        System.err.println("Error!");
-        System.err.println("Was not able to retrieve data from database.");
         e.printStackTrace();
-      
     }
+
+    return dataList;
   }
 }

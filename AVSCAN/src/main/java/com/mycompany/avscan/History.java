@@ -4,6 +4,9 @@
  */
 package com.mycompany.avscan;
 
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author vince-kong
@@ -169,6 +172,31 @@ public class History extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+       public void outPutDataToTable() {
+      // Create an instance of DatabaseUtils
+      try {
+        DatabaseUtils databaseUtils = new DatabaseUtils();
+
+        // Fetch data from the database
+        List <Data> dataList = databaseUtils.fetchDataFromDatabase();
+
+        // Update the JTable with the fetched data
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0); // Clear existing data
+
+        for (Data data: dataList) {
+          // Add each row of data to the JTable
+          model.addRow(new Object[] {
+            data.getEquipmentID(), data.getEquipmentName(), data.getEquipmentType()
+          });
+        }
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    
+    
     private void JEquipmentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JEquipmentIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JEquipmentIDActionPerformed
