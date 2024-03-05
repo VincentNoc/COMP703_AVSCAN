@@ -4,6 +4,7 @@
  */
 package com.mycompany.avscan;
 
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
