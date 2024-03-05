@@ -61,7 +61,7 @@ public class DatabaseUtils {
     try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
         // Your code for executing queries and processing results
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from EquipmentLog");
+        ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
 
         while (rs.next()) {
             Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
