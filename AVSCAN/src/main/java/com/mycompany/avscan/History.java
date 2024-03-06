@@ -7,6 +7,7 @@ package com.mycompany.avscan;
 
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
 
 /**
  *
@@ -193,7 +194,7 @@ public class History extends javax.swing.JFrame {
           });
         }
 
-      } catch (Exception e) {
+      } catch (SQLException e) {
         e.printStackTrace();
       }
     }
