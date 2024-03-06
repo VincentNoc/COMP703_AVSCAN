@@ -175,7 +175,8 @@ public class History extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-       public void outPutDataToTable() {
+    
+    public void outPutDataToTable() {
       // Create an instance of DatabaseUtils
       try {
         DatabaseUtils databaseUtils = new DatabaseUtils();
