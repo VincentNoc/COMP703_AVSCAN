@@ -113,6 +113,11 @@ public class History extends javax.swing.JFrame {
         );
 
         JHomeButton.setText("Home");
+        JHomeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JHomeButtonActionPerformed(evt);
+            }
+        });
 
         JFormatButton.setText("Format");
 
@@ -176,6 +181,13 @@ public class History extends javax.swing.JFrame {
     private void JEquipmentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JEquipmentNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JEquipmentNameActionPerformed
+
+    private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.setVisible(true);
+    }//GEN-LAST:event_JHomeButtonActionPerformed
 
     /**
      * @param args the command line arguments
