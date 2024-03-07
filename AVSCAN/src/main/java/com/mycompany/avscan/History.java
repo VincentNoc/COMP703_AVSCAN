@@ -5,6 +5,8 @@
 package com.mycompany.avscan;
 
 
+import Database.Data;
+import Database.DatabaseUtils;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
