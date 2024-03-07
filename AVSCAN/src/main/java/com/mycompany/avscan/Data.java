@@ -6,19 +6,32 @@ package com.mycompany.avscan;
 
 /**
  *
- * @author vince-kong
+ * @author dmitr
  */
 public class Data {
-    public String EquipmentID = "";
-    public String EquipmentName= "";
-    public String EquipmentType="";
+    private String equipmentID = "";
+    private String equipmentName= "";
+    private String equipmentType= "";
+
     
-    public Data(){};
+    public Data(String equipmentID, String equipmentName, String equipmentType){
+        this.equipmentID=equipmentID;
+        this.equipmentName=equipmentName;
+        this.equipmentType = equipmentType;
+        
+    }
     
-    public Data(String EquipmentID, String EquipmentName, String EquipmentType){
-        this.EquipmentID = EquipmentID;
-        this.EquipmentName = EquipmentName;
-        this.EquipmentType = EquipmentType; 
+        // Getter methods
+    public String getEquipmentID() {
+        return equipmentID;
+    }
+
+    public String getEquipmentName() {
+        return equipmentName;
+    }
+
+    public String getEquipmentType() {
+        return equipmentType;
     }
     
     

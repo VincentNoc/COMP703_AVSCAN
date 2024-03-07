@@ -10,17 +10,25 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
  * @author vince-kong
  */
+
 public class DatabaseUtils {
   Connection con;
+  private final String URL="jdbc:mysql://localhost:3306/mysql";
+  private final String USER= "root";
+  private final String PASSWORD = "AUT4events_";
 
   public DatabaseUtils() throws SQLException {
     this.con = DatabaseConnector.connectToDatabase();
   }
+  
   public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
     insertData(equipmentID, equipmentName, equipmentType);
   }
@@ -29,17 +37,15 @@ public class DatabaseUtils {
     String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
       System.out.println("Connected to Database");
-
-      ////here sonoo is database name, root is username and password  
+      
       Statement stmt = con.createStatement();
-      PreparedStatement prepStmt = con.prepareStatement("insert into EquipmentLog (EquipmentID, EquipmentName, EquipmentType)" + " values (?, ?, ?)");
+      PreparedStatement prepStmt = con.prepareStatement(query);
       prepStmt.setString(1, equipmentID);
       prepStmt.setString(2, equipmentName);
       prepStmt.setString(3, equipmentType);
       prepStmt.execute();
-      ResultSet rs = stmt.executeQuery("select * from ITEMS");
 
       System.out.println("Information added");
       con.close();
@@ -49,7 +55,22 @@ public class DatabaseUtils {
     }
   }
 
-  public void showTable() {
+  public List<Data> fetchDataFromDatabase() {
+    List<Data> dataList = new ArrayList<>();
+ 
+    try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        // Your code for executing queries and processing results
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
 
+        while (rs.next()) {
+            Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+            dataList.add(equipment);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    return dataList;
   }
 }
