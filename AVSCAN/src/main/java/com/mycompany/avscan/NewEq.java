@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+
 /**
  *
  * @author vince-kong
@@ -91,7 +92,7 @@ public class NewEq extends javax.swing.JFrame {
         connToParent.setText("Connect to parent");
         connToParent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                connectoToParent(evt);
+                connectToParent(evt);
             }
         });
 
@@ -163,12 +164,11 @@ public class NewEq extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    
-    public void addFakeInfoRow(){ 
+
+    public void addFakeInfoRow() {
         //jTable1 = new javax.swing.JTable();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-       
+
         final JTable table = new JTable(model);
         table.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -183,18 +183,17 @@ public class NewEq extends javax.swing.JFrame {
 
         // Assuming jScrollPane1 is a JScrollPane declared elsewhere
         // jScrollPane1.setViewportView(jTable1);
-        
     }
-    
-    
+
+
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-   //To remove Selected row
+    //To remove Selected row
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
-         int selectedRow = jTable1.getSelectedRow();
+        int selectedRow = jTable1.getSelectedRow();
         System.out.println(selectedRow);
         // Check if a row is selected
         if (selectedRow != -1) {
@@ -202,7 +201,7 @@ public class NewEq extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.removeRow(selectedRow);
         }
-        
+
     }//GEN-LAST:event_deleteActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -212,28 +211,42 @@ public class NewEq extends javax.swing.JFrame {
     // To remove selected row
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
-               DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-               // Get text from JTextFields
-                String text1 = jTextField1.getText();
-                String text2 = jTextField2.getText();
-                String text3 = jTextField3.getText();
+        // Get text from JTextFields
+        String text1 = jTextField1.getText();
+        String text2 = jTextField2.getText();
+        String text3 = jTextField3.getText();
 
+        // Add new row to the table model
+        model.addRow(new Object[]{text1, text2, text3});
 
-                // Add new row to the table model
-                model.addRow(new Object[]{text1, text2, text3});
-
-                // Optionally, clear the text fields after adding
-                jTextField1.setText("");
-                jTextField2.setText("");
-                jTextField3.setText("");
+        // Optionally, clear the text fields after adding
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
 
     }//GEN-LAST:event_addActionPerformed
 
-    private void connectoToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectoToParent
+    private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
         int selectedRow = jTable1.getSelectedRow();
-        
-    }//GEN-LAST:event_connectoToParent
+
+        if (selectedRow != -1) {
+            // Assuming model is the DefaultTableModel associated with your JTable
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+            // Assuming 0, 1, and 2 are the column indices for Equipment ID, Equipment Name, and Equipment Type
+            String equipmentID = (String) model.getValueAt(selectedRow, 0);
+            String equipmentName = (String) model.getValueAt(selectedRow, 1);
+            String equipmentType = (String) model.getValueAt(selectedRow, 2);
+
+            new ConnectItemToParent(equipmentID, equipmentName, equipmentType);
+        } else {
+            System.out.println("No row selected.");
+        }
+
+
+    }//GEN-LAST:event_connectToParent
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:

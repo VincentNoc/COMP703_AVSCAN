@@ -20,6 +20,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         this.showParentID.setText(parentID);
         this.showParentName.setText(parentName);
         this.showParentType.setText(parentType);
+        this.setVisible(true);
     }
 
     /**
@@ -221,7 +222,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConnectItemToParent("I'm parrent","newName", "Type of eq").setVisible(true);
+                new ConnectItemToParent("I'm parrent","newName", "Type of eq");
                 
             }
         });
