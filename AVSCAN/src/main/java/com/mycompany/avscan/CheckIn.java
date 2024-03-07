@@ -45,6 +45,7 @@ public class CheckIn extends javax.swing.JFrame {
         jEquipmentType = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        JHomeButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,15 +94,16 @@ public class CheckIn extends javax.swing.JFrame {
             }
         });
 
-        jEquipmentType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jEquipmentTypeActionPerformed(evt);
-            }
-        });
-
         jLabel2.setText("Name");
 
         jLabel3.setText("Type");
+
+        JHomeButton.setText("Home");
+        JHomeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JHomeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,6 +136,10 @@ public class CheckIn extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +161,9 @@ public class CheckIn extends javax.swing.JFrame {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13))
         );
 
         pack();
@@ -250,9 +258,12 @@ public class CheckIn extends javax.swing.JFrame {
         
     }//GEN-LAST:event_connectoToParent
 
-    private void jEquipmentTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEquipmentTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jEquipmentTypeActionPerformed
+    private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
+            // TODO add your handling code here:
+            this.dispose();
+            MainMenu mainmenu = new MainMenu();
+            mainmenu.setVisible(true);
+    }//GEN-LAST:event_JHomeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,6 +299,7 @@ public class CheckIn extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton JHomeButton;
     private javax.swing.JButton connToParent;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
