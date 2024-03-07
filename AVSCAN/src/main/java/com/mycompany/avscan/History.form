@@ -87,17 +87,19 @@
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <Component id="JEquipmentName" min="-2" pref="154" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" pref="94" max="-2" attributes="0"/>
                               <Component id="JEquipmentID" min="-2" pref="154" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <Component id="JEventID" alignment="0" min="-2" pref="154" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="JEventID" pref="154" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -130,15 +132,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JTextField" name="JEquipmentName">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JEquipmentNameActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JTextField" name="JEquipmentID">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JEquipmentIDActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="JEventID">
         </Component>
@@ -163,6 +157,8 @@
           </Properties>
         </Component>
         <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker3">
+        </Component>
+        <Component class="javax.swing.JTextField" name="JEquipmentName">
         </Component>
       </SubComponents>
     </Container>

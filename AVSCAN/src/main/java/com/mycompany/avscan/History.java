@@ -35,7 +35,6 @@ public class History extends javax.swing.JFrame {
         dateTimePicker2 = new com.github.lgooddatepicker.components.DateTimePicker();
         datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
         jPanel1 = new javax.swing.JPanel();
-        JEquipmentName = new javax.swing.JTextField();
         JEquipmentID = new javax.swing.JTextField();
         JEventID = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -43,6 +42,7 @@ public class History extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         dateTimePicker3 = new com.github.lgooddatepicker.components.DateTimePicker();
+        JEquipmentName = new javax.swing.JTextField();
         JHomeButton = new javax.swing.JButton();
         JFormatButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -51,18 +51,6 @@ public class History extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        JEquipmentName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JEquipmentNameActionPerformed(evt);
-            }
-        });
-
-        JEquipmentID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JEquipmentIDActionPerformed(evt);
-            }
-        });
 
         jButton1.setText("Search");
 
@@ -87,15 +75,16 @@ public class History extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(JEquipmentName, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(JEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(JEventID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 12, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(JEventID, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -206,14 +195,6 @@ public class History extends javax.swing.JFrame {
     }
     
     
-    private void JEquipmentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JEquipmentIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JEquipmentIDActionPerformed
-
-    private void JEquipmentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JEquipmentNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JEquipmentNameActionPerformed
-
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
