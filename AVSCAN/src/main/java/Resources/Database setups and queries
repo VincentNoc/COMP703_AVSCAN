@@ -7,3 +7,7 @@ Password: AUT4events
 URL: "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL"
 
 CREATE TABLE EquipmentLog;
+
+Three Columns should be made in EquipmentLog. 
+
+first EquipmentID: primary key, varchar 225. 
