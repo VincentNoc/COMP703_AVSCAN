@@ -5,10 +5,8 @@
     <artifactId>AVSCAN</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <repositories>
-    </repositories>
-    <dependencies>
-           <dependency>
+        <dependencies>
+          <dependency>
             <groupId>com.github.lgooddatepicker</groupId>
             <artifactId>LGoodDatePicker</artifactId>
             <version>11.2.1</version>
