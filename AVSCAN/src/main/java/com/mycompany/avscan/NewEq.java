@@ -211,8 +211,9 @@ public class NewEq extends javax.swing.JFrame {
         if (selectedRow != null) {
             // Remove the selected row from the model
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            for(int number:selectedRow)
-            model.removeRow(number);
+            for(int i = selectedRow.length-1; i >=0; i--){
+                model.removeRow(selectedRow[i]);
+            }
         }
 
     }//GEN-LAST:event_deleteActionPerformed
@@ -234,6 +235,14 @@ public class NewEq extends javax.swing.JFrame {
             String text3 = jTextField3.getText();
 
             // Add new row to the table model
+            boolean dublicates = false;
+            for(int i = 0; i<model.getRowCount();i++){
+                String toCheck = (String) model.getValueAt(i, 0);
+                if(toCheck.equalsIgnoreCase(text1)){
+                    new SmallErrorMessage("The Equipment already added to the table.");
+                    return;
+                }
+            }
             model.addRow(new Object[]{text1, text2, text3});
 
             // Optionally, clear the text fields after adding
