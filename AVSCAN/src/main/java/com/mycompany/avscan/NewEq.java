@@ -4,6 +4,7 @@
  */
 package com.mycompany.avscan;
 
+import Database.DatabaseUtils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -23,7 +24,7 @@ public class NewEq extends javax.swing.JFrame {
      */
     public NewEq() {
         initComponents();
-        addFakeInfoRow();
+        //addFakeInfoRow();
     }
 
     /**
@@ -39,13 +40,14 @@ public class NewEq extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         connToParent = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        formatButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,27 +61,25 @@ public class NewEq extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Equipment ID", "Equipment Name", "Equipment Type"
+                "Equipment ID", "Equipment Name", "Equipment Type", "Child"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Delete");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Add");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addActionPerformed(evt);
+                addButtonActionPerformed(evt);
             }
         });
 
@@ -89,7 +89,8 @@ public class NewEq extends javax.swing.JFrame {
             }
         });
 
-        connToParent.setText("Connect to parent");
+        connToParent.setText("Connect to subequipment");
+        connToParent.setToolTipText("");
         connToParent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 connectToParent(evt);
@@ -105,6 +106,13 @@ public class NewEq extends javax.swing.JFrame {
         jLabel2.setText("Name");
 
         jLabel3.setText("Type");
+
+        formatButton.setText("Format");
+        formatButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                formatButtonaddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -131,11 +139,13 @@ public class NewEq extends javax.swing.JFrame {
                         .addGap(42, 42, 42))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(connToParent)
-                        .addGap(134, 134, 134)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16)
+                        .addComponent(formatButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -155,11 +165,13 @@ public class NewEq extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(connToParent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(formatButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(48, 48, 48))
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
@@ -193,13 +205,14 @@ public class NewEq extends javax.swing.JFrame {
     //To remove Selected row
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
-        int selectedRow = jTable1.getSelectedRow();
+        int selectedRow[] = jTable1.getSelectedRows();
         System.out.println(selectedRow);
         // Check if a row is selected
-        if (selectedRow != -1) {
+        if (selectedRow != null) {
             // Remove the selected row from the model
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.removeRow(selectedRow);
+            for(int number:selectedRow)
+            model.removeRow(number);
         }
 
     }//GEN-LAST:event_deleteActionPerformed
@@ -209,24 +222,29 @@ public class NewEq extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     // To remove selected row
-    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if(!this.jTextField1.getText().equals("")&&!this.jTextField2.getText().equals("")&&!this.jTextField3.getText().equals("")){
+            
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-        // Get text from JTextFields
-        String text1 = jTextField1.getText();
-        String text2 = jTextField2.getText();
-        String text3 = jTextField3.getText();
+            // Get text from JTextFields
+            String text1 = jTextField1.getText();
+            String text2 = jTextField2.getText();
+            String text3 = jTextField3.getText();
 
-        // Add new row to the table model
-        model.addRow(new Object[]{text1, text2, text3});
+            // Add new row to the table model
+            model.addRow(new Object[]{text1, text2, text3});
 
-        // Optionally, clear the text fields after adding
-        jTextField1.setText("");
-        jTextField2.setText("");
-        jTextField3.setText("");
-
-    }//GEN-LAST:event_addActionPerformed
+            // Optionally, clear the text fields after adding
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jTextField3.setText("");
+        }
+        else{
+            new SmallErrorMessage("Please fill all input areas.");
+        }
+    }//GEN-LAST:event_addButtonActionPerformed
 
     private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
         int selectedRow = jTable1.getSelectedRow();
@@ -251,6 +269,18 @@ public class NewEq extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void formatButtonaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formatButtonaddActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        if(model.getRowCount()>0){
+            new DatabaseUtils(model);
+            //new DatabaseUtils(model).fetchDataFromDatabase();
+        }else{
+            new SmallErrorMessage("Use button \"Add\" to add new equipment before format!");
+        }
+        
+    }//GEN-LAST:event_formatButtonaddActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,9 +325,10 @@ public class NewEq extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addButton;
     private javax.swing.JButton connToParent;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton formatButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

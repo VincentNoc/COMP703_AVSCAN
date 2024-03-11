@@ -80,7 +80,8 @@ public class SmallErrorMessage implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==okBut){
-            this.myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+            //this.myFrame.dispatchEvent(new WindowEvent(myFrame, WindowEvent.WINDOW_CLOSING));
+            this.myFrame.dispose();
         }
     }
 }
