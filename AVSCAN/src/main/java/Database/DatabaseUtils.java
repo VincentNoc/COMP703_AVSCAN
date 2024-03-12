@@ -30,10 +30,14 @@ public class DatabaseUtils {
   }
   
   public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
-    insertData(equipmentID, equipmentName, equipmentType);
+    insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+  }
+  
+  public DatabaseUtils(String EventID, String EventName, String EventDate, String EventTime, String EquipmentID ){
+      insertDataEventTable(EventID, EventName, EventDate, EventTime, EquipmentID);
   }
 
-  public final void insertData(String equipmentID, String equipmentName, String equipmentType) {
+  public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
     String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
@@ -55,6 +59,31 @@ public class DatabaseUtils {
     }
   }
 
+  public final void insertDataEventTable(String EventID, String EventName, String EventDate, String EventTime, String EquipmentID){
+    String query = "INSERT INTO Event (EventID, EventName, EventDate, EventTime, ) VALUES (?, ?, ?)";
+    try {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+      System.out.println("Connected to Database");
+      
+      Statement stmt = con.createStatement();
+      PreparedStatement prepStmt = con.prepareStatement(query);
+      prepStmt.setString(1, EventID);
+      prepStmt.setString(2, EventName);
+      prepStmt.setString(3, EventDate);
+      prepStmt.setString(4, EventTime);
+      prepStmt.setString(5, EquipmentID);
+      prepStmt.execute();
+
+      System.out.println("Information added");
+      con.close();
+
+    } catch (Exception e) {
+      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+    }
+  }
+  
+  
   public List<Data> fetchDataFromDatabase() {
     List<Data> dataList = new ArrayList<>();
  
