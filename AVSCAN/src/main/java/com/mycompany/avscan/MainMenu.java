@@ -92,7 +92,7 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        jButtonCheckOut.setText("Chech Out");
+        jButtonCheckOut.setText("Check Out");
         jButtonCheckOut.setPreferredSize(new java.awt.Dimension(260, 53));
         jButtonCheckOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
