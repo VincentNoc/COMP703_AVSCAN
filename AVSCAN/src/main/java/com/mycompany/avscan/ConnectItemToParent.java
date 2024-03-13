@@ -11,6 +11,11 @@ import javax.swing.table.DefaultTableModel;
  * @author mdd2557
  */
 public class ConnectItemToParent extends javax.swing.JFrame {
+        private boolean backClicked = false;
+
+    public boolean isBackClicked() {
+        return backClicked;
+    }
 
     /**
      * Creates new form ConnectItemToParent
@@ -48,6 +53,8 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         childNameLB = new javax.swing.JLabel();
         childTypeLB = new javax.swing.JLabel();
         addButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,6 +103,20 @@ public class ConnectItemToParent extends javax.swing.JFrame {
             }
         });
 
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        backButton.setText("Go back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,21 +136,22 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(childTypeLB)
                                     .addComponent(childTypeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(parentTypeLB)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(parentIDLB)
-                                            .addGap(40, 40, 40)
-                                            .addComponent(showParentID))
-                                        .addComponent(childIDLB)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(addButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(connectButton)))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(backButton)
+                                    .addGap(28, 28, 28)
+                                    .addComponent(deleteButton)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(addButton)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(connectButton))
+                                .addComponent(parentTypeLB)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(parentIDLB)
+                                    .addGap(40, 40, 40)
+                                    .addComponent(showParentID))
+                                .addComponent(childIDLB)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 17, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(parentNameLB)
@@ -169,7 +191,9 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(connectButton)
-                    .addComponent(addButton))
+                    .addComponent(addButton)
+                    .addComponent(deleteButton)
+                    .addComponent(backButton))
                 .addGap(35, 35, 35))
         );
 
@@ -192,6 +216,29 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedRow[] = jTable1.getSelectedRows();
+        System.out.println(selectedRow);
+        // Check if a row is selected
+        if (selectedRow != null) {
+            // Remove the selected row from the model
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for(int i = selectedRow.length-1; i >=0; i--){
+                model.removeRow(selectedRow[i]);
+            }
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose(); 
+        this.backClicked= true;
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    public DefaultTableModel getChildsInfo(){
+        return (DefaultTableModel) jTable1.getModel();
+    }
     /**
      * @param args the command line arguments
      */
@@ -222,7 +269,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConnectItemToParent("I'm parrent","newName", "Type of eq");
+                new ConnectItemToParent("Parrent ID","newName", "Type of eq");
                 
             }
         });
@@ -231,12 +278,14 @@ public class ConnectItemToParent extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ChildIDInput;
     private javax.swing.JButton addButton;
+    private javax.swing.JButton backButton;
     private javax.swing.JLabel childIDLB;
     private javax.swing.JTextField childNameInput;
     private javax.swing.JLabel childNameLB;
     private javax.swing.JTextField childTypeInput;
     private javax.swing.JLabel childTypeLB;
     private javax.swing.JButton connectButton;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel parentIDLB;

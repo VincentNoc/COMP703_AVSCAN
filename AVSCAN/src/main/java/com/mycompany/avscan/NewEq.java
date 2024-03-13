@@ -10,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -24,7 +26,7 @@ public class NewEq extends javax.swing.JFrame {
      */
     public NewEq() {
         initComponents();
-        //addFakeInfoRow();
+        addFakeInfoRow();
     }
 
     /**
@@ -64,7 +66,7 @@ public class NewEq extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Equipment ID", "Equipment Name", "Equipment Type", "Child"
+                "Equipment ID", "Equipment Name", "Equipment Type", "Parent ID"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -89,7 +91,7 @@ public class NewEq extends javax.swing.JFrame {
             }
         });
 
-        connToParent.setText("Connect to subequipment");
+        connToParent.setText("Connect to parent");
         connToParent.setToolTipText("");
         connToParent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,7 +187,7 @@ public class NewEq extends javax.swing.JFrame {
         table.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         // Add 100 rows of dummy data
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 15; i++) {
             model.addRow(new Object[]{"ID " + i + "A", "Name " + i + "Type", "camera"});
         }
 
@@ -211,7 +213,7 @@ public class NewEq extends javax.swing.JFrame {
         if (selectedRow != null) {
             // Remove the selected row from the model
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            for(int i = selectedRow.length-1; i >=0; i--){
+            for (int i = selectedRow.length - 1; i >= 0; i--) {
                 model.removeRow(selectedRow[i]);
             }
         }
@@ -225,8 +227,8 @@ public class NewEq extends javax.swing.JFrame {
     // To remove selected row
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        if(!this.jTextField1.getText().equals("")&&!this.jTextField2.getText().equals("")&&!this.jTextField3.getText().equals("")){
-            
+        if (!this.jTextField1.getText().equals("") && !this.jTextField2.getText().equals("") && !this.jTextField3.getText().equals("")) {
+
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
             // Get text from JTextFields
@@ -236,9 +238,9 @@ public class NewEq extends javax.swing.JFrame {
 
             // Add new row to the table model
             boolean dublicates = false;
-            for(int i = 0; i<model.getRowCount();i++){
+            for (int i = 0; i < model.getRowCount(); i++) {
                 String toCheck = (String) model.getValueAt(i, 0);
-                if(toCheck.equalsIgnoreCase(text1)){
+                if (toCheck.equalsIgnoreCase(text1)) {
                     new SmallErrorMessage("The Equipment already added to the table.");
                     return;
                 }
@@ -249,30 +251,36 @@ public class NewEq extends javax.swing.JFrame {
             jTextField1.setText("");
             jTextField2.setText("");
             jTextField3.setText("");
-        }
-        else{
+        } else {
             new SmallErrorMessage("Please fill all input areas.");
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
+        if (jTable1.getSelectedRows().length != 1) {
+            new SmallErrorMessage("Please select one Row only");
+            return;
+        }
         int selectedRow = jTable1.getSelectedRow();
 
-        if (selectedRow != -1) {
-            // Assuming model is the DefaultTableModel associated with your JTable
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        // Assuming model is the DefaultTableModel associated with your JTable
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-            // Assuming 0, 1, and 2 are the column indices for Equipment ID, Equipment Name, and Equipment Type
-            String equipmentID = (String) model.getValueAt(selectedRow, 0);
-            String equipmentName = (String) model.getValueAt(selectedRow, 1);
-            String equipmentType = (String) model.getValueAt(selectedRow, 2);
+        // Assuming 0, 1, 2 and 3 are the column indices for Equipment ID, Equipment Name, and Equipment Type, ParentID
+        String equipmentID = (String) model.getValueAt(selectedRow, 0);
+        String equipmentName = (String) model.getValueAt(selectedRow, 1);
+        String equipmentType = (String) model.getValueAt(selectedRow, 2);
 
-            new ConnectItemToParent(equipmentID, equipmentName, equipmentType);
-        } else {
-            System.out.println("No row selected.");
+        ConnectItemToParent childs = new ConnectItemToParent(equipmentID, equipmentName, equipmentType);
+        DefaultTableModel toConnect = childs.getChildsInfo();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            for (int b = 0; b < toConnect.getRowCount(); b++) {
+                if (model.getValueAt(i, 0).equals(toConnect.getValueAt(b, 0))) {
+                    var temp = model.getValueAt(selectedRow, 0);
+                    model.setValueAt(temp, i, 3);
+                }
+            }
         }
-
-
     }//GEN-LAST:event_connectToParent
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
@@ -282,13 +290,13 @@ public class NewEq extends javax.swing.JFrame {
     private void formatButtonaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formatButtonaddActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        if(model.getRowCount()>0){
+        if (model.getRowCount() > 0) {
             new DatabaseUtils(model);
             //new DatabaseUtils(model).fetchDataFromDatabase();
-        }else{
+        } else {
             new SmallErrorMessage("Use button \"Add\" to add new equipment before format!");
         }
-        
+
     }//GEN-LAST:event_formatButtonaddActionPerformed
 
     /**
