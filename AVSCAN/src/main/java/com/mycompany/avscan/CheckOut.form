@@ -78,7 +78,9 @@
                               <Component id="jTxtReturnDate" min="-2" pref="130" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="59" pref="189" max="32767" attributes="0"/>
+                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                      <Component id="timePicker1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -106,6 +108,7 @@
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="JEventID" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTxtDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="timePicker1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -233,6 +236,8 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="2"/>
       </Properties>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker1">
     </Component>
   </SubComponents>
 </Form>

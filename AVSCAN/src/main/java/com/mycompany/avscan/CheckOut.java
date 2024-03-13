@@ -7,12 +7,14 @@ package com.mycompany.avscan;
 import Database.Data;
 import Database.DatabaseUtils;
 import java.awt.Color;
+import java.awt.Component;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import java.util.Calendar;
 
 
 /**
@@ -55,6 +57,7 @@ public class CheckOut extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTxtDate = new javax.swing.JTextField();
         jTxtReturnDate = new javax.swing.JTextField();
+        timePicker1 = new com.github.lgooddatepicker.components.TimePicker();
 
         dateChooser1.setTextRefernce(jTxtDate);
 
@@ -141,7 +144,9 @@ public class CheckOut extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTxtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(59, 189, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                        .addComponent(timePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,7 +167,8 @@ public class CheckOut extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(JEventID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -203,8 +209,9 @@ public class CheckOut extends javax.swing.JFrame {
       }
     }
     
+   // Assuming "component" is an instance of your third-party GUI component
+//    timePicker1.setTimeFormat(TimeFormat.TWENTY_FOUR_HOUR); // Example method call to set time format to 24-hour
 
-   
     
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
@@ -274,5 +281,6 @@ public class CheckOut extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTxtDate;
     private javax.swing.JTextField jTxtReturnDate;
+    private com.github.lgooddatepicker.components.TimePicker timePicker1;
     // End of variables declaration//GEN-END:variables
 }
