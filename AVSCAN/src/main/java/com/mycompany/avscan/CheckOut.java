@@ -9,12 +9,15 @@ import Database.DatabaseUtils;
 import java.awt.Color;
 import java.awt.Component;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -22,7 +25,9 @@ import java.util.Calendar;
  * @author vince-kong
  */
 public class CheckOut extends javax.swing.JFrame {
-    
+    private DateTimeFormatter formatForDisplayTime;
+    private DateTimeFormatter formatForMenuTimes;
+
     /**
      * Creates new form CheckOut
      */
@@ -30,6 +35,8 @@ public class CheckOut extends javax.swing.JFrame {
         initComponents();
         outPutDataToTable();
 //        BackgroundColour();
+
+    
 
     }
 
@@ -183,7 +190,19 @@ public class CheckOut extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void use24HourClockFormat() {
+        Locale locale = Locale.getDefault(); // or specify a specific locale
 
+        formatForDisplayTime = PickerUtilities.createFormatterFromPatternString("HH:mm", locale);
+        formatForMenuTimes = formatForDisplayTime;
+    }
+
+    
+    
+    public void MyInitComponents(){
+        
+    }
     
     public void outPutDataToTable() {
       // Create an instance of DatabaseUtils
