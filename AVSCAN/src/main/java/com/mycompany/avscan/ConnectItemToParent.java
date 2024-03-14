@@ -11,23 +11,24 @@ import javax.swing.table.DefaultTableModel;
  * @author mdd2557
  */
 public class ConnectItemToParent extends javax.swing.JFrame {
-        private boolean backClicked = false;
 
-    public boolean isBackClicked() {
-        return backClicked;
+    private ConnectCallback connectCallback;
+
+    public interface ConnectCallback {
+        void onConnect();
     }
-
     /**
      * Creates new form ConnectItemToParent
      */
-    public ConnectItemToParent(String parentID,String parentName, String parentType) {
+    public ConnectItemToParent(String parentID,String parentName, String parentType, ConnectCallback callback) {
         initComponents();
         this.showParentID.setText(parentID);
         this.showParentName.setText(parentName);
         this.showParentType.setText(parentType);
+        this.connectCallback = callback; // Save the callback instance
         this.setVisible(true);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,10 +82,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "camera sx2", "camera"},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Equipment ID", "Equipment Name", "Equipment Type"
@@ -136,22 +134,21 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(childTypeLB)
                                     .addComponent(childTypeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(backButton)
-                                    .addGap(28, 28, 28)
-                                    .addComponent(deleteButton)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(addButton)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(connectButton))
-                                .addComponent(parentTypeLB)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(parentIDLB)
-                                    .addGap(40, 40, 40)
-                                    .addComponent(showParentID))
-                                .addComponent(childIDLB)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(backButton)
+                                .addGap(28, 28, 28)
+                                .addComponent(deleteButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(addButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(connectButton))
+                            .addComponent(parentTypeLB, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(parentIDLB)
+                                .addGap(40, 40, 40)
+                                .addComponent(showParentID))
+                            .addComponent(childIDLB, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 17, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(parentNameLB)
@@ -202,6 +199,10 @@ public class ConnectItemToParent extends javax.swing.JFrame {
 
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         // TODO add your handling code here:
+         // Trigger the callback when connectButton is clicked
+        if (connectCallback != null) {
+            connectCallback.onConnect();
+        }
     }//GEN-LAST:event_connectButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
@@ -233,7 +234,6 @@ public class ConnectItemToParent extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.dispose(); 
-        this.backClicked= true;
     }//GEN-LAST:event_backButtonActionPerformed
 
     public DefaultTableModel getChildsInfo(){
@@ -269,7 +269,9 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConnectItemToParent("Parrent ID","newName", "Type of eq");
+                //can't run from here
+                System.out.println("Can't Run from here any more!!!!");
+                //new ConnectItemToParent("Parrent ID","newName", "Type of eq",);
                 
             }
         });

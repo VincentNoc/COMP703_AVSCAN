@@ -19,8 +19,10 @@ import javax.swing.table.TableColumn;
  *
  * @author vince-kong
  */
-public class NewEq extends javax.swing.JFrame {
+public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.ConnectCallback{
 
+    private ConnectItemToParent childs;
+    private int rememberSelectedRow;
     /**
      * Creates new form CheckIn
      */
@@ -261,28 +263,37 @@ public class NewEq extends javax.swing.JFrame {
             new SmallErrorMessage("Please select one Row only");
             return;
         }
-        int selectedRow = jTable1.getSelectedRow();
+        this.rememberSelectedRow =  jTable1.getSelectedRow();
 
         // Assuming model is the DefaultTableModel associated with your JTable
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         // Assuming 0, 1, 2 and 3 are the column indices for Equipment ID, Equipment Name, and Equipment Type, ParentID
-        String equipmentID = (String) model.getValueAt(selectedRow, 0);
-        String equipmentName = (String) model.getValueAt(selectedRow, 1);
-        String equipmentType = (String) model.getValueAt(selectedRow, 2);
+        String equipmentID = (String) model.getValueAt(rememberSelectedRow, 0);
+        String equipmentName = (String) model.getValueAt(rememberSelectedRow, 1);
+        String equipmentType = (String) model.getValueAt(rememberSelectedRow, 2);
 
-        ConnectItemToParent childs = new ConnectItemToParent(equipmentID, equipmentName, equipmentType);
+        childs = new ConnectItemToParent(equipmentID, equipmentName, equipmentType, this);
+        
+    }//GEN-LAST:event_connectToParent
+
+    @Override
+    public void onConnect() {
+        // Continue execution after connect action is performed
+        // Put your code here that should execute after connecting to the parent
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
         DefaultTableModel toConnect = childs.getChildsInfo();
         for (int i = 0; i < model.getRowCount(); i++) {
             for (int b = 0; b < toConnect.getRowCount(); b++) {
                 if (model.getValueAt(i, 0).equals(toConnect.getValueAt(b, 0))) {
-                    var temp = model.getValueAt(selectedRow, 0);
+                    var temp = model.getValueAt(rememberSelectedRow, 0);
                     model.setValueAt(temp, i, 3);
                 }
             }
         }
-    }//GEN-LAST:event_connectToParent
-
+    }
+    
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
