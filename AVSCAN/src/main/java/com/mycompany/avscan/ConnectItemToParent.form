@@ -29,7 +29,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="ChildIDInput" min="-2" pref="162" max="-2" attributes="0"/>
+                              <Component id="childIDInput" min="-2" pref="162" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="childNameInput" alignment="0" min="-2" pref="162" max="-2" attributes="0"/>
@@ -100,7 +100,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="ChildIDInput" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="childIDInput" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="childNameInput" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="childTypeInput" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -154,11 +154,14 @@
         <Property name="text" type="java.lang.String" value="Enter Child ID:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="ChildIDInput">
+    <Component class="javax.swing.JTextField" name="childIDInput">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childIDInputKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="connectButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Connect to Parent"/>
+        <Property name="text" type="java.lang.String" value="Connect to parent"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="connectButtonActionPerformed"/>

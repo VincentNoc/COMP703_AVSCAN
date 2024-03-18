@@ -93,7 +93,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             }
         });
 
-        connToParent.setText("Connect to parent");
+        connToParent.setText("Add childs");
         connToParent.setToolTipText("");
         connToParent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,7 +136,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(127, 127, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
@@ -190,7 +190,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
 
         // Add 100 rows of dummy data
         for (int i = 0; i < 15; i++) {
-            model.addRow(new Object[]{"ID " + i + "A", "Name " + i + "Type", "camera"});
+            model.addRow(new Object[]{"ID " + i + "A", "Name " + i, "camera"});
         }
 
         // Assuming jScrollPane1 is already set up to display jTable1
@@ -273,7 +273,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         String equipmentName = (String) model.getValueAt(rememberSelectedRow, 1);
         String equipmentType = (String) model.getValueAt(rememberSelectedRow, 2);
 
-        childs = new ConnectItemToParent(equipmentID, equipmentName, equipmentType, this);
+        childs = new ConnectItemToParent(model, equipmentID, equipmentName, equipmentType, this);
         
     }//GEN-LAST:event_connectToParent
 
@@ -282,16 +282,27 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         // Continue execution after connect action is performed
         // Put your code here that should execute after connecting to the parent
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        
+        var temp = model.getValueAt(rememberSelectedRow, 0);
         DefaultTableModel toConnect = childs.getChildsInfo();
+        
         for (int i = 0; i < model.getRowCount(); i++) {
             for (int b = 0; b < toConnect.getRowCount(); b++) {
                 if (model.getValueAt(i, 0).equals(toConnect.getValueAt(b, 0))) {
-                    var temp = model.getValueAt(rememberSelectedRow, 0);
+                    
                     model.setValueAt(temp, i, 3);
+                    toConnect.removeRow(b);
                 }
             }
         }
+        while(toConnect.getRowCount()>0){
+            
+            String ID = (String) toConnect.getValueAt(0, 0);
+            String Name = (String) toConnect.getValueAt(0, 1);
+            String Type = (String) toConnect.getValueAt(0, 2);
+            model.addRow(new Object[]{ID, Name, Type, temp});
+            toConnect.removeRow(0);
+        }
+        //this.jTable1 = new JTable(model);
     }
     
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed

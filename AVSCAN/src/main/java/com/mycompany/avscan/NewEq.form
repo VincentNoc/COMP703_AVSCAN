@@ -40,7 +40,7 @@
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField2" min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="127" max="32767" attributes="0"/>
+                      <EmptySpace min="127" pref="127" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jTextField3" min="-2" pref="100" max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -177,7 +177,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="connToParent">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Connect to parent"/>
+        <Property name="text" type="java.lang.String" value="Add childs"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
       <Events>
