@@ -101,6 +101,18 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        childNameInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                childNameInputKeyReleased(evt);
+            }
+        });
+
+        childTypeInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                childTypeInputKeyReleased(evt);
+            }
+        });
+
         childNameLB.setText("Enter Child Name:");
 
         childTypeLB.setText("Enter Child Type:");
@@ -288,6 +300,26 @@ public class ConnectItemToParent extends javax.swing.JFrame {
             this.childTypeInput.setForeground(Color.black);
         }
     }//GEN-LAST:event_childIDInputKeyReleased
+
+    private void childNameInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childNameInputKeyReleased
+        // TODO add your handling code here:
+        if (!this.childNameLB.getText().equals("Enter Child Name:")) {
+            childNameLB.setText("Enter Child Name:");
+            childTypeLB.setText("Enter Child Type:");
+            this.childNameInput.setForeground(Color.black);
+            this.childTypeInput.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_childNameInputKeyReleased
+
+    private void childTypeInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childTypeInputKeyReleased
+        // TODO add your handling code here:
+        if (!this.childNameLB.getText().equals("Enter Child Name:")) {
+            childNameLB.setText("Enter Child Name:");
+            childTypeLB.setText("Enter Child Type:");
+            this.childNameInput.setForeground(Color.black);
+            this.childTypeInput.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_childTypeInputKeyReleased
 
     public DefaultTableModel getChildsInfo() {
         return (DefaultTableModel) jTable1.getModel();
