@@ -192,11 +192,14 @@
     </Container>
     <Component class="javax.swing.JTextField" name="childNameInput">
       <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="childNameInputActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childNameInputKeyPressed"/>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childNameInputKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="childTypeInput">
       <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childTypeInputKeyPressed"/>
         <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childTypeInputKeyReleased"/>
       </Events>
     </Component>

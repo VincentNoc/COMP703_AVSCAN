@@ -101,13 +101,24 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        childNameInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                childNameInputActionPerformed(evt);
+            }
+        });
         childNameInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                childNameInputKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 childNameInputKeyReleased(evt);
             }
         });
 
         childTypeInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                childTypeInputKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 childTypeInputKeyReleased(evt);
             }
@@ -290,6 +301,8 @@ public class ConnectItemToParent extends javax.swing.JFrame {
 
                 childNameLB.setText("<html>Enter Child Name<font color='green'> (suggestion)</font>:</html>");
                 childTypeLB.setText("<html>Enter Child Type<font color='green'> (suggestion)</font>:</html>");
+                this.childNameInput.setEditable(false);
+                this.childTypeInput.setEditable(false);
                 return;
             }
             childNameLB.setText("Enter Child Name:");
@@ -298,28 +311,50 @@ public class ConnectItemToParent extends javax.swing.JFrame {
             this.childTypeInput.setText("");
             this.childNameInput.setForeground(Color.black);
             this.childTypeInput.setForeground(Color.black);
+            this.childNameInput.setEditable(true);
+            this.childTypeInput.setEditable(true);
         }
     }//GEN-LAST:event_childIDInputKeyReleased
 
     private void childNameInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childNameInputKeyReleased
         // TODO add your handling code here:
-        if (!this.childNameLB.getText().equals("Enter Child Name:")) {
+        /*if (!this.childNameLB.getText().equals("Enter Child Name:")) {
             childNameLB.setText("Enter Child Name:");
             childTypeLB.setText("Enter Child Type:");
             this.childNameInput.setForeground(Color.black);
             this.childTypeInput.setForeground(Color.black);
-        }
+        }*/
     }//GEN-LAST:event_childNameInputKeyReleased
 
     private void childTypeInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childTypeInputKeyReleased
         // TODO add your handling code here:
-        if (!this.childNameLB.getText().equals("Enter Child Name:")) {
+        /*if (!this.childNameLB.getText().equals("Enter Child Name:")) {
             childNameLB.setText("Enter Child Name:");
             childTypeLB.setText("Enter Child Type:");
             this.childNameInput.setForeground(Color.black);
             this.childTypeInput.setForeground(Color.black);
-        }
+        }*/
     }//GEN-LAST:event_childTypeInputKeyReleased
+
+    private void childNameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_childNameInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_childNameInputActionPerformed
+
+    private void childNameInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childNameInputKeyPressed
+        // TODO add your handling code here:
+        if(this.childNameInput.isEditable()==false){
+            new SmallErrorMessage(this.childIDInput.getText()+"|"+this.childNameInput.getText()+"|"+this.childTypeInput.getText()+" - "
+            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name");
+        }
+    }//GEN-LAST:event_childNameInputKeyPressed
+
+    private void childTypeInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childTypeInputKeyPressed
+        // TODO add your handling code here:
+        if(this.childTypeInput.isEditable()==false){
+            new SmallErrorMessage(this.childIDInput.getText()+"|"+this.childNameInput.getText()+"|"+this.childTypeInput.getText()+" - "
+            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name");
+        }
+    }//GEN-LAST:event_childTypeInputKeyPressed
 
     public DefaultTableModel getChildsInfo() {
         return (DefaultTableModel) jTable1.getModel();

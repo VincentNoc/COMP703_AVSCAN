@@ -11,3 +11,19 @@ CREATE TABLE EquipmentLog;
 Three Columns should be made in EquipmentLog. 
 
 first EquipmentID: primary key, varchar 225. 
+
+
+
+<Equipment Table>
+CREATE DATABASE AVSCAN;
+USE AVSCAN;
+DROP DATABASE AVSCAN;
+
+DROP TABLE EquipmentLog;
+CREATE TABLE EquipmentLog (
+	EquipmentID varchar(100) NOT NULL PRIMARY KEY,
+    EquipmentName varchar(255) NOT NULL,
+    EquipmentType varchar(100),
+    parentID varchar(100),
+    FOREIGN KEY(parentID) references EquipmentLog(EquipmentID)    
+);
