@@ -14,8 +14,16 @@ public class HelpTxtHome extends javax.swing.JPanel {
      * Creates new form HelpTxtHome
      */
     public HelpTxtHome() {
+        // creates all complonents in file
         initComponents();
         
+        // help text that would show up in the text area
+        String helpTxtHome = new String();
+        helpTxtHome = "What is the Check In Page?\n"
+                + "The 'Check In page' is where you can check in equipments that has been returned from an event.";
+        textArea1.setText(helpTxtHome);
+        
+        // makes the text non-editable by user
         textArea1.setEditable(false);
     }
 

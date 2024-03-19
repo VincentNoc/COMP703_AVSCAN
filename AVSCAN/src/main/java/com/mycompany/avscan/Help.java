@@ -6,15 +6,51 @@ package com.mycompany.avscan;
 
 /**
  *
- * @author 2xkaz
+ * @author Misako Morihana
  */
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
 public class Help extends javax.swing.JFrame {
 
-    /**
+       /**
      * Creates new form Help
      */
+    
+    String hTxtHome;
+    String hTxtCheckIn;
+    String hTxtCheckOut;
+    String hTxtAddNewEquipment;
+    String hTxtDataList;
+    
     public Help() {
         initComponents();
+        
+        hTxtHome = "Help - Home Page\n"
+                + "In this page you can select and move into one of the\n"
+                + "pages shown in this page.\n"
+                + "\n"
+                + "\n"
+                + "\n";
+        //Write Help txt for Home Page here...
+        
+
+        hTxtCheckIn = "Help - Check In Page";
+        //Write Help txt for Check In Page here...
+        
+        
+        hTxtCheckOut = "Help - Check Out Page";
+        //Write Help txt for Check Out Page here...
+        
+        
+        hTxtAddNewEquipment = "Help - Add New Equipment Page";
+        //Write Help txt for Add New Equipment Page here...
+        
+        
+        hTxtDataList = "Help - Data List Page";
+        //Write Help txt for Data List Page here...
+        
     }
 
     /**
@@ -34,6 +70,8 @@ public class Help extends javax.swing.JFrame {
         jBtnAddNewEquip = new javax.swing.JButton();
         jBtnDataList = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 700));
@@ -44,6 +82,7 @@ public class Help extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(380, 390));
 
+        jBtnHome.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
         jBtnHome.setText("Home");
         jBtnHome.setMaximumSize(new java.awt.Dimension(380, 60));
         jBtnHome.setMinimumSize(new java.awt.Dimension(380, 60));
@@ -54,25 +93,49 @@ public class Help extends javax.swing.JFrame {
             }
         });
 
+        jBtnCheckIn.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
         jBtnCheckIn.setText("Check In");
         jBtnCheckIn.setMaximumSize(new java.awt.Dimension(380, 60));
         jBtnCheckIn.setMinimumSize(new java.awt.Dimension(380, 60));
         jBtnCheckIn.setPreferredSize(new java.awt.Dimension(380, 60));
+        jBtnCheckIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnCheckInActionPerformed(evt);
+            }
+        });
 
+        jBtnCheckOut.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
         jBtnCheckOut.setText("Check Out");
         jBtnCheckOut.setMaximumSize(new java.awt.Dimension(380, 60));
         jBtnCheckOut.setMinimumSize(new java.awt.Dimension(380, 60));
         jBtnCheckOut.setPreferredSize(new java.awt.Dimension(380, 60));
+        jBtnCheckOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnCheckOutActionPerformed(evt);
+            }
+        });
 
+        jBtnAddNewEquip.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
         jBtnAddNewEquip.setText("Add New Equipment");
         jBtnAddNewEquip.setMaximumSize(new java.awt.Dimension(380, 60));
         jBtnAddNewEquip.setMinimumSize(new java.awt.Dimension(380, 60));
         jBtnAddNewEquip.setPreferredSize(new java.awt.Dimension(380, 60));
+        jBtnAddNewEquip.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnAddNewEquipActionPerformed(evt);
+            }
+        });
 
-        jBtnDataList.setText("Add New Equipment");
+        jBtnDataList.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
+        jBtnDataList.setText("Data List");
         jBtnDataList.setMaximumSize(new java.awt.Dimension(380, 60));
         jBtnDataList.setMinimumSize(new java.awt.Dimension(380, 60));
         jBtnDataList.setPreferredSize(new java.awt.Dimension(380, 60));
+        jBtnDataList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnDataListActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -100,18 +163,30 @@ public class Help extends javax.swing.JFrame {
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel3.setPreferredSize(new java.awt.Dimension(620, 390));
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(620, 390));
+
+        jTextArea1.setEditable(false);
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 618, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,8 +221,24 @@ public class Help extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnHomeActionPerformed
-        //
+        jTextArea1.setText(hTxtHome);
     }//GEN-LAST:event_jBtnHomeActionPerformed
+
+    private void jBtnCheckInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCheckInActionPerformed
+        jTextArea1.setText(hTxtCheckIn);
+    }//GEN-LAST:event_jBtnCheckInActionPerformed
+
+    private void jBtnCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCheckOutActionPerformed
+        jTextArea1.setText(hTxtCheckOut);
+    }//GEN-LAST:event_jBtnCheckOutActionPerformed
+
+    private void jBtnAddNewEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnAddNewEquipActionPerformed
+        jTextArea1.setText(hTxtAddNewEquipment);
+    }//GEN-LAST:event_jBtnAddNewEquipActionPerformed
+
+    private void jBtnDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDataListActionPerformed
+        jTextArea1.setText(hTxtDataList);
+    }//GEN-LAST:event_jBtnDataListActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,6 +275,8 @@ public class Help extends javax.swing.JFrame {
         });
     }
 
+    private HelpTxtHome helpTxtHome;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnAddNewEquip;
     private javax.swing.JButton jBtnCheckIn;
@@ -193,5 +286,7 @@ public class Help extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
