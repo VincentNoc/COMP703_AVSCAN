@@ -20,12 +20,15 @@ import javax.swing.SwingConstants;
 /**
  *
  * @author mdd2557
+ * 
+ * That file create a small error message with ok button
  */
 public class SmallErrorMessage implements ActionListener{
     private JLabel testLabel;
     private JFrame myFrame = new JFrame(); 
     private JButton okBut = new JButton("Ok");
     
+    //Just use -> new SmallErrorMessage("Error message");//to call or create error message frame
     public SmallErrorMessage(String message){
         testLabel = new JLabel("<html><p>"+message+"</p></html>", SwingConstants.CENTER);
         intiErrorFrame();
