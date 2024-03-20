@@ -56,7 +56,8 @@ public class DatabaseUtils {
         }
     }
 
-    //Modified by Dmitry
+    //Added by Dmitry
+    //the same method as default one but using different value to store data and also using parrent ID
     public DatabaseUtils(DefaultTableModel table) {
         insertData(table);
     }
@@ -90,7 +91,7 @@ public class DatabaseUtils {
         } catch (Exception e) {
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
         }
-    } //End of modiffied by Dmitry
+    } //End of added by Dmitry
 
     public List<Data> fetchDataFromDatabase() {
         List<Data> dataList = new ArrayList<>();

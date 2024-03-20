@@ -28,7 +28,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
      */
     public NewEq() {
         initComponents();
-        addFakeInfoRow();
+        addFakeInfoRow();//Just simple dummy data to do not input it manualy. Comment it out if needed.
     }
 
     /**
@@ -54,12 +54,6 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         formatButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("ID");
 
@@ -87,23 +81,11 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
         connToParent.setText("Add childs");
         connToParent.setToolTipText("");
         connToParent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 connectToParent(evt);
-            }
-        });
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
             }
         });
 
@@ -136,7 +118,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(127, 127, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
@@ -181,6 +163,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //Creating dummy data. Comment out the caller in the constructor to stop generating.
     public void addFakeInfoRow() {
         //jTable1 = new javax.swing.JTable();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -202,18 +185,11 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     }
 
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    //To remove Selected row
+    //To remove Selected rows
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-        // TODO add your handling code here:
         int selectedRow[] = jTable1.getSelectedRows();
         System.out.println(selectedRow);
-        // Check if a row is selected
         if (selectedRow != null) {
-            // Remove the selected row from the model
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             for (int i = selectedRow.length - 1; i >= 0; i--) {
                 model.removeRow(selectedRow[i]);
@@ -222,11 +198,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
 
     }//GEN-LAST:event_deleteActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    // To remove selected row
+    // Adding new row based on information inputed in jTextField(1&2&3)
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         if (!this.jTextField1.getText().equals("") && !this.jTextField2.getText().equals("") && !this.jTextField3.getText().equals("")) {
@@ -258,8 +230,10 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
+    //Open new window to create parent-child(super-sub) equipment realtion.
+    //Will send the selected row to the next windo to add child equipments to the parent equipment.
     private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
-        if (jTable1.getSelectedRows().length != 1) {
+        if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
             new SmallErrorMessage("Please select one Row only");
             return;
         }
@@ -277,10 +251,10 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         
     }//GEN-LAST:event_connectToParent
 
+    //Updating child-parent relation information after adding childs
     @Override
     public void onConnect() {
         // Continue execution after connect action is performed
-        // Put your code here that should execute after connecting to the parent
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         var temp = model.getValueAt(rememberSelectedRow, 0);
         DefaultTableModel toConnect = childs.getChildsInfo();
@@ -305,10 +279,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         //this.jTable1 = new JTable(model);
     }
     
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
+    //Sending data to database.
     private void formatButtonaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formatButtonaddActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
