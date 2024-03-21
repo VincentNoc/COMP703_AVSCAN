@@ -4,6 +4,7 @@
  */
 package com.mycompany.avscan;
 
+import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -12,14 +13,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ConnectItemToParent extends javax.swing.JFrame {
 
+    private ConnectCallback connectCallback;
+    DefaultTableModel importModel;
+
+    public interface ConnectCallback {
+
+        void onConnect();
+    }
+
     /**
      * Creates new form ConnectItemToParent
      */
-    public ConnectItemToParent(String parentID,String parentName, String parentType) {
+    public ConnectItemToParent(DefaultTableModel model, String parentID, String parentName, String parentType, ConnectCallback callback) {
         initComponents();
+        this.importModel = model;
         this.showParentID.setText(parentID);
         this.showParentName.setText(parentName);
         this.showParentType.setText(parentType);
+        this.connectCallback = callback; // Save the callback instance
         this.setVisible(true);
     }
 
@@ -39,7 +50,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         showParentName = new javax.swing.JLabel();
         showParentType = new javax.swing.JLabel();
         childIDLB = new javax.swing.JLabel();
-        ChildIDInput = new javax.swing.JTextField();
+        childIDInput = new javax.swing.JTextField();
         connectButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -48,6 +59,8 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         childNameLB = new javax.swing.JLabel();
         childTypeLB = new javax.swing.JLabel();
         addButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,7 +78,13 @@ public class ConnectItemToParent extends javax.swing.JFrame {
 
         childIDLB.setText("Enter Child ID:");
 
-        connectButton.setText("Connect to Parent");
+        childIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                childIDInputKeyReleased(evt);
+            }
+        });
+
+        connectButton.setText("Connect to parent");
         connectButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 connectButtonActionPerformed(evt);
@@ -74,16 +93,36 @@ public class ConnectItemToParent extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "camera sx2", "camera"},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Equipment ID", "Equipment Name", "Equipment Type"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        childNameInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                childNameInputActionPerformed(evt);
+            }
+        });
+        childNameInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                childNameInputKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                childNameInputKeyReleased(evt);
+            }
+        });
+
+        childTypeInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                childTypeInputKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                childTypeInputKeyReleased(evt);
+            }
+        });
 
         childNameLB.setText("Enter Child Name:");
 
@@ -93,6 +132,20 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
+            }
+        });
+
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+
+        backButton.setText("Go back");
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
             }
         });
 
@@ -106,7 +159,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(ChildIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(childIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(childNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -115,21 +168,21 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(childTypeLB)
                                     .addComponent(childTypeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(parentTypeLB)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(parentIDLB)
-                                            .addGap(40, 40, 40)
-                                            .addComponent(showParentID))
-                                        .addComponent(childIDLB)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(addButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(connectButton)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(backButton)
+                                .addGap(28, 28, 28)
+                                .addComponent(deleteButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(addButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(connectButton))
+                            .addComponent(parentTypeLB, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(parentIDLB)
+                                .addGap(40, 40, 40)
+                                .addComponent(showParentID))
+                            .addComponent(childIDLB, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 17, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(parentNameLB)
@@ -161,7 +214,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                     .addComponent(childTypeLB))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ChildIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(childIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(childNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(childTypeInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
@@ -169,7 +222,9 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(connectButton)
-                    .addComponent(addButton))
+                    .addComponent(addButton)
+                    .addComponent(deleteButton)
+                    .addComponent(backButton))
                 .addGap(35, 35, 35))
         );
 
@@ -178,19 +233,132 @@ public class ConnectItemToParent extends javax.swing.JFrame {
 
     private void connectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
         // TODO add your handling code here:
+        // Trigger the callback when connectButton is clicked
+        if (connectCallback != null) {
+            connectCallback.onConnect();
+            this.dispose();
+        }
     }//GEN-LAST:event_connectButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        if(!this.ChildIDInput.getText().equals("")&& !this.childNameInput.equals("")&& !this.childTypeInput.equals(""))
-        {
-            model.addRow(new Object[]{this.ChildIDInput.getText(), this.childNameInput, this.childTypeInput});
-        }else{
+        if (!this.childIDInput.getText().equals("") && !this.childNameInput.getText().equals("") && !this.childTypeInput.getText().equals("")) {
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                if (((String) model.getValueAt(i, 0)).equals(this.childIDInput.getText())) {
+                    new SmallErrorMessage("The \"" + this.childIDInput.getText() + "\" ID already added");
+                    return;//or return;??
+                }
+            }
+            for (int i = 0; i < this.importModel.getRowCount(); i++) {
+                if (((String) this.importModel.getValueAt(i, 0)).equals(this.childIDInput.getText())) {
+                    if ((this.importModel.getValueAt(i, 3)) != null
+                            && !((String) this.importModel.getValueAt(i, 3)).equals("")) {
+                        new SmallErrorMessage("THIS ERROR MESSAGE REQUIRED MULTICHOISE??!! The \"" + this.childIDInput.getText() + "\" already has an parrent");
+                        return;
+                    }
+                }
+            }
+            model.addRow(new Object[]{this.childIDInput.getText(), this.childNameInput.getText(), this.childTypeInput.getText()});
+            this.childIDInput.setText("");
+            this.childNameInput.setText("");
+            this.childTypeInput.setText("");
+        } else {
             new SmallErrorMessage("Empty input field!");//Error message window
-            
+
         }
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedRow[] = jTable1.getSelectedRows();
+        System.out.println(selectedRow);
+        // Check if a row is selected
+        if (selectedRow != null) {
+            // Remove the selected row from the model
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (int i = selectedRow.length - 1; i >= 0; i--) {
+                model.removeRow(selectedRow[i]);
+            }
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_backButtonActionPerformed
+
+    private void childIDInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childIDInputKeyReleased
+        // TODO add your handling code here:
+        for (int i = 0; i < this.importModel.getRowCount(); i++) {
+
+            if (this.childIDInput.getText().equals((String) this.importModel.getValueAt(i, 0))) {
+                this.childNameInput.setText((String) this.importModel.getValueAt(i, 1));
+                this.childTypeInput.setText((String) this.importModel.getValueAt(i, 2));
+                this.childNameInput.setForeground(Color.green);
+                this.childTypeInput.setForeground(Color.green);
+
+                childNameLB.setText("<html>Enter Child Name<font color='green'> (suggestion)</font>:</html>");
+                childTypeLB.setText("<html>Enter Child Type<font color='green'> (suggestion)</font>:</html>");
+                this.childNameInput.setEditable(false);
+                this.childTypeInput.setEditable(false);
+                return;
+            }
+            childNameLB.setText("Enter Child Name:");
+            childTypeLB.setText("Enter Child Type:");
+            this.childNameInput.setText("");
+            this.childTypeInput.setText("");
+            this.childNameInput.setForeground(Color.black);
+            this.childTypeInput.setForeground(Color.black);
+            this.childNameInput.setEditable(true);
+            this.childTypeInput.setEditable(true);
+        }
+    }//GEN-LAST:event_childIDInputKeyReleased
+
+    private void childNameInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childNameInputKeyReleased
+        // TODO add your handling code here:
+        /*if (!this.childNameLB.getText().equals("Enter Child Name:")) {
+            childNameLB.setText("Enter Child Name:");
+            childTypeLB.setText("Enter Child Type:");
+            this.childNameInput.setForeground(Color.black);
+            this.childTypeInput.setForeground(Color.black);
+        }*/
+    }//GEN-LAST:event_childNameInputKeyReleased
+
+    private void childTypeInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childTypeInputKeyReleased
+        // TODO add your handling code here:
+        /*if (!this.childNameLB.getText().equals("Enter Child Name:")) {
+            childNameLB.setText("Enter Child Name:");
+            childTypeLB.setText("Enter Child Type:");
+            this.childNameInput.setForeground(Color.black);
+            this.childTypeInput.setForeground(Color.black);
+        }*/
+    }//GEN-LAST:event_childTypeInputKeyReleased
+
+    private void childNameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_childNameInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_childNameInputActionPerformed
+
+    private void childNameInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childNameInputKeyPressed
+        // TODO add your handling code here:
+        if(this.childNameInput.isEditable()==false){
+            new SmallErrorMessage(this.childIDInput.getText()+"|"+this.childNameInput.getText()+"|"+this.childTypeInput.getText()+" - "
+            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name");
+        }
+    }//GEN-LAST:event_childNameInputKeyPressed
+
+    private void childTypeInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_childTypeInputKeyPressed
+        // TODO add your handling code here:
+        if(this.childTypeInput.isEditable()==false){
+            new SmallErrorMessage(this.childIDInput.getText()+"|"+this.childNameInput.getText()+"|"+this.childTypeInput.getText()+" - "
+            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name");
+        }
+    }//GEN-LAST:event_childTypeInputKeyPressed
+
+    public DefaultTableModel getChildsInfo() {
+        return (DefaultTableModel) jTable1.getModel();
+    }
 
     /**
      * @param args the command line arguments
@@ -222,21 +390,25 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConnectItemToParent("I'm parrent","newName", "Type of eq");
-                
+                //can't run from here
+                System.out.println("Can't Run from here any more!!!!");
+                //new ConnectItemToParent("Parrent ID","newName", "Type of eq",);
+
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField ChildIDInput;
     private javax.swing.JButton addButton;
+    private javax.swing.JButton backButton;
+    private javax.swing.JTextField childIDInput;
     private javax.swing.JLabel childIDLB;
     private javax.swing.JTextField childNameInput;
     private javax.swing.JLabel childNameLB;
     private javax.swing.JTextField childTypeInput;
     private javax.swing.JLabel childTypeLB;
     private javax.swing.JButton connectButton;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel parentIDLB;

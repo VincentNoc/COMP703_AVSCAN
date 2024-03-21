@@ -29,7 +29,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="ChildIDInput" min="-2" pref="162" max="-2" attributes="0"/>
+                              <Component id="childIDInput" min="-2" pref="162" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="childNameInput" alignment="0" min="-2" pref="162" max="-2" attributes="0"/>
@@ -41,26 +41,23 @@
                                   <Component id="childTypeInput" min="-2" pref="162" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="parentTypeLB" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <Component id="parentIDLB" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                          <Component id="showParentID" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="childIDLB" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane1" min="-2" pref="640" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="addButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="connectButton" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="backButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="addButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="connectButton" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="parentTypeLB" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="parentIDLB" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                              <Component id="showParentID" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="childIDLB" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane1" alignment="0" min="-2" pref="640" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="17" max="32767" attributes="0"/>
                   </Group>
@@ -103,7 +100,7 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="ChildIDInput" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="childIDInput" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="childNameInput" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="childTypeInput" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -113,6 +110,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="connectButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="backButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
           </Group>
@@ -155,11 +154,14 @@
         <Property name="text" type="java.lang.String" value="Enter Child ID:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="ChildIDInput">
+    <Component class="javax.swing.JTextField" name="childIDInput">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childIDInputKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="connectButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Connect to Parent"/>
+        <Property name="text" type="java.lang.String" value="Connect to parent"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="connectButtonActionPerformed"/>
@@ -175,25 +177,10 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="3" rowCount="4">
-                <Column editable="true" title="Equipment ID" type="java.lang.Object">
-                  <Data value="1"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                </Column>
-                <Column editable="true" title="Equipment Name" type="java.lang.Object">
-                  <Data value="camera sx2"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                </Column>
-                <Column editable="true" title="Equipment Type" type="java.lang.Object">
-                  <Data value="camera"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                  <Data value="null"/>
-                </Column>
+              <Table columnCount="3" rowCount="0">
+                <Column editable="true" title="Equipment ID" type="java.lang.Object"/>
+                <Column editable="true" title="Equipment Name" type="java.lang.Object"/>
+                <Column editable="true" title="Equipment Type" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -204,8 +191,17 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="childNameInput">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="childNameInputActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childNameInputKeyPressed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childNameInputKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="childTypeInput">
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childTypeInputKeyPressed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="childTypeInputKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="childNameLB">
       <Properties>
@@ -223,6 +219,22 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="deleteButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Delete"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="backButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Go back"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
