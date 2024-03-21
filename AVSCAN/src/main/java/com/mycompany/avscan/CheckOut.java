@@ -4,13 +4,11 @@
  */
 package com.mycompany.avscan;
 
+import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
 import java.sql.SQLException;
 import java.util.List;
-import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
 import java.util.Date;
@@ -215,13 +213,12 @@ public class CheckOut extends javax.swing.JFrame {
     
     public void outPutDataToTable() {
         try {
-            // Create an instance of DatabaseUtils
+            //
             DatabaseUtils databaseUtils = new DatabaseUtils();
 
             // Fetch data from the database
             List<Data> dataList = databaseUtils.fetchDataFromEquipmentLog();
 
-            //calls for the NonEditableTableModel 
             NonEditableTableModel model = new NonEditableTableModel();
             
             model.setColumnIdentifiers(new Object[]{"Equipment ID", "Equipment Name"});
