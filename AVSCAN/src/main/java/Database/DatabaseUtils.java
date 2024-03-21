@@ -33,8 +33,8 @@ public class DatabaseUtils {
     insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
   }
   
-  public DatabaseUtils(String EventID, String EventName, String EventDate, String EventTime, String EquipmentID ){
-      insertDataEventTable(EventID, EventName, EventDate, EventTime, EquipmentID);
+  public DatabaseUtils(String EventID, String EventName, String EquipmentID, String EqDateReturn, String EqTimeSent, String EqTimeReturned, String EqDateSent){
+      insertDataEventTable(EventID, EventName, EquipmentID, EqDateReturn, EqTimeSent, EqTimeReturned, EqDateSent);
   }
 
   public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
@@ -59,8 +59,8 @@ public class DatabaseUtils {
     }
   }
 
-  public final void insertDataEventTable(String EventID, String EventName, String EventDate, String EventTime, String EquipmentID){
-    String query = "INSERT INTO Event (EventID, EventName, EventDate, EventTime, ) VALUES (?, ?, ?)";
+  public final void insertDataEventTable(String EventID, String EventName, String EquipmentID, String EqDateReturn, String EqTimeSent, String EqTimeReturned, String EqDateSent){
+    String query = "INSERT INTO Event (EventID, EventName, EquipmentID, EqDateReturn, EqTimeSent, EqTimeReturned, EqDateSent ) VALUES (?, ?, ?, ?, ?, ?, ? , ?)";
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -70,9 +70,12 @@ public class DatabaseUtils {
       PreparedStatement prepStmt = con.prepareStatement(query);
       prepStmt.setString(1, EventID);
       prepStmt.setString(2, EventName);
-      prepStmt.setString(3, EventDate);
-      prepStmt.setString(4, EventTime);
-      prepStmt.setString(5, EquipmentID);
+      prepStmt.setString(3, EquipmentID);
+      prepStmt.setString(4, EqDateReturn);
+      prepStmt.setString(5, EqTimeSent);
+      prepStmt.setString(6, EqTimeReturned);
+      prepStmt.setString(7, EqDateSent);
+
       prepStmt.execute();
 
       System.out.println("Information added");
@@ -84,7 +87,7 @@ public class DatabaseUtils {
   }
   
   
-  public List<Data> fetchDataFromDatabase() {
+  public List<Data> fetchDataFromEquipmentLog() {
     List<Data> dataList = new ArrayList<>();
  
     try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {

@@ -178,7 +178,7 @@ public class History extends javax.swing.JFrame {
         DatabaseUtils databaseUtils = new DatabaseUtils();
 
         // Fetch data from the database
-        List <Data> dataList = databaseUtils.fetchDataFromDatabase();
+        List <Data> dataList = databaseUtils.fetchDataFromEquipmentLog();
 
         // Update the JTable with the fetched data
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
