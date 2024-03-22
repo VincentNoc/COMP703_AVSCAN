@@ -35,9 +35,9 @@
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="JHomeButton" min="-2" pref="158" max="-2" attributes="0"/>
+                      <Component id="homeButton" min="-2" pref="158" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="JFormatButton" min="-2" pref="158" max="-2" attributes="0"/>
+                      <Component id="formatButton" min="-2" pref="158" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -51,8 +51,8 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JHomeButton" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                  <Component id="JFormatButton" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="homeButton" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="formatButton" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="197" max="-2" attributes="0"/>
@@ -80,26 +80,29 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="dateTimePicker3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <Component id="searchButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <Component id="JEquipmentName" min="-2" pref="154" max="-2" attributes="0"/>
+                              <Component id="equipmentNameLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="equipmentNameInput" min="-2" pref="154" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" pref="94" max="-2" attributes="0"/>
-                              <Component id="JEquipmentID" min="-2" pref="154" max="-2" attributes="0"/>
+                              <Component id="equipmentIDLabel" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="equipmentIDInput" min="-2" pref="154" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Component id="JEventID" pref="154" max="32767" attributes="0"/>
+                              <Component id="parentIDLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="parentIDInput" min="-2" pref="154" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="eventIDLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="eventIDInput" alignment="0" min="-2" pref="154" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="251" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -110,20 +113,29 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="JEventID" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="JEquipmentID" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="JEquipmentName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="equipmentNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="equipmentIDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="parentIDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="parentIDInput" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="equipmentIDInput" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="equipmentNameInput" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="eventIDLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="eventIDInput" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="searchButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="dateTimePicker3" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -132,45 +144,52 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JTextField" name="JEquipmentID">
+        <Component class="javax.swing.JTextField" name="equipmentIDInput">
         </Component>
-        <Component class="javax.swing.JTextField" name="JEventID">
+        <Component class="javax.swing.JTextField" name="parentIDInput">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="searchButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Search"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="equipmentNameLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Equipment Name"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="equipmentIDLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Equipment ID"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel3">
+        <Component class="javax.swing.JLabel" name="parentIDLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Event ID"/>
+            <Property name="text" type="java.lang.String" value="Parent ID"/>
           </Properties>
         </Component>
         <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker3">
         </Component>
-        <Component class="javax.swing.JTextField" name="JEquipmentName">
+        <Component class="javax.swing.JTextField" name="equipmentNameInput">
+        </Component>
+        <Component class="javax.swing.JTextField" name="eventIDInput">
+        </Component>
+        <Component class="javax.swing.JLabel" name="eventIDLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Event ID"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="JHomeButton">
+    <Component class="javax.swing.JButton" name="homeButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Home"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JHomeButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="homeButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="JFormatButton">
+    <Component class="javax.swing.JButton" name="formatButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Format"/>
       </Properties>
@@ -185,11 +204,14 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="5" rowCount="4">
-                <Column editable="true" title="Equipment Name" type="java.lang.Object"/>
-                <Column editable="true" title="Equipment ID" type="java.lang.Object"/>
+              <Table columnCount="8" rowCount="0">
                 <Column editable="true" title="Event ID" type="java.lang.Object"/>
-                <Column editable="true" title="Return Date" type="java.lang.String"/>
+                <Column editable="true" title="Equipment ID" type="java.lang.Object"/>
+                <Column editable="true" title="Equipment Name" type="java.lang.Object"/>
+                <Column editable="true" title="Parent ID" type="java.lang.Object"/>
+                <Column editable="true" title="Parent Name" type="java.lang.Object"/>
+                <Column editable="true" title="Return Date" type="java.lang.Object"/>
+                <Column editable="true" title="Staff ID" type="java.lang.Object"/>
                 <Column editable="true" title="Status" type="java.lang.Object"/>
               </Table>
             </Property>
