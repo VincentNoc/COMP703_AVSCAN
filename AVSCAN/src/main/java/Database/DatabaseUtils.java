@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 
 /**
@@ -33,8 +34,8 @@ public class DatabaseUtils {
     insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
   }
   
-  public DatabaseUtils(String EventID, String EventName, String EquipmentID, String EqDateReturn, String EqTimeSent, String EqTimeReturned, String EqDateSent){
-      insertDataEventTable(EventID, EventName, EquipmentID, EqDateReturn, EqTimeSent, EqTimeReturned, EqDateSent);
+  public DatabaseUtils(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+      insertDataEventTable( evID,  evEquipmentID,  evName,  evDateTime,  evCheckOutStaff,  eqSentDateTime,  eqReturnDateTime);
   }
 
   public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
@@ -59,22 +60,27 @@ public class DatabaseUtils {
     }
   }
 
-  public final void insertDataEventTable(String EventID, String EventName, String EquipmentID, String EqDateReturn, String EqTimeSent, String EqTimeReturned, String EqDateSent){
-    String query = "INSERT INTO Event (EventID, EventName, EquipmentID, EqDateReturn, EqTimeSent, EqTimeReturned, EqDateSent ) VALUES (?, ?, ?, ?, ?, ?, ? , ?)";
+  public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+    String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
+    
+    
     try {
+      Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
+      Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
+
       Class.forName("com.mysql.cj.jdbc.Driver");
       Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
       System.out.println("Connected to Database");
       
       Statement stmt = con.createStatement();
       PreparedStatement prepStmt = con.prepareStatement(query);
-      prepStmt.setString(1, EventID);
-      prepStmt.setString(2, EventName);
-      prepStmt.setString(3, EquipmentID);
-      prepStmt.setString(4, EqDateReturn);
-      prepStmt.setString(5, EqTimeSent);
-      prepStmt.setString(6, EqTimeReturned);
-      prepStmt.setString(7, EqDateSent);
+      prepStmt.setString(1, evID);
+      prepStmt.setString(2, evEquipmentID);
+      prepStmt.setString(3, evName);
+      prepStmt.setString(4, evDateTime);
+      prepStmt.setString(5, evCheckOutStaff);
+      prepStmt.setTimestamp(6, timeStampSent);
+      prepStmt.setTimestamp(7, timeStampReturn);
 
       prepStmt.execute();
 
@@ -82,7 +88,8 @@ public class DatabaseUtils {
       con.close();
 
     } catch (Exception e) {
-      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+//      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+      e.printStackTrace();
     }
   }
   

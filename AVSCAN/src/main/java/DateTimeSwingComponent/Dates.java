@@ -20,7 +20,7 @@ public final class Dates extends javax.swing.JPanel {
 
     public Dates() {
         initComponents();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-mm-dd");
         Date date = new Date();
         String toDay = df.format(date);
         DAY = Integer.valueOf(toDay.split("-")[0]);

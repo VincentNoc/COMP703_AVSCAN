@@ -2,17 +2,17 @@
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="com.raven.datechooser.DateChooser" name="dateChooser1">
-      <Properties>
-        <Property name="textRefernce" type="javax.swing.JTextField" editor="org.netbeans.modules.form.ComponentChooserEditor">
-          <ComponentRef name="jTxtDate"/>
-        </Property>
-      </Properties>
-    </Component>
     <Component class="com.raven.datechooser.DateChooser" name="dateChooser2">
       <Properties>
         <Property name="textRefernce" type="javax.swing.JTextField" editor="org.netbeans.modules.form.ComponentChooserEditor">
           <ComponentRef name="jTxtReturnDate"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="com.raven.datechooser.DateChooser" name="dateChooser1">
+      <Properties>
+        <Property name="textRefernce" type="javax.swing.JTextField" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jTxtDate"/>
         </Property>
       </Properties>
     </Component>
@@ -238,9 +238,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jEventName">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jEventNameActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTxtDate">
       <Properties>
@@ -261,14 +258,14 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(timeIssue)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Date date = new Date();&#xa;  SpinnerDateModel timeIssue = &#xa;  new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Date d = new Date();&#xa;  SpinnerDateModel timeIssue = &#xa;  new SpinnerDateModel(d, null, null, Calendar.HOUR_OF_DAY);"/>
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JSpinner.DateEditor de = new JSpinner.DateEditor(jTimeIssued, &quot;HH:mm&quot;);&#xa;jTimeIssued.setEditor(de);"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JSpinner" name="jTimeReturn">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(timeReturn)"/>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="// Code adding the component to the parent container - not shown here&#xa;Date returnDate = new Date();&#xa;  SpinnerDateModel timeReturn = &#xa;  new SpinnerDateModel(returnDate, null, null, Calendar.HOUR_OF_DAY);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="// Code adding the component to the parent container - not shown here&#xa;Date dReturn = new Date();&#xa;  SpinnerDateModel timeReturn = &#xa;  new SpinnerDateModel(dReturn, null, null, Calendar.HOUR_OF_DAY);"/>
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JSpinner.DateEditor dateEdit = new JSpinner.DateEditor(jTimeReturn, &quot;HH:mm&quot;);&#xa;jTimeReturn.setEditor(dateEdit);&#xa;jTimeReturn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));&#xa;&#xa;jTimeReturn.setDoubleBuffered(true);"/>
       </AuxValues>
     </Component>

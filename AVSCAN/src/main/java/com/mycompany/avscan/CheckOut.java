@@ -8,12 +8,16 @@ import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
+import java.text.ParseException;
+import javax.swing.UIManager;
 
 
 /**
@@ -32,7 +36,7 @@ public class CheckOut extends javax.swing.JFrame {
 //        BackgroundColour();
 
   
-    }
+    } 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -43,8 +47,8 @@ public class CheckOut extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dateChooser1 = new com.raven.datechooser.DateChooser();
         dateChooser2 = new com.raven.datechooser.DateChooser();
+        dateChooser1 = new com.raven.datechooser.DateChooser();
         JHomeButton = new javax.swing.JButton();
         jCheckOutButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -58,20 +62,20 @@ public class CheckOut extends javax.swing.JFrame {
         jEventName = new javax.swing.JTextField();
         jTxtDate = new javax.swing.JTextField();
         jTxtReturnDate = new javax.swing.JTextField();
-        Date date = new Date();
+        Date d = new Date();
         SpinnerDateModel timeIssue =
-        new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+        new SpinnerDateModel(d, null, null, Calendar.HOUR_OF_DAY);
         jTimeIssued = new javax.swing.JSpinner(timeIssue);
         // Code adding the component to the parent container - not shown here
-        Date returnDate = new Date();
+        Date dReturn = new Date();
         SpinnerDateModel timeReturn =
-        new SpinnerDateModel(returnDate, null, null, Calendar.HOUR_OF_DAY);
+        new SpinnerDateModel(dReturn, null, null, Calendar.HOUR_OF_DAY);
         jTimeReturn = new javax.swing.JSpinner(timeReturn);
         jLabel6 = new javax.swing.JLabel();
 
-        dateChooser1.setTextRefernce(jTxtDate);
-
         dateChooser2.setTextRefernce(jTxtReturnDate);
+
+        dateChooser1.setTextRefernce(jTxtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,12 +117,6 @@ public class CheckOut extends javax.swing.JFrame {
 
         jLabel5.setText("Event Name:");
         jLabel5.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
-
-        jEventName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jEventNameActionPerformed(evt);
-            }
-        });
 
         jTxtDate.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
@@ -250,10 +248,39 @@ public class CheckOut extends javax.swing.JFrame {
         }
     }
     
-   // Assuming "component" is an instance of your third-party GUI component
-//    timePicker1.setTimeFormat(TimeFormat.TWENTY_FOUR_HOUR); // Example method call to set time format to 24-hour
+    //String formatDateTime to get time from spinner and date from calendar component  in the format that works with TimeStamp
+    private String formatDateTime(Date time, String date) {
+        //wanted formats for the mysql table TimeStamp column
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        try {
+            // Parse the date string into a Date object
+            Date formattedDate = dateFormat.parse(date);
+//            System.out.println("this is the sysout"+ formattedDate);
+//            String forDate = (String) formattedDate;
+            // Format the time
+            String formattedDateString = dateFormat.format(formattedDate);
+                        System.out.println("this is the sysout"+ formattedDateString);
 
+            String formattedTime = timeFormat.format(time);
+
+            // Return the concatenated date and time strings
+            return formattedDateString + " " + formattedTime;
+        } catch (ParseException e) {
+            // Handle any parsing errors
+            e.printStackTrace();
+            return null; // or throw an exception or return a default value
+        }
+    }
+
+    //String method formatDateTime to get time from spinner and date from calendar component in the format that works with TimeStamp
+//    private String getFormattedDateTime(Date date, String time) {
+//        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat formattedTime = new SimpleDateFormat("HH:mm:ss");
+//        return formattedTime.format(date) + " " + time;
+//    }
     
+        
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -263,25 +290,44 @@ public class CheckOut extends javax.swing.JFrame {
 
     private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckOutButtonActionPerformed
         // TODO add your handling code here:
-        String EvID = JEventID.getText();
-        String EvName = jEventName.getText();
-        String DateIssue = jTxtDate.getText();
-        String DateReturn = jTxtReturnDate.getText();
+        String evID = JEventID.getText();
+        String evName = jEventName.getText();
+        String dateIssue = jTxtDate.getText();
+        String dateReturn = jTxtReturnDate.getText();
+        //formatting date and time. 
+        String dateTimeSent = formatDateTime((Date) jTimeIssued.getValue(), dateIssue);
+        String dateTimeReturn = formatDateTime((Date) jTimeReturn.getValue(), dateReturn);
+    
         int selectedRow = jTable1.getSelectedRow();
-        System.out.println(DateIssue);
-        System.out.println(DateReturn);
+        
+        
+        System.out.println(dateTimeSent);
+        
+        System.out.println(dateIssue);
+//        System.out.println(dateReturn);
 
-        // Check if a row is selected
-        if (selectedRow != -1) {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            
-
+        System.out.println(dateTimeReturn);
+        try{
+            DatabaseUtils dbUtils = new DatabaseUtils();
+              // Check if a row is selected
+                if (selectedRow != -1) {
+                    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                    Object selectedValue = jTable1.getValueAt(selectedRow, 0);
+                    String selectedEqID = (String)selectedValue;
+                    //this will be changed latter on. 
+//                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
+                    dbUtils.insertDataEventTable(evID, selectedEqID, evName, "2024-10-03 13:19:00", "8", dateTimeSent, dateTimeReturn);
+        //            System.out.println(selectedValue);
+                }else{
+                    JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Must select an Equipment");
+                }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
+      
     }//GEN-LAST:event_jCheckOutButtonActionPerformed
-
-    private void jEventNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEventNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jEventNameActionPerformed
     
 
     /**
@@ -295,6 +341,7 @@ public class CheckOut extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
