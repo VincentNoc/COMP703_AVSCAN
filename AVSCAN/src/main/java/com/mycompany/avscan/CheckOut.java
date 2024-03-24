@@ -250,21 +250,17 @@ public class CheckOut extends javax.swing.JFrame {
     
     //String formatDateTime to get time from spinner and date from calendar component  in the format that works with TimeStamp
     private String formatDateTime(Date time, String date) {
-        //wanted formats for the mysql table TimeStamp column
+        /*originalDateFormat is created so that we can parse String Date as a Date object, which can later be formatted to yyyy-MM-dd format
+        */
+        SimpleDateFormat originalDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         try {
             // Parse the date string into a Date object
-            Date formattedDate = dateFormat.parse(date);
-//            System.out.println("this is the sysout"+ formattedDate);
-//            String forDate = (String) formattedDate;
-            // Format the time
+            Date formattedDate =  originalDateFormat.parse(date);
             String formattedDateString = dateFormat.format(formattedDate);
-                        System.out.println("this is the sysout"+ formattedDateString);
-
             String formattedTime = timeFormat.format(time);
-
-            // Return the concatenated date and time strings
+            
             return formattedDateString + " " + formattedTime;
         } catch (ParseException e) {
             // Handle any parsing errors
@@ -299,14 +295,6 @@ public class CheckOut extends javax.swing.JFrame {
         String dateTimeReturn = formatDateTime((Date) jTimeReturn.getValue(), dateReturn);
     
         int selectedRow = jTable1.getSelectedRow();
-        
-        
-        System.out.println(dateTimeSent);
-        
-        System.out.println(dateIssue);
-//        System.out.println(dateReturn);
-
-        System.out.println(dateTimeReturn);
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
               // Check if a row is selected
