@@ -25,7 +25,7 @@ public class ExcelWriter {
     private ArrayList<HistoryData> historyDataList = new ArrayList<>();
 
     public ExcelWriter() {
-        createAndWriteHistory();
+        //createAndWriteHistory();
     }
 
     public void addToExcel(HistoryData imported) {
@@ -97,7 +97,6 @@ public class ExcelWriter {
             try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
                 workbook.write(fileOut);
                 System.out.println("Excel file has been created successfully at: " + filePath);
-                workbook.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

@@ -222,18 +222,20 @@ public class History extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             ExcelWriter ex = new ExcelWriter();
             for (int i = selectedRow.length - 1; i >= 0; i--) {
-                String evID=(String) model.getValueAt(i, 0);
+                String evID         =     (String) model.getValueAt(selectedRow[i], 0);
                 String equipmentID  =     (String) model.getValueAt(selectedRow[i], 1);
                 String euipmentName =     (String) model.getValueAt(selectedRow[i], 2);
                 String parentID     =     (String) model.getValueAt(selectedRow[i], 3);
                 String parentName   =     (String) model.getValueAt(selectedRow[i], 4);
-                String returnDate   =     String.valueOf(model.getValueAt(selectedRow[i], 5));
+                String returnDate   =      String.valueOf(model.getValueAt(selectedRow[i], 5));
                 String staffID      =     (String) model.getValueAt(selectedRow[i], 6);
                 
                 HistoryData temp = new HistoryData(evID, equipmentID, euipmentName, parentID, parentName, returnDate, staffID);
                 ex.addToExcel(temp);
             }
             ex.createAndWriteHistory();
+        }else{
+            new SmallErrorMessage("Please select at least one row.");
         }
     }//GEN-LAST:event_formatButtonActionPerformed
 
