@@ -12,17 +12,15 @@ import java.sql.Timestamp;
  */
 public class HistoryData {
     private String evID;//not null
-    private String evName;
     private String evEquipmentID;//FOREIGN KEY not null
     private String EquipmentName;
     private String ParentID;
     private String ParentName;
-    private String evCheckOutStaff;//FOREIGN KEY not null
     private Timestamp eqReturnDateTime;
+    private String evCheckOutStaff;//FOREIGN KEY not null
 
-    public HistoryData(String evID, String evName, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, String evCheckOutStaff, Timestamp eqReturnDateTime) {
+    public HistoryData(String evID, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, Timestamp eqReturnDateTime, String evCheckOutStaff) {
         this.evID = evID;
-        this.evName = evName;
         this.evEquipmentID = evEquipmentID;
         this.EquipmentName = EquipmentName;
         this.ParentID = ParentID;
@@ -33,10 +31,6 @@ public class HistoryData {
 
     public String getEvID() {
         return evID;
-    }
-
-    public String getEvName() {
-        return evName;
     }
 
     public String getEvEquipmentID() {
@@ -65,7 +59,7 @@ public class HistoryData {
 
     @Override
     public String toString() {
-        return "HistoryData{" + "evID=" + evID + ", evName=" + evName + ", evEquipmentID=" + evEquipmentID + ", EquipmentName=" + EquipmentName + ", ParentID=" + ParentID + ", ParentName=" + ParentName + ", evCheckOutStaff=" + evCheckOutStaff + ", eqReturnDateTime=" + eqReturnDateTime + '}';
+        return "HistoryData{" + "evID=" + evID + ", evEquipmentID=" + evEquipmentID + ", EquipmentName=" + EquipmentName + ", ParentID=" + ParentID + ", ParentName=" + ParentName + ", evCheckOutStaff=" + evCheckOutStaff + ", eqReturnDateTime=" + eqReturnDateTime + '}';
     }
 
    

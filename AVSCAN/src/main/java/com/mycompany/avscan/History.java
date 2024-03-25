@@ -190,7 +190,8 @@ public class History extends javax.swing.JFrame {
         for (HistoryData data: dataList) {
           // Add each row of data to the JTable
           model.addRow(new Object[] {
-            data.getEvID(), data.getEvName(), data.getEvEquipmentID(), data.getEqName, data.getEqReturnDateTime(),//WORKING
+            data.getEvID(), data.getEvEquipmentID(), data.getEquipmentName(),data.getParentID(), 
+              data.getParentName(), data.getEqReturnDateTime(), data.getEvCheckOutStaff()//WORKING
           });
         }
 
