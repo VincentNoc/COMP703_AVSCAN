@@ -9,12 +9,15 @@ package excel;
  * @author dmitr
  */
 import Database.HistoryData;
+import java.io.File;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelWriter {
@@ -54,6 +57,8 @@ public class ExcelWriter {
         for (HistoryData data : historyDataList) {
             Row row = sheet.createRow(rowNum++);
 
+            System.out.println("EvID: " + data.getEvID());
+            
             row.createCell(0).setCellValue(data.getEvID());
             row.createCell(1).setCellValue(data.getEvEquipmentID());
             row.createCell(2).setCellValue(data.getEquipmentName());
@@ -73,19 +78,37 @@ public class ExcelWriter {
             sheet.autoSizeColumn(i);
         }
 
-        // Write the workbook content to a file
-        String filePath = "C:\\Users\\dmitr\\OneDrive\\Desktop\\java.xlsx"; // Specify the file path
-        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-            workbook.write(fileOut);
-            System.out.println("Excel file has been created successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
+        // Create a file location chooser
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Excel File");
+
+        int userSelection = fileChooser.showSaveDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+
+            // Append ".xlsx" extension if not already present
+            if (!filePath.toLowerCase().endsWith(".xlsx")) {
+                filePath += ".xlsx";
+            }
+            
+            // Write the workbook content to the specified file
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+                System.out.println("Excel file has been created successfully at: " + filePath);
                 workbook.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    workbook.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            System.out.println("Excel file creation was canceled.");
         }
     }
 }
