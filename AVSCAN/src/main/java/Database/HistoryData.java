@@ -19,14 +19,26 @@ public class HistoryData {
     private Timestamp eqReturnDateTime;
     private String evCheckOutStaff;//FOREIGN KEY not null
 
+    
+
     public HistoryData(String evID, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, Timestamp eqReturnDateTime, String evCheckOutStaff) {
         this.evID = evID;
         this.evEquipmentID = evEquipmentID;
         this.EquipmentName = EquipmentName;
         this.ParentID = ParentID;
         this.ParentName = ParentName;
-        this.evCheckOutStaff = evCheckOutStaff;
         this.eqReturnDateTime = eqReturnDateTime;
+        this.evCheckOutStaff = evCheckOutStaff;
+    }
+    
+    public HistoryData(String evID, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, String eqReturnDateTime, String evCheckOutStaff) {
+        this.evID = evID;
+        this.evEquipmentID = evEquipmentID;
+        this.EquipmentName = EquipmentName;
+        this.ParentID = ParentID;
+        this.ParentName = ParentName;
+        this.eqReturnDateTime = Timestamp.valueOf(eqReturnDateTime);
+        this.evCheckOutStaff = evCheckOutStaff;
     }
 
     public String getEvID() {
@@ -61,7 +73,4 @@ public class HistoryData {
     public String toString() {
         return "HistoryData{" + "evID=" + evID + ", evEquipmentID=" + evEquipmentID + ", EquipmentName=" + EquipmentName + ", ParentID=" + ParentID + ", ParentName=" + ParentName + ", evCheckOutStaff=" + evCheckOutStaff + ", eqReturnDateTime=" + eqReturnDateTime + '}';
     }
-
-   
-       
 }

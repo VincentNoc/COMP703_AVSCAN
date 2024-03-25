@@ -8,6 +8,7 @@ package com.mycompany.avscan;
 import Database.Data;
 import Database.DatabaseUtils;
 import Database.HistoryData;
+import excel.ExcelWriter;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
@@ -131,6 +132,11 @@ public class History extends javax.swing.JFrame {
         });
 
         formatButton.setText("Format");
+        formatButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                formatButtonActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -207,6 +213,29 @@ public class History extends javax.swing.JFrame {
         MainMenu mainMenu = new MainMenu();
         mainMenu.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
+
+    private void formatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formatButtonActionPerformed
+        // TODO add your handling code here:
+        int selectedRow[] = jTable1.getSelectedRows();
+        //System.out.println(selectedRow);
+        if (selectedRow != null) {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            ExcelWriter ex = new ExcelWriter();
+            for (int i = selectedRow.length - 1; i >= 0; i--) {
+                String evID=(String) model.getValueAt(i, 0);
+                String equipmentID  =     (String) model.getValueAt(selectedRow[i], 1);
+                String euipmentName =     (String) model.getValueAt(selectedRow[i], 2);
+                String parentID     =     (String) model.getValueAt(selectedRow[i], 3);
+                String parentName   =     (String) model.getValueAt(selectedRow[i], 4);
+                String returnDate   =     String.valueOf(model.getValueAt(selectedRow[i], 5));
+                String staffID      =     (String) model.getValueAt(selectedRow[i], 6);
+                
+                HistoryData temp = new HistoryData(evID, equipmentID, euipmentName, parentID, parentName, returnDate, staffID);
+                ex.addToExcel(temp);
+            }
+            ex.createAndWriteHistory();
+        }
+    }//GEN-LAST:event_formatButtonActionPerformed
 
     /**
      * @param args the command line arguments
