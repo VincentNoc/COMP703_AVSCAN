@@ -22,7 +22,7 @@ public class CheckIn extends javax.swing.JFrame {
      */
     public CheckIn() {
         initComponents();
-        addFakeInfoRow();
+//        addFakeInfoRow();
     }
 
     /**
@@ -48,12 +48,6 @@ public class CheckIn extends javax.swing.JFrame {
         JHomeButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jEquipmentID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jEquipmentIDActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("ID");
 
@@ -182,7 +176,7 @@ public class CheckIn extends javax.swing.JFrame {
         return jEquipmentType;
     }  
     
-    
+//    this is just to test if we can hard code test data into the jtable. 
     public void addFakeInfoRow(){ 
         //jTable1 = new javax.swing.JTable();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -202,10 +196,6 @@ public class CheckIn extends javax.swing.JFrame {
     
     
     
-    private void jEquipmentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEquipmentIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jEquipmentIDActionPerformed
-
    //To remove Selected row
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
@@ -244,7 +234,7 @@ public class CheckIn extends javax.swing.JFrame {
             //creates DatabaseUtils object. 
             DatabaseUtils dbUtil = new DatabaseUtils();
             //insertData method to add user input into database. 
-            dbUtil.insertData(equipmentID, equipmentName, equipmentType); 
+            dbUtil.insertDataEquipmentLog(equipmentID, equipmentName, equipmentType); 
             JOptionPane.showMessageDialog(this, "Successfully Added into the database", "Success", JOptionPane.INFORMATION_MESSAGE);
             
         }catch(SQLException e){

@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Timestamp;
 
 
 /**
@@ -30,10 +31,14 @@ public class DatabaseUtils {
   }
   
   public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
-    insertData(equipmentID, equipmentName, equipmentType);
+    insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+  }
+  
+  public DatabaseUtils(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+      insertDataEventTable( evID,  evEquipmentID,  evName,  evDateTime,  evCheckOutStaff,  eqSentDateTime,  eqReturnDateTime);
   }
 
-  public final void insertData(String equipmentID, String equipmentName, String equipmentType) {
+  public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
     String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
@@ -55,7 +60,41 @@ public class DatabaseUtils {
     }
   }
 
-  public List<Data> fetchDataFromDatabase() {
+  public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+    String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
+    
+    
+    try {
+      Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
+      Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
+
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+      System.out.println("Connected to Database");
+      
+      Statement stmt = con.createStatement();
+      PreparedStatement prepStmt = con.prepareStatement(query);
+      prepStmt.setString(1, evID);
+      prepStmt.setString(2, evEquipmentID);
+      prepStmt.setString(3, evName);
+      prepStmt.setString(4, evDateTime);
+      prepStmt.setString(5, evCheckOutStaff);
+      prepStmt.setTimestamp(6, timeStampSent);
+      prepStmt.setTimestamp(7, timeStampReturn);
+
+      prepStmt.execute();
+
+      System.out.println("Information added");
+      con.close();
+
+    } catch (Exception e) {
+//      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+      e.printStackTrace();
+    }
+  }
+  
+  
+  public List<Data> fetchDataFromEquipmentLog() {
     List<Data> dataList = new ArrayList<>();
  
     try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
