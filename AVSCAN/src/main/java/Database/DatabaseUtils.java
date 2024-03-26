@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 
 public class DatabaseUtils {
   Connection con;
+  //  private final String URL="jdbc:mysql://localhost:3306/avscan";
   private final String URL="jdbc:mysql://localhost:3306/mysql";
   private final String USER= "root";
   private final String PASSWORD = "AUT4events_";
@@ -62,7 +63,6 @@ public class DatabaseUtils {
 
   public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
     String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
-    
     
     try {
       Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
