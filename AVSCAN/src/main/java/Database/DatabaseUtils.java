@@ -141,5 +141,9 @@ public List<Data> fetchDataFromEquipmentLog() {
           return false;
       }
   }
+   
+   public final void insertStaff(String Username, String password){
+        String query = "INSERT INTO Staff (Username, StringPassword) VALUES (?, ?)";
+   }
  
 }
