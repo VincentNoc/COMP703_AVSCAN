@@ -50,7 +50,7 @@ public class History extends javax.swing.JFrame {
         eventIDInput = new javax.swing.JTextField();
         eventIDLabel = new javax.swing.JLabel();
         homeButton = new javax.swing.JButton();
-        formatButton = new javax.swing.JButton();
+        ExportToCsvButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -131,10 +131,10 @@ public class History extends javax.swing.JFrame {
             }
         });
 
-        formatButton.setText("Format");
-        formatButton.addActionListener(new java.awt.event.ActionListener() {
+        ExportToCsvButton.setText("Export to .csv File");
+        ExportToCsvButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                formatButtonActionPerformed(evt);
+                ExportToCsvButtonActionPerformed(evt);
             }
         });
 
@@ -160,7 +160,7 @@ public class History extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(formatButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ExportToCsvButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -171,7 +171,7 @@ public class History extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(formatButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ExportToCsvButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -214,7 +214,7 @@ public class History extends javax.swing.JFrame {
         mainMenu.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
-    private void formatButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formatButtonActionPerformed
+    private void ExportToCsvButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExportToCsvButtonActionPerformed
         // TODO add your handling code here:
         int selectedRow[] = jTable1.getSelectedRows();
         //System.out.println(selectedRow);
@@ -237,7 +237,7 @@ public class History extends javax.swing.JFrame {
         }else{
             new SmallErrorMessage("Please select at least one row.");
         }
-    }//GEN-LAST:event_formatButtonActionPerformed
+    }//GEN-LAST:event_ExportToCsvButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -275,6 +275,7 @@ public class History extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ExportToCsvButton;
     private com.github.lgooddatepicker.components.DatePicker datePicker1;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker2;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker3;
@@ -284,7 +285,6 @@ public class History extends javax.swing.JFrame {
     private javax.swing.JLabel equipmentNameLabel;
     private javax.swing.JTextField eventIDInput;
     private javax.swing.JLabel eventIDLabel;
-    private javax.swing.JButton formatButton;
     private javax.swing.JButton homeButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
