@@ -9,5 +9,7 @@ package com.mycompany.avscan;
  * @author vince-kong
  */
 public class AVSCAN {
-    
+    public static void main(String args[]){
+        
+    }
 }

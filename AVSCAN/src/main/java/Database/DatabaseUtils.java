@@ -38,6 +38,10 @@ public class DatabaseUtils {
   public DatabaseUtils(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
       insertDataEventTable( evID,  evEquipmentID,  evName,  evDateTime,  evCheckOutStaff,  eqSentDateTime,  eqReturnDateTime);
   }
+  
+  public DatabaseUtils(String username, String password){
+      loginCredentials(username, password);
+  }
 
   public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
     String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
@@ -63,7 +67,6 @@ public class DatabaseUtils {
 
   public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
     String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
-    
     try {
       Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
       Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
@@ -94,11 +97,10 @@ public class DatabaseUtils {
   }
   
   
-  public List<Data> fetchDataFromEquipmentLog() {
+public List<Data> fetchDataFromEquipmentLog() {
     List<Data> dataList = new ArrayList<>();
  
     try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-        // Your code for executing queries and processing results
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
 
@@ -106,10 +108,58 @@ public class DatabaseUtils {
             Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
             dataList.add(equipment);
         }
+        
     } catch (Exception e) {
         e.printStackTrace();
+    } finally {
+        try {
+            if (con != null) {
+                con.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     return dataList;
+}
+  
+   public final boolean loginCredentials(String username, String password){
+      try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
+        String query = "SELECT * FROM Staff WHERE stName = ? AND password = ?";
+        try(PreparedStatement prepStm = con.prepareStatement(query)){
+            prepStm.setString(1, username);
+            prepStm.setString(2, password);
+            try(ResultSet rs = prepStm.executeQuery()){
+                return rs.next();
+            }
+
+        }
+      }catch(SQLException e){
+          e.printStackTrace();
+          return false;
+      }
   }
+   
+   public final void insertStaff(String Username,String StaffID, String password){
+        String query = "INSERT INTO Staff (stName,stID,password) VALUES (?, ?, ?)";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            DatabaseConnector dbCon= new DatabaseConnector();
+            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
+            Statement stmt = con.createStatement();
+            PreparedStatement prepStmt = con.prepareStatement(query);
+            prepStmt.setString(1, Username);
+            prepStmt.setString(2, StaffID);
+            prepStmt.setString(3, password);
+            prepStmt.execute();
+
+            System.out.println("Information added");
+            con.close();
+
+        }catch (Exception e) {
+            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+        }
+   }
+ 
 }
