@@ -125,7 +125,6 @@ public List<Data> fetchDataFromEquipmentLog() {
 }
   
    public final boolean loginCredentials(String username, String password){
-      
       try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
         String query = "SELECT * FROM Staff WHERE stName = ? AND password = ?";
         try(PreparedStatement prepStm = con.prepareStatement(query)){
@@ -142,8 +141,25 @@ public List<Data> fetchDataFromEquipmentLog() {
       }
   }
    
-   public final void insertStaff(String Username, String password){
-        String query = "INSERT INTO Staff (Username, StringPassword) VALUES (?, ?)";
+   public final void insertStaff(String Username,String StaffID, String password){
+        String query = "INSERT INTO Staff (stName,stID,password) VALUES (?, ?, ?)";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            DatabaseConnector dbCon= new DatabaseConnector();
+            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
+            Statement stmt = con.createStatement();
+            PreparedStatement prepStmt = con.prepareStatement(query);
+            prepStmt.setString(1, Username);
+            prepStmt.setString(2, StaffID);
+            prepStmt.setString(3, password);
+            prepStmt.execute();
+
+            System.out.println("Information added");
+            con.close();
+
+        }catch (Exception e) {
+            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+        }
    }
  
 }

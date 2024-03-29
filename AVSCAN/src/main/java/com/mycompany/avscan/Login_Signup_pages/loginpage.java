@@ -167,7 +167,6 @@ public class Loginpage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
-        
             String Name = jUsername.getText();
             String password = jPasswordTxt.getText();
             
@@ -180,6 +179,7 @@ public class Loginpage extends javax.swing.JFrame {
                 System.out.println("username or password is wrong");
             }
         }catch(SQLException e){
+            JOptionPane.showMessageDialog(this,"Something went wrong with the database connection", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }//GEN-LAST:event_jLoginButtonActionPerformed
