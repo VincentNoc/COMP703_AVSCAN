@@ -3,7 +3,7 @@ Current database setup:
 Name of table: EquipmentLog.
 
 User: root
-Password: AUT4events
+Password: AUT4events_
 URL: "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL"
 
 CREATE TABLE EquipmentLog (
@@ -28,6 +28,7 @@ Select * From EquipmentLog
 WHERE ParentID is NULL || parentID = '00000001' || parentID = '00000002' ;
 
 DROP TABLE Staff;
+
 CREATE TABLE Staff(
 	stID varchar(100) NOT NULL PRIMARY KEY,
 	stName varchar(255),
@@ -43,6 +44,7 @@ VALUES('1', 'John', 'Inportant person'),
 SELECT * FROM Staff;
 
 DROP TABLE Event;
+
 CREATE TABLE Event(
 	evID varchar(100) NOT NULL,
     evEquipmentID varchar(100) NOT NULL,
