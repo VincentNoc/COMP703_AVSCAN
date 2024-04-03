@@ -34,7 +34,6 @@ public class History extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dateChooser1 = new com.raven.datechooser.DateChooser();
         jPanel1 = new javax.swing.JPanel();
         JEquipmentID = new javax.swing.JTextField();
         JEventID = new javax.swing.JTextField();
@@ -49,8 +48,6 @@ public class History extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        dateChooser1.setTextRefernce(jHistoryDate);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -62,6 +59,12 @@ public class History extends javax.swing.JFrame {
         jLabel2.setText("Equipment ID");
 
         jLabel3.setText("Event ID");
+
+        jHistoryDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jHistoryDateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -205,6 +208,10 @@ public class History extends javax.swing.JFrame {
         mainMenu.setVisible(true);
     }//GEN-LAST:event_JHomeButtonActionPerformed
 
+    private void jHistoryDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jHistoryDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jHistoryDateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -246,7 +253,6 @@ public class History extends javax.swing.JFrame {
     private javax.swing.JTextField JEventID;
     private javax.swing.JButton JFormatButton;
     private javax.swing.JButton JHomeButton;
-    private com.raven.datechooser.DateChooser dateChooser1;
     private javax.swing.JButton jButton1;
     private javax.swing.JTextField jHistoryDate;
     private javax.swing.JLabel jLabel1;
