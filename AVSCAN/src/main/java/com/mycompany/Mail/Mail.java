@@ -48,31 +48,32 @@ public class Mail {
         newSession = Session.getDefaultInstance(prop, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("Vk6953@hotmail.com", "Dtmvzw581");
+                return new PasswordAuthentication("Avscansmtp@outlook.com", "AUTAV26022024");
             }
         });
     }
 
     private void draftEmail() throws MessagingException {
-        String[] emailReceipients = {"kst0629@autuni.ac.nz"};
-        String emailSubject = "Test Mail";
-        String emailBody = "Test Body of my email";
-        mimeMessage = new MimeMessage(newSession);
-        for (int i = 0; i < emailReceipients.length; i++) {
-            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(emailReceipients[i]));
-        }
-        mimeMessage.setSubject(emailSubject);
-        MimeBodyPart bodyPart = new MimeBodyPart();
-        bodyPart.setContent(emailBody, "text/html");
-        Multipart multiPart = new MimeMultipart();
-        multiPart.addBodyPart(bodyPart);
-        mimeMessage.setContent(multiPart);
-    }
+       String[] emailReceipients = {"kst0629@autuni.ac.nz"};
+       String emailSubject = "Test Mail";
+       String emailBody = "Test Body of my email";
+       mimeMessage = new MimeMessage(newSession);
+       mimeMessage.setFrom(new InternetAddress("Avscansmtp@outlook.com")); // Set the From address
+       for (int i = 0; i < emailReceipients.length; i++) {
+           mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(emailReceipients[i]));
+       }
+       mimeMessage.setSubject(emailSubject);
+       MimeBodyPart bodyPart = new MimeBodyPart();
+       bodyPart.setContent(emailBody, "text/html");
+       Multipart multiPart = new MimeMultipart();
+       multiPart.addBodyPart(bodyPart);
+       mimeMessage.setContent(multiPart);
+   }
 
     private void sendEmail() throws MessagingException {
-        String emailHost = "smtp-mail.outlook.com";
+        String emailHost ="smtp-mail.outlook.com";
         try (Transport transport = newSession.getTransport("smtp")) {
-            transport.connect(emailHost, "Vk6953@hotmail.com", "Dtmvzw581");
+            transport.connect(emailHost, "Avscansmtp@outlook.com", "AUTAV26022024");
             transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
             System.out.println("Email successfully sent!!!");
         }
