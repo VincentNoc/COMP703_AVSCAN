@@ -9,13 +9,15 @@ import Database.Data;
 import Database.DatabaseUtils;
 import Database.HistoryData;
 import excel.ExcelWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 
 /**
  *
- * @author vince-kong
+ * @author vince-kong, Misako Morihana
  */
 public class History extends javax.swing.JFrame {
 
@@ -182,28 +184,47 @@ public class History extends javax.swing.JFrame {
 
     
     public void outPutDataToTable() {
-      // Create an instance of DatabaseUtils
-      try {
-        DatabaseUtils databaseUtils = new DatabaseUtils();
+        /*
+        COMMENTING OUT TEMPORARY AS IT LOOKS INCOMPLETE (By Misako)
+        
+        // Create an instance of DatabaseUtils
+        try {
+          DatabaseUtils databaseUtils = new DatabaseUtils();
 
-        // Fetch data from the database
-        List <HistoryData> dataList = databaseUtils.fetchHistoryFromDatabase();
+          // Fetch data from the database
+          List <HistoryData> dataList = databaseUtils.fetchHistoryFromDatabase();
 
-        // Update the JTable with the fetched data
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Clear existing data
+          // Update the JTable with the fetched data
+          DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+          model.setRowCount(0); // Clear existing data
 
-        for (HistoryData data: dataList) {
-          // Add each row of data to the JTable
-          model.addRow(new Object[] {
-            data.getEvID(), data.getEvEquipmentID(), data.getEquipmentName(),data.getParentID(), 
-              data.getParentName(), data.getEqReturnDateTime(), data.getEvCheckOutStaff()//WORKING
-          });
+          for (HistoryData data: dataList) {
+            // Add each row of data to the JTable
+            model.addRow(new Object[] {
+              data.getEvID(), data.getEvEquipmentID(), data.getEquipmentName(),data.getParentID(), 
+                data.getParentName(), data.getEqReturnDateTime(), data.getEvCheckOutStaff()//WORKING
+            });
+          }
+
+        } catch (SQLException e) {
+          e.printStackTrace();
         }
-
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+        */
+        
+        // Database connection
+        try {
+            // Opening connection
+            // for forName, goto Services>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // for getConnection, use (Database name, "root", SQL password)
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
+            
+            connection.close();
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        
     }
     
     
