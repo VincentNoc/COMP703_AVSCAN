@@ -11,9 +11,11 @@ import Database.HistoryData;
 import excel.ExcelWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -218,6 +220,30 @@ public class History extends javax.swing.JFrame {
             Class.forName("com.mysql.cj.jdbc.Driver");
             // for getConnection, use (Database name, "root", SQL password)
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
+            
+            // Getting Data from SQL Database
+            Statement statement = connection.createStatement();
+            // Using SQL query
+            String sqlQuery = 
+                    "SELECT * FROM EquipmentLog";
+            ResultSet rs = statement.executeQuery(sqlQuery);
+            
+            // loops until it reads all rows from database
+            while (rs.next()){
+                // use rs.getInt and rs.getString to get data from each row
+                // use String.valueOf() to convert int to a String               
+                String eqID = String.valueOf(rs.getInt("EquipmentID"));
+                String eqName = rs.getString("EquipmentName");
+                String eqType = rs.getString("EquipmentType");
+                String eqPID = String.valueOf(rs.getInt("parentID"));
+                
+                // An array to store data into jTable
+                String tableData[] = {eqID, eqName, eqType, eqPID};
+                DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+                
+                // Add the String arary into the jTable
+                tableModel.addRow(tableData);
+            }
             
             connection.close();
         }catch(Exception e) {
