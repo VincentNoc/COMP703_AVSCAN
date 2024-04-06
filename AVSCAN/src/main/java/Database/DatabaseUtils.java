@@ -115,6 +115,7 @@ public class DatabaseUtils {
     public List<MaintenanceData> fetchMaintenanceData() {
         List<MaintenanceData> dataList = new ArrayList<>();
 
+        
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
@@ -156,4 +157,58 @@ public class DatabaseUtils {
 
         return dataList;
     }
+    
+    public List<MaintenanceData> fetchHashtableMaintenanceSearchData(String ID, String Name, String received, String returned) {
+        List<MaintenanceData> dataList = new ArrayList<>();
+        String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
+                    + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
+                    + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
+                    + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
+                    + "WHERE ";
+        
+        boolean canditionAdded = false;
+        
+        if(!ID.equals("")){
+            query += ("Maintenance.EquipmentID = \'"+ ID + "\'");
+            canditionAdded = true;
+        }
+        if(!Name.equals("")){
+            if(canditionAdded == true){
+                query += " AND";
+            }
+            query += (" child.EquipmentName = \'" + Name + "\'");
+            canditionAdded = true;
+        }
+        if(!received.equals("dd/mm/yyyy")){
+            if(canditionAdded == true){
+                query += " AND";
+            }
+            query += (" Maintenance.Received Like \'"+ received+"\'");
+            canditionAdded = true;
+        }
+        if(!returned.equals("dd/mm/yyyy")){
+            if(canditionAdded == true){
+                query += " AND";
+            }
+            query += (" Maintenance.repairedReturned Like \'"+ returned+"\'");
+        }
+        query += "\n";
+        query += "ORDER BY Maintenance.Received DESC;";
+        
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            // Your code for executing queries and processing results
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                MaintenanceData equipment = new MaintenanceData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getTimestamp(6), rs.getTimestamp(7));
+                dataList.add(equipment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dataList;
+    } 
+   
 }

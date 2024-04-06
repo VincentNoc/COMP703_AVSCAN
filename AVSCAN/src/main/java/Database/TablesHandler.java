@@ -13,7 +13,10 @@ import java.util.Map;
  *
  * @author dmitr
  */
-public class TablesHandler {
+// that class crated to sort MaintenanceData data by java languge.
+// Now everything is sorting by SQL so current class not in use.
+//Might be needed later to sort by java
+public class TablesHandler { 
     private Hashtable<String, MaintenanceData> IDType;
     private Hashtable<String, MaintenanceData> nameType;
     private Hashtable<Timestamp, MaintenanceData> receivedType;
@@ -22,8 +25,8 @@ public class TablesHandler {
     
 
     public TablesHandler(List <MaintenanceData> IDType) {
-        createIDTypeTable(IDType);
         //add methods
+        createIDTypeTable(IDType);
     }
     
     
