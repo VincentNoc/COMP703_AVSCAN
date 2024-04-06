@@ -12,8 +12,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Timestamp;
-import java.util.Hashtable;
+
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -22,8 +23,8 @@ import java.util.Hashtable;
 public class DatabaseUtils {
 
     Connection con;
-    private final String URL = "jdbc:mysql://localhost:3306/avscan";
-    //private final String URL="jdbc:mysql://localhost:3306/mysql";
+    //private final String URL = "jdbc:mysql://localhost:3306/mysql";//Use that one as default version
+    private final String URL = "jdbc:mysql://localhost:3306/avscan";//Don't use that one!!!!
     private final String USER = "root";
     private final String PASSWORD = "AUT4events_";
 
@@ -32,14 +33,10 @@ public class DatabaseUtils {
     }
 
     public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
-        insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+        insertData(equipmentID, equipmentName, equipmentType);
     }
 
-    public DatabaseUtils(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) {
-        insertDataEventTable(evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime);
-    }
-
-    public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
+    public final void insertData(String equipmentID, String equipmentName, String equipmentType) {
         String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -61,6 +58,62 @@ public class DatabaseUtils {
         }
     }
 
+    //Added by Dmitry
+    //the same method as default one but using different value to store data and also using parrent ID
+    public DatabaseUtils(DefaultTableModel table) {
+        insertData(table);
+    }
+    private final void insertData(DefaultTableModel table) {
+        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
+        int size = table.getRowCount();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Connected to Database");
+
+            while (size > 0 ) {
+                size--;
+                String equipmentID = (String) table.getValueAt(size, 0);
+                String equipmentName = (String) table.getValueAt(size, 1);
+                String equipmentType = (String) table.getValueAt(size, 2);
+                String eqyipmentParent = (String) table.getValueAt(size, 3);
+                
+                Statement stmt = con.createStatement();
+                PreparedStatement prepStmt = con.prepareStatement(query);
+                prepStmt.setString(1, equipmentID);
+                prepStmt.setString(2, equipmentName);
+                prepStmt.setString(3, equipmentType);
+                prepStmt.setString(4, eqyipmentParent);
+                prepStmt.execute();
+            }
+
+            System.out.println("Information added");
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+        }
+    } //End of added by Dmitry
+
+    public List<Data> fetchDataFromDatabase() {
+        List<Data> dataList = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            // Your code for executing queries and processing results
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
+
+            while (rs.next()) {
+                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+                dataList.add(equipment);
+                System.out.println(equipment.toString());//to show data
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dataList;
+    }
     public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) {
         String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
 
