@@ -19,6 +19,7 @@ public class SignUp extends javax.swing.JFrame {
      */
     public SignUp() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -140,7 +141,7 @@ public class SignUp extends javax.swing.JFrame {
     private void jHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        Loginpage lp = new Loginpage();
+        LoginPage lp = new LoginPage();
         lp.setVisible(true);
     }//GEN-LAST:event_jHomeButtonActionPerformed
 

@@ -23,6 +23,7 @@ public class History extends javax.swing.JFrame {
     public History() {
         initComponents();
         outPutDataToTable();
+        this.setLocationRelativeTo(null);
     }
 
     /**

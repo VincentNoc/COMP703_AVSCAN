@@ -39,11 +39,11 @@
             <artifactId>datechooser</artifactId>
             <version>SNAPSHOT</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.raven.datechooser</groupId>
             <artifactId>datechooser</artifactId>
             <version>SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>

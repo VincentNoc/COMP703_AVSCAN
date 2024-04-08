@@ -22,6 +22,7 @@ public class CheckIn extends javax.swing.JFrame {
      */
     public CheckIn() {
         initComponents();
+        this.setLocationRelativeTo(null);
 //        addFakeInfoRow();
     }
 

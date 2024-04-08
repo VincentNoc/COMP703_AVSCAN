@@ -33,6 +33,7 @@ public class CheckOut extends javax.swing.JFrame {
     public CheckOut() {
         initComponents();
         outPutDataToTable();
+        this.setLocationRelativeTo(null);
 //        BackgroundColour();
 
   
