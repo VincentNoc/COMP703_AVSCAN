@@ -4,20 +4,21 @@
  */
 package com.mycompany.Mail;
 
-import java.io.IOException;
-import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 import javax.mail.*;
-import javax.mail.internet.*;
+import Database.DatabaseConnector;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.sql.*;
 /**
  *
  * @author vince-kong
@@ -55,8 +56,24 @@ public class Mail {
 
     private void draftEmail() throws MessagingException {
        String[] emailReceipients = {"kst0629@autuni.ac.nz"};
-       String emailSubject = "Test Mail";
-       String emailBody = "Test Body of my email";
+       String emailSubject = "Return AV Equipment";
+       StringBuilder emailBody = new StringBuilder();
+//       String emailBody = "";
+       
+       try{
+            DatabaseConnector dbCon= new DatabaseConnector();
+            Connection con = dbCon.connectToDatabase();
+            String query="SELECT * FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 3 DAY)";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            
+            emailBody.append("<html><body>");
+            emailBody.append("<h2>AV Equipment close to return date.</h2>");
+           
+       }catch(Exception e){
+           e.printStackTrace();
+       }
+       
        mimeMessage = new MimeMessage(newSession);
        mimeMessage.setFrom(new InternetAddress("Avscansmtp@outlook.com")); // Set the From address
        for (int i = 0; i < emailReceipients.length; i++) {
