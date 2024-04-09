@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.sql.*;
+//import MailCredentials;
 /**
  *
  * @author vince-kong
@@ -29,26 +30,15 @@ import javax.sql.*;
 public class Mail {
     Session newSession;
     MimeMessage mimeMessage = null;
-    private final String emailAdd = "Avscansmtp@outlook.com";
-    private final String emailPass = "AUTAV26022024";
+    MailCredentials mc = new MailCredentials();
+    private final String emailAdd = mc.getEmailAdd();
+    private final String emailPass = mc.getEmailPass();
     
+  
     public Mail(){
         setUpServerProperties();
-//        draftEmail();
-//        sendEmail();
     }
 
-//    public static void main(String args[]) throws SQLException {
-////      Mail mail = new Mail();
-////      try {
-////        mail.setUpServerProperties();
-////        mail.draftEmail();
-////        mail.sendEmail();
-////      } catch (MessagingException e) {
-////        e.printStackTrace();
-////        System.out.println("Failed to send email: " + e.getMessage());
-////      }
-//    }
 
     private void setUpServerProperties() {
       Properties prop = new Properties();
@@ -76,7 +66,7 @@ public class Mail {
         Connection con = dbCon.connectToDatabase();
 
         // Query to retrieve events with AV equipment due for return within 3 days
-        String query = "SELECT evID, evName, evEquipmentID FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 3 DAY)";
+        String query = "SELECT evID, evName, evEquipmentID FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(query);
 

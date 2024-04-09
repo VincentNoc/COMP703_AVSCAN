@@ -35,8 +35,6 @@ public class CheckOut extends javax.swing.JFrame {
         outPutDataToTable();
         this.setLocationRelativeTo(null);
 //        BackgroundColour();
-
-  
     } 
 
     /**

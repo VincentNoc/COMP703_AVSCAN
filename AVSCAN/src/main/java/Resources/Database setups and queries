@@ -83,3 +83,7 @@ SELECT * FROM Event;
 INSERT INTO Event(evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime)
 	VALUES('56', '00000008', 'Conference', '2024-03-22 09:00:00', null, '2024-03-22 10:30:00', '2024-03-22 16:00:00');
 
+//this is to just create the boolean column so that application is check if email has already been sent so there are no repeat emails.
+ALTER TABLE Event
+ADD COLUMN email_sent BIT NOT NULL DEFAULT 0;
+
