@@ -231,6 +231,9 @@ public class Maintenance extends javax.swing.JFrame {
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
+        this.dispose();
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
