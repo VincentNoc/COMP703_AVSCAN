@@ -25,6 +25,5 @@ public class AVSCAN {
         }catch(MessagingException e){
             e.printStackTrace();
         }
-       
     }
 }
