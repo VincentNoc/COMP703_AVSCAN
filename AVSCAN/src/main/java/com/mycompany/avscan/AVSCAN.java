@@ -20,8 +20,7 @@ public class AVSCAN {
         
         try{
             lp.setVisible(true);
-            mail.draftEmail();
-            mail.sendEmail();
+            mail.checkTimeStampInDB();
         }catch(MessagingException e){
             e.printStackTrace();
         }

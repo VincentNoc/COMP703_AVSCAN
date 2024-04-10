@@ -16,11 +16,12 @@ import java.util.Properties;
 import javax.mail.*;
 import Database.DatabaseConnector;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.sql.*;
-//import MailCredentials;
+import java.sql.Timestamp;
+
 /**
  *
  * @author vince-kong
@@ -122,7 +123,8 @@ public class Mail {
       // Set the content of the MimeMessage as the multipart object
       mimeMessage.setContent(multiPart);
     }
-
+    
+    
     public void sendEmail() throws MessagingException {
       String emailHost = "smtp-mail.outlook.com";
       try (Transport transport = newSession.getTransport("smtp")) {
@@ -131,5 +133,47 @@ public class Mail {
         System.out.println("Email successfully sent!!!");
       }
     }
+    
+    public static boolean checkOneDayEvent(String daySent, String dayReturn){
+       try{
+           Timestamp timeStamp1 = Timestamp.valueOf(daySent);
+           Timestamp timeStamp2 = Timestamp.valueOf(daySent);
+           
+           //calculates difference in milliseconds between the two timestamps
+           long diffMillis = Math.abs(timeStamp2.getTime() - timeStamp1.getTime());
+           //one day in milliseconds
+           long oneDayMillis = 24 * 60 * 60 * 1000;
+           
+           return diffMillis < oneDayMillis;
+       }catch(IllegalArgumentException e){
+           return false;
+       }
+    }
+    
+    public void checkTimeStampInDB() throws SQLException, MessagingException{
+       String query = "SELECT eqSentDateTime, eqRturnDateTime FROM Event";
+       
+       try{
+            DatabaseConnector dbCon= new DatabaseConnector();
+            Connection con = dbCon.connectToDatabase();
+            PreparedStatement prepStmt = con.prepareStatement(query);
+            ResultSet rs = prepStmt.executeQuery();
+            
+            while(rs.next()){
+                String sentDate = rs.getString("eqSentDateTime");
+                String returnDate = rs.getString("eqReturnDateTime");
+                
+                if(checkOneDayEvent(sentDate, returnDate)){
+                    draftEmail();
+                    sendEmail();
+                }
+            }
+            
+       }catch(SQLException e){
+           e.printStackTrace();
+       }
+    }
+
+
 }
 

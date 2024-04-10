@@ -161,5 +161,4 @@ public List<Data> fetchDataFromEquipmentLog() {
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
         }
    }
- 
 }
