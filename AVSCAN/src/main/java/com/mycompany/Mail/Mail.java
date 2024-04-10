@@ -137,7 +137,7 @@ public class Mail {
     public static boolean checkOneDayEvent(String daySent, String dayReturn){
        try{
            Timestamp timeStamp1 = Timestamp.valueOf(daySent);
-           Timestamp timeStamp2 = Timestamp.valueOf(daySent);
+           Timestamp timeStamp2 = Timestamp.valueOf(dayReturn);
            
            //calculates difference in milliseconds between the two timestamps
            long diffMillis = Math.abs(timeStamp2.getTime() - timeStamp1.getTime());
@@ -151,7 +151,7 @@ public class Mail {
     }
     
     public void checkTimeStampInDB() throws SQLException, MessagingException{
-       String query = "SELECT eqSentDateTime, eqRturnDateTime FROM Event";
+       String query = "SELECT eqSentDateTime, eqReturnDateTime FROM Event";
        
        try{
             DatabaseConnector dbCon= new DatabaseConnector();
@@ -163,7 +163,7 @@ public class Mail {
                 String sentDate = rs.getString("eqSentDateTime");
                 String returnDate = rs.getString("eqReturnDateTime");
                 
-                if(checkOneDayEvent(sentDate, returnDate)){
+                if(!checkOneDayEvent(sentDate, returnDate)){
                     draftEmail();
                     sendEmail();
                 }
