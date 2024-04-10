@@ -67,7 +67,7 @@ public class Mail {
         Connection con = dbCon.connectToDatabase();
 
         // Query to retrieve events with AV equipment due for return within 3 days
-        String query = "SELECT evID, evName, evEquipmentID FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+        String query = "SELECT evID, evName, evEquipmentID FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(query);
 
