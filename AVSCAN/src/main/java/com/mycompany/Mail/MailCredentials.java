@@ -11,10 +11,12 @@ package com.mycompany.Mail;
 public class MailCredentials {
     private String emailAdd;
     private String emailPass;
+    private String smtpAdd; 
     
     public MailCredentials(){
         this.emailAdd = "Avscansmtp@outlook.com";
         this.emailPass = "AUTAV26022024";
+        this.smtpAdd = "smtp-mail.outlook.com";
     }
     
     
@@ -24,5 +26,9 @@ public class MailCredentials {
     
      public String getEmailPass(){
         return emailPass;
+    }
+     
+    public String getSmtpAdd(){
+        return smtpAdd;
     }
 }

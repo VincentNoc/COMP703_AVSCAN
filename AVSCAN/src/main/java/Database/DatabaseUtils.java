@@ -161,4 +161,21 @@ public List<Data> fetchDataFromEquipmentLog() {
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
         }
    }
+   
+   public void updateEmailSentStatus(){
+       try{
+            DatabaseConnector dbCon= new DatabaseConnector();
+            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
+            String updateQuery = "UPDATE Event SET email_sent = true WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1";
+            
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(updateQuery);
+            
+            stmt.close();
+            con.close();
+       }catch(SQLException e){
+           e.printStackTrace();
+       }
+   }
+   
 }

@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 import javax.mail.*;
 import Database.DatabaseConnector;
+import Database.DatabaseUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,6 +35,7 @@ public class Mail {
     MailCredentials mc = new MailCredentials();
     private final String emailAdd = mc.getEmailAdd();
     private final String emailPass = mc.getEmailPass();
+    private final String smtpHost = mc.getSmtpAdd();
     
   
     public Mail(){
@@ -43,6 +45,7 @@ public class Mail {
 
     private void setUpServerProperties() {
       Properties prop = new Properties();
+      prop.put("mail.smtp.host", smtpHost);
       prop.put("mail.smtp.port", "587");
       prop.put("mail.smtp.auth", "true");
       prop.put("mail.smtp.starttls.enable", "true");
@@ -67,7 +70,7 @@ public class Mail {
         Connection con = dbCon.connectToDatabase();
 
         // Query to retrieve events with AV equipment due for return within 3 days
-        String query = "SELECT evID, evName, evEquipmentID FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1";
+        String query = "SELECT evID, evName, evEquipmentID FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(query);
 
@@ -125,14 +128,17 @@ public class Mail {
     }
     
     
-    public void sendEmail() throws MessagingException {
-      String emailHost = "smtp-mail.outlook.com";
+    public void sendEmail() throws MessagingException, SQLException {
       try (Transport transport = newSession.getTransport("smtp")) {
-        transport.connect(emailHost, emailAdd, emailPass);
+        transport.connect(smtpHost, emailAdd, emailPass);
         transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         System.out.println("Email successfully sent!!!");
+        DatabaseUtils dbUtils = new DatabaseUtils();
+        
+        dbUtils.updateEmailSentStatus();
       }
     }
+    
     
     public static boolean checkOneDayEvent(String daySent, String dayReturn){
        try{
@@ -144,7 +150,7 @@ public class Mail {
            //one day in milliseconds
            long oneDayMillis = 24 * 60 * 60 * 1000;
            
-           return diffMillis < oneDayMillis;
+           return diffMillis > oneDayMillis;
        }catch(IllegalArgumentException e){
            return false;
        }
@@ -163,11 +169,15 @@ public class Mail {
                 String sentDate = rs.getString("eqSentDateTime");
                 String returnDate = rs.getString("eqReturnDateTime");
                 
-                if(!checkOneDayEvent(sentDate, returnDate)){
+                if(checkOneDayEvent(sentDate, returnDate)){
                     draftEmail();
                     sendEmail();
                 }
             }
+            
+            rs.close();
+            prepStmt.close();
+            con.close();
             
        }catch(SQLException e){
            e.printStackTrace();
