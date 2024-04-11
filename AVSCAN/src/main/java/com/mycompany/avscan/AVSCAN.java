@@ -9,7 +9,7 @@ import com.mycompany.avscan.Login_Signup_pages.LoginPage;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
 
-/**
+/**^
  *
  * @author vince-kong
  */
@@ -17,7 +17,6 @@ public class AVSCAN {
     public static void main(String args[]) throws SQLException{
         LoginPage lp = new LoginPage();
         Mail mail = new Mail();
-        
         try{
             lp.setVisible(true);
             mail.checkTimeStampInDB();

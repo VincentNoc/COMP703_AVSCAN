@@ -162,13 +162,12 @@ public List<Data> fetchDataFromEquipmentLog() {
         }
    }
    
-   public void updateEmailSentStatus(){
-       try{
-            DatabaseConnector dbCon= new DatabaseConnector();
+   public void updateEmailSentStatus() throws SQLException{
+       String updateQuery = "UPDATE Event SET email_sent = true WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1";
+       DatabaseConnector dbCon = new DatabaseConnector();
+       try(
             Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
-            String updateQuery = "UPDATE Event SET email_sent = true WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1";
-            
-            Statement stmt = con.createStatement();
+            Statement stmt = con.createStatement();){
             stmt.executeUpdate(updateQuery);
             
             stmt.close();

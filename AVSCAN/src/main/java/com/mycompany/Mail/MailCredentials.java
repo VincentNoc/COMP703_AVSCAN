@@ -9,9 +9,9 @@ package com.mycompany.Mail;
  * @author vince-kong
  */
 public class MailCredentials {
-    private String emailAdd;
-    private String emailPass;
-    private String smtpAdd; 
+    private final String emailAdd;
+    private final String emailPass;
+    private final String smtpAdd; 
     
     public MailCredentials(){
         this.emailAdd = "Avscansmtp@outlook.com";
