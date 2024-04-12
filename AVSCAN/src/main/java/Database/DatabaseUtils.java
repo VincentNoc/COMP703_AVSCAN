@@ -167,10 +167,10 @@ public List<Data> fetchDataFromEquipmentLog() {
        DatabaseConnector dbCon = new DatabaseConnector();
        try(
             Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
-            Statement stmt = con.createStatement();){
-            stmt.executeUpdate(updateQuery);
+            PreparedStatement prepStmt = con.prepareStatement(updateQuery);){
+            prepStmt.executeUpdate();
             
-            stmt.close();
+            prepStmt.close();
             con.close();
        }catch(SQLException e){
            e.printStackTrace();

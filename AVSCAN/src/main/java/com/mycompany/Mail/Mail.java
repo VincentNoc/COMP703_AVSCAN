@@ -59,53 +59,43 @@ public class Mail {
         }
       });
     }
+    
 
-    public void draftEmail() throws MessagingException, SQLException {
+     public void draftEmail() throws MessagingException, SQLException {
       String[] emailRecipients = {
-//        "kst0629@autuni.ac.nz"
-          "testingemailnotif@yopmail.com"
+        "testingemailnotif@yopmail.com"
       };
-        String emailSubject = "Reminder for AV equipment due to return.";
+        String emailSubject = "AV Equipment Due for Return";
         StringBuilder emailBody = new StringBuilder();
         DatabaseConnector dbCon = new DatabaseConnector();
-        String query = "SELECT evID, evName, evEquipmentID FROM Event WHERE eqReturnDateTime >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false";
-        boolean eventsFound = false;
+        String query = "SELECT evID, evName, evEquipmentID, eqSentDateTime, eqReturnDateTime FROM Event WHERE DATE(eqReturnDateTime) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false;";
+
 
       try(Connection con = dbCon.connectToDatabase();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);) {
+        // Connect to the database
+       
 
+        // Query to retrieve events with AV equipment due for return within 3 days
+       
 
         // Build the HTML email body
         emailBody.append("<html><body>");
-        emailBody.append("<h2>AV Equipment Due For Return.</h2>");
+        emailBody.append("<h2>AV Equipment Due For Return</h2>");
         emailBody.append("<p>The following events have received the listed AV equipment and are now due for return.</p>");
         emailBody.append("<table border='1'><tr><th>Event Name </th><th>Event ID </th><th>Equipment ID </th></tr>");
 
         // Iterate over the query results and populate the table rows
-      while (rs.next()) {
-        String evName = rs.getString("evName");
-        String evID = rs.getString("evID");
-        String eqID = rs.getString("evEquipmentID");
-
-        // Append event details to the email body
-        emailBody.append("<tr><td>").append(evName).append("</td><td>").append(evID).append("</td><td>").append(eqID).append("</td></tr>");
-
-        eventsFound = true; // Set flag to indicate that events were found
-        }
-
-        if (eventsFound) {
-            // Construct the complete email body with table headers and closing tags
-            emailBody.insert(0, "<html><body><h2>AV Equipment Due For Return</h2><table border='1'><tr><th>Event Name</th><th>Event ID</th><th>Equipment ID</th></tr>");
-            emailBody.append("</table></body></html>");
-
-            // Set email properties and send the email
-            mimeMessage.setSubject("Reminder for AV equipment due to return.");
-            mimeMessage.setContent(emailBody.toString(), "text/html");
-            // Send the email here...
-        } else {
-            // No events found, do not send a blank email
-            System.out.println("No events found to include in the email.");
+        while (rs.next()) {
+          String evName = rs.getString("evName");
+          String evID = rs.getString("evID");
+          String eqID = rs.getString("evEquipmentID");
+          emailBody.append("<tr>");
+          emailBody.append("<td>").append(evName).append("</td>");
+          emailBody.append("<td>").append(evID).append("</td>");
+          emailBody.append("<td>").append(eqID).append("</td>");
+          emailBody.append("</tr>");
         }
 
         emailBody.append("</table>");
@@ -117,11 +107,8 @@ public class Mail {
         con.close();
 
       } catch (SQLException e) {
-            e.printStackTrace(); // Handle database-related exceptions
-      }catch (MessagingException e) {
-            e.printStackTrace();
-            System.err.println("Error occurred while constructing or sending the email: " + e.getMessage());
-        }   
+        e.printStackTrace(); // Handle database-related exceptions
+      }
 
       // Create a new MimeMessage and set email properties
       mimeMessage = new MimeMessage(newSession);
@@ -146,15 +133,14 @@ public class Mail {
       mimeMessage.setContent(multiPart);
     }
     
-    
+    //function that sends email 
     public void sendEmail() throws MessagingException, SQLException {
       try (Transport transport = newSession.getTransport("smtp")) {
+        DatabaseUtils dbUtils = new DatabaseUtils();
+        dbUtils.updateEmailSentStatus();
         transport.connect(smtpHost, emailAdd, emailPass);
         transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         System.out.println("Email successfully sent!!!");
-        DatabaseUtils dbUtils = new DatabaseUtils();
-        
-        dbUtils.updateEmailSentStatus();
       }
     }
     
