@@ -11,7 +11,7 @@ import javax.mail.MessagingException;
 
 /**^
  *
- * @author vince-kong
+ * @author vince-kongs
  */
 public class AVSCAN {
     public static void main(String args[]) throws SQLException{
