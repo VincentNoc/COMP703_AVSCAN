@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,9 +39,7 @@ public class Mail {
     private final String emailAdd = mc.getEmailAdd();
     private final String emailPass = mc.getEmailPass();
     private final String smtpHost = mc.getSmtpAdd();
-    Set<String> processedEventIds = new HashSet<>();
-    
-  
+
     public Mail(){
         setUpServerProperties();
     }
@@ -136,8 +135,6 @@ public class Mail {
     //function that sends email 
     public void sendEmail() throws MessagingException, SQLException {
       try (Transport transport = newSession.getTransport("smtp")) {
-        DatabaseUtils dbUtils = new DatabaseUtils();
-        dbUtils.updateEmailSentStatus();
         transport.connect(smtpHost, emailAdd, emailPass);
         transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         System.out.println("Email successfully sent!!!");
@@ -145,52 +142,78 @@ public class Mail {
     }
     
     
-    public static boolean checkOneDayEvent(String daySent, String dayReturn){
-       try{
-           Timestamp timeStamp1 = Timestamp.valueOf(daySent);
-           Timestamp timeStamp2 = Timestamp.valueOf(dayReturn);
-           
-           //calculates difference in milliseconds between the two timestamps
-           long diffMillis = Math.abs(timeStamp2.getTime() - timeStamp1.getTime());
-           //one day in milliseconds
-           long oneDayMillis = 24 * 60 * 60 * 1000;
-           
-           return diffMillis > oneDayMillis;
-       }catch(IllegalArgumentException e){
-           return false;
-       }
-    }
+//    public static boolean checkOneDayEvent(String daySent, String dayReturn){
+//       try{
+//           Timestamp timeStamp1 = Timestamp.valueOf(daySent);
+//           Timestamp timeStamp2 = Timestamp.valueOf(dayReturn);
+//           
+//           //calculates difference in milliseconds between the two timestamps
+//           long diffMillis = Math.abs(timeStamp2.getTime() - timeStamp1.getTime());
+//           //one day in milliseconds
+//           long oneDayMillis = 24 * 60 * 60 * 1000;
+//           
+//           return diffMillis > oneDayMillis;
+//       }catch(IllegalArgumentException e){
+//           return false;
+//       }
+//    }
+//    
+//    public void checkTimeStampInDB() throws SQLException, MessagingException{
+//       String query = "SELECT evID, eqSentDateTime, eqReturnDateTime FROM Event";
+//       DatabaseConnector dbCon= new DatabaseConnector();
+//       try(Connection con = dbCon.connectToDatabase();
+//            PreparedStatement prepStmt = con.prepareStatement(query);
+//            ResultSet rs = prepStmt.executeQuery()){
+//            
+//            while(rs.next()){
+//                String eventID = rs.getString("evID");
+//                String sentDate = rs.getString("eqSentDateTime");
+//                String returnDate = rs.getString("eqReturnDateTime");
+//                
+//                if(checkOneDayEvent(sentDate, returnDate)){
+//                    draftEmail();
+//                    sendEmail(); 
+//                } 
+//            }
+//            
+//            rs.close();
+//            prepStmt.close();
+//            con.close();
+//            
+//       }catch(SQLException e){
+//           e.printStackTrace();
+//       }
+//    }
     
-    public void checkTimeStampInDB() throws SQLException, MessagingException{
-       String query = "SELECT evID, eqSentDateTime, eqReturnDateTime FROM Event";
-       DatabaseConnector dbCon= new DatabaseConnector();
-       try(Connection con = dbCon.connectToDatabase();
-            PreparedStatement prepStmt = con.prepareStatement(query);
-            ResultSet rs = prepStmt.executeQuery();){
-            
-            
-            while(rs.next()){
-                String eventID = rs.getString("evID");
-                String sentDate = rs.getString("eqSentDateTime");
-                String returnDate = rs.getString("eqReturnDateTime");
-                
-                if(checkOneDayEvent(sentDate, returnDate) && !processedEventIds.contains(eventID)){
-                    processedEventIds.add(eventID);
-                    
-                    draftEmail();
-                    sendEmail();
-                }
-            }
-            
-            rs.close();
-            prepStmt.close();
-            con.close();
-            
-       }catch(SQLException e){
-           e.printStackTrace();
-       }
+    public void checkEmailSent() throws SQLException, MessagingException {
+        String query = "SELECT evID, eqSentDateTime, eqReturnDateTime FROM Event " +
+                        "WHERE DATE(eqReturnDateTime) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) " +
+                        "AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 " +
+                        "AND email_sent = false";
+         DatabaseUtils dbUtil = new DatabaseUtils();
+         try (Connection con = DatabaseConnector.connectToDatabase();
+              PreparedStatement prepStmt = con.prepareStatement(query);
+              ResultSet resultSet = prepStmt.executeQuery()) {
+
+             while (resultSet.next()) {
+                 Timestamp eqReturnDateTime = resultSet.getTimestamp("eqReturnDateTime");
+
+                 LocalDate currentDate = LocalDate.now();
+                 LocalDate returnDate = eqReturnDateTime.toLocalDateTime().toLocalDate();
+
+                 // Check if return date is within 1 day of current date
+                 if (returnDate.equals(currentDate.plusDays(1))) {
+                     // Call sendEmail and draftEmail functions
+                     draftEmail();
+                     sendEmail();
+                     // Update email_sent flag to true for the processed event
+                     dbUtil.updateEmailSentStatus();
+                 }
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+
+         }
     }
-
-
 }
 
