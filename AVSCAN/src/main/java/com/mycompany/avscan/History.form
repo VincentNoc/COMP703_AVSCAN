@@ -145,13 +145,22 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="equipmentIDInput">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="equipmentIDInputKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="parentIDInput">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="parentIDInputKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="searchButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Search"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="equipmentNameLabel">
           <Properties>
@@ -171,8 +180,15 @@
         <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker3">
         </Component>
         <Component class="javax.swing.JTextField" name="equipmentNameInput">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="equipmentNameInputActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="equipmentNameInputKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="eventIDInput">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="eventIDInputKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="eventIDLabel">
           <Properties>

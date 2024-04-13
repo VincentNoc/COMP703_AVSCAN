@@ -9,6 +9,7 @@ import Database.Data;
 import Database.DatabaseUtils;
 import Database.HistoryData;
 import excel.ExcelWriter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,6 +17,10 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -62,13 +67,47 @@ public class History extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        equipmentIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                equipmentIDInputKeyPressed(evt);
+            }
+        });
+
+        parentIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                parentIDInputKeyPressed(evt);
+            }
+        });
+
         searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
 
         equipmentNameLabel.setText("Equipment Name");
 
         equipmentIDLabel.setText("Equipment ID");
 
         parentIDLabel.setText("Parent ID");
+
+        equipmentNameInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                equipmentNameInputActionPerformed(evt);
+            }
+        });
+        equipmentNameInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                equipmentNameInputKeyPressed(evt);
+            }
+        });
+
+        eventIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                eventIDInputKeyPressed(evt);
+            }
+        });
 
         eventIDLabel.setText("Event ID");
 
@@ -184,7 +223,7 @@ public class History extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    // For default table(before search)
     public void outPutDataToTable() {
         /*
         COMMENTING OUT TEMPORARY AS IT LOOKS INCOMPLETE (By Misako)
@@ -216,16 +255,97 @@ public class History extends javax.swing.JFrame {
         // Database connection
         try {
             // Opening connection
-            // for forName, goto Services>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
+            // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
             Class.forName("com.mysql.cj.jdbc.Driver");
             // for getConnection, use (Database name, "root", SQL password)
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
             
             // Getting Data from SQL Database
             Statement statement = connection.createStatement();
+            
+            
+            //In default(no text writen in textfield)
             // Using SQL query
             String sqlQuery = 
-                    "SELECT * FROM EquipmentLog";
+                    "SELECT * FROM EquipmentLog;";
+            ResultSet rs = statement.executeQuery(sqlQuery);
+            
+            // loops until it reads all rows from database
+            while (rs.next()){
+                // use rs.getInt and rs.getString to get data from each row
+                // use String.valueOf() to convert int to a String               
+                String eqID = String.valueOf(rs.getInt("EquipmentID"));
+                String eqName = rs.getString("EquipmentName");
+                String eqType = rs.getString("EquipmentType");
+                String eqPID = String.valueOf(rs.getInt("parentID"));
+                
+                // An array to store data into jTable
+                String tableData[] = {eqID, eqName, eqType, eqPID};
+                DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
+                
+                // Add the String arary into the jTable
+                tableModel.addRow(tableData);
+            }
+            // Clear out ResultSet
+            rs.close();
+            
+            connection.close();
+        }catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    // For searching data in table (search feature)
+    // Takes in an array of any typed words in all four text fields
+    public void outPutDataToTable(String[] searchWords){
+        
+        // Database connection
+        try {
+            // Opening connection
+            // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // for getConnection, use (Database name, "root", SQL password)
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
+            
+            // Clearing the jTable before adding the filtered data
+            DefaultTableModel clearTable = (DefaultTableModel)jTable1.getModel();
+            clearTable.setRowCount(0);
+            
+            // Getting Data from SQL Database
+            Statement statement = connection.createStatement();
+            
+            //In default(no text writen in textfield)
+            // Using SQL query
+            String sqlQuery = "SELECT * FROM EquipmentLog ";
+            
+            // WHERE statement will be added for text fields that is not empty
+            if (!searchWords[0].equals("") || !searchWords[1].equals("") || !searchWords[2].equals("") || !searchWords[3].equals("")){
+                sqlQuery += "WHERE ";
+                
+                // If Equipment Name text field is not empty
+                if (!searchWords[0].equals("")){
+                    sqlQuery += "EquipmentName LIKE '" + searchWords[0] + "%'";
+                }
+                // If Equipment ID text field is not empty
+                if (!searchWords[1].equals("") && searchWords[0].equals("")){
+                    sqlQuery += "EquipmentID LIKE '" + searchWords[1] + "%'";
+                } else if (!searchWords[1].equals("")) {
+                    sqlQuery += " AND EquipmentID LIKE '" + searchWords[1] + "%'";
+                }
+                // If Parent ID text field is not empty
+                if (!searchWords[2].equals("") && searchWords[0].equals("") && searchWords[1].equals("")){
+                    sqlQuery += "parentID LIKE '" + searchWords[2] + "%'";
+                } else if (!searchWords[2].equals("")) {
+                    sqlQuery += " AND parentID LIKE '" + searchWords[2] + "%'";
+                }
+                // If Event ID text field is not empty
+                if (!searchWords[3].equals("") && searchWords[0].equals("") && searchWords[1].equals("") && searchWords[2].isEmpty()){
+                    sqlQuery += "evID LIKE '" + searchWords[3] + "%'";
+                } else if (!searchWords[3].equals("")) {
+                    sqlQuery += " AND evID LIKE '" + searchWords[3] + "%'";
+                }
+            }
+              
             ResultSet rs = statement.executeQuery(sqlQuery);
             
             // loops until it reads all rows from database
@@ -245,12 +365,49 @@ public class History extends javax.swing.JFrame {
                 tableModel.addRow(tableData);
             }
             
+            // Clear out ResultSet
+            rs.close();
+            
             connection.close();
         }catch(Exception e) {
             System.out.println(e.getMessage());
         }
-        
-        
+    }
+    
+    public void searchData() {
+        //Getting searching text from textfield
+            equipmentNameInput.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    try {
+                        sqlQuery();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    try {
+                        sqlQuery();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    try {
+                        sqlQuery();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+                public void sqlQuery() throws SQLException{
+                    // Write searching code here...
+                }
+            });
     }
     
     
@@ -285,6 +442,41 @@ public class History extends javax.swing.JFrame {
             new SmallErrorMessage("Please select at least one row.");
         }
     }//GEN-LAST:event_ExportToCsvButtonActionPerformed
+
+    private void equipmentNameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_equipmentNameInputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_equipmentNameInputActionPerformed
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        // Create an array which will contain text from all four search text fields
+        String[] searchWords = {equipmentNameInput.getText(), equipmentIDInput.getText(), parentIDInput.getText(), eventIDInput.getText()};
+        
+        outPutDataToTable(searchWords);
+    }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void equipmentNameInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_equipmentNameInputKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            searchButton.doClick();
+        }
+    }//GEN-LAST:event_equipmentNameInputKeyPressed
+
+    private void equipmentIDInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_equipmentIDInputKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            searchButton.doClick();
+        }
+    }//GEN-LAST:event_equipmentIDInputKeyPressed
+
+    private void parentIDInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_parentIDInputKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            searchButton.doClick();
+        }
+    }//GEN-LAST:event_parentIDInputKeyPressed
+
+    private void eventIDInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eventIDInputKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            searchButton.doClick();
+        }
+    }//GEN-LAST:event_eventIDInputKeyPressed
 
     /**
      * @param args the command line arguments
