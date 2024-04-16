@@ -4,17 +4,26 @@
  */
 package com.mycompany.avscan;
 
-/**
+
+import Database.DatabaseUtils;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTextField;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
+        /**
  *
  * @author vince-kong
  */
 public class CheckIn extends javax.swing.JFrame {
-
     /**
      * Creates new form CheckIn
      */
     public CheckIn() {
         initComponents();
+        this.setLocationRelativeTo(null);
+//        addFakeInfoRow();
     }
 
     /**
@@ -26,21 +35,226 @@ public class CheckIn extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jEquipmentID = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jEquipmentName = new javax.swing.JTextField();
+        connToParent = new javax.swing.JButton();
+        jEquipmentType = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        JHomeButton = new javax.swing.JToggleButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("ID");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Equipment ID", "Equipment Name", "Equipment Type"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addActionPerformed(evt);
+            }
+        });
+
+        jEquipmentName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jEquipmentNameActionPerformed(evt);
+            }
+        });
+
+        connToParent.setText("Connect to parent");
+        connToParent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectoToParent(evt);
+            }
+        });
+
+        jLabel2.setText("Name");
+
+        jLabel3.setText("Type");
+
+        JHomeButton.setText("Home");
+        JHomeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JHomeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(175, 175, 175)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jEquipmentName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(127, 143, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jEquipmentType, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(42, 42, 42))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(158, 158, 158)
+                        .addComponent(connToParent)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jEquipmentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jEquipmentType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    
+    public JTextField getJTextField1(){
+        return jEquipmentID;
+    }  
+    
+     public JTextField getJTextField2(){
+        return jEquipmentName;
+    }  
+     
+      public JTextField getJTextField3(){
+        return jEquipmentType;
+    }  
+    
+//    this is just to test if we can hard code test data into the jtable. 
+    public void addFakeInfoRow(){ 
+        //jTable1 = new javax.swing.JTable();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+       
+        final JTable table = new JTable(model);
+        table.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        // Add 100 rows of dummy data
+        for (int i = 1; i <= 10; i++) {
+            model.addRow(new Object[]{"ID " + i + "A", "Name " + i + "Type", "camera"});
+        }
+
+        // Assuming jScrollPane1 is already set up to display jTable1
+        // You might need to refresh jScrollPane1 if it's not automatically updating
+        jScrollPane1.setViewportView(jTable1);    
+    }
+    
+    
+    
+   //To remove Selected row
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        // TODO add your handling code here:
+         int selectedRow = jTable1.getSelectedRow();
+        System.out.println(selectedRow);
+        // Check if a row is selected
+        if (selectedRow != -1) {
+            // Remove the selected row from the model
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.removeRow(selectedRow);
+        }
+        
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void jEquipmentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEquipmentNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jEquipmentNameActionPerformed
+
+    // To remove selected row
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+            // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
+        String equipmentID = jEquipmentID.getText();
+        String equipmentName = jEquipmentName.getText();
+        String equipmentType = jEquipmentType.getText();
+        
+        model.addRow(new Object[]{equipmentID, equipmentName, equipmentType});
+
+        // Optionally, clear the text fields after adding
+        jEquipmentID.setText("");
+        jEquipmentName.setText("");
+        jEquipmentType.setText("");
+        
+        try{
+            //creates DatabaseUtils object. 
+            DatabaseUtils dbUtil = new DatabaseUtils();
+            //insertData method to add user input into database. 
+            dbUtil.insertDataEquipmentLog(equipmentID, equipmentName, equipmentType); 
+            JOptionPane.showMessageDialog(this, "Successfully Added into the database", "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_addActionPerformed
+
+    private void connectoToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectoToParent
+  
+        
+    }//GEN-LAST:event_connectoToParent
+
+    private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
+            // TODO add your handling code here:
+            this.dispose();
+            MainMenu mainmenu = new MainMenu();
+            mainmenu.setVisible(true);
+    }//GEN-LAST:event_JHomeButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,8 +282,6 @@ public class CheckIn extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CheckIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new CheckIn().setVisible(true);
@@ -78,5 +290,17 @@ public class CheckIn extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton JHomeButton;
+    private javax.swing.JButton connToParent;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField jEquipmentID;
+    private javax.swing.JTextField jEquipmentName;
+    private javax.swing.JTextField jEquipmentType;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
