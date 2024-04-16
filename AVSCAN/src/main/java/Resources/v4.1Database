@@ -9,13 +9,13 @@ CREATE TABLE Equipment (
 );
 
 CREATE TABLE Event (
-    evID varchar(100) NOT NULL,
+    evID varchar(100) NOT NULL PRIMARY KEY,
     evName varchar(255) NOT NULL,
     evEmailSent timestamp
 );
 
 CREATE TABLE Staff (
-    stID varchar(100) NOT NULL,
+    stID varchar(100) NOT NULL PRIMARY KEY,
     stName varchar(255),
     stRole varchar(255)
 );

@@ -11,8 +11,3 @@ CREATE TABLE EquipmentLog;
 Three Columns should be made in EquipmentLog. 
 
 first EquipmentID: primary key, varchar 225. 
-
-
-
-<Equipment Table>
-<>
