@@ -26,15 +26,17 @@ public class Maintenance extends javax.swing.JFrame {
     /**
      * Creates new form Maintenance
      */
-    public Maintenance(){
+    public Maintenance() throws SQLException{
         initComponents();
         outPutDataToTable();
-        
+        getEquipmentData();
     }
     
     private void getEquipmentData() throws SQLException{
         DatabaseUtils temp = new DatabaseUtils();
-        this.equipment = (Hashtable<String, Data>) temp.fetchDataFromEquipmentLog();
+        
+        this.equipment = temp.fetchHashtableMaintenanceData();
+        
     }
 
     /**
@@ -89,6 +91,12 @@ public class Maintenance extends javax.swing.JFrame {
         receivedLabel.setText("Received ");
 
         repairedLabel.setText("Repaired & Returned");
+
+        eqIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                eqIDInputKeyReleased(evt);
+            }
+        });
 
         receivedInput.setForeground(new java.awt.Color(204, 204, 204));
         receivedInput.setText("dd/mm/yyyy");
@@ -150,22 +158,22 @@ public class Maintenance extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(homeButton)
-                                .addGap(162, 162, 162)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(addButton))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(eqIDLabel)
                                     .addComponent(eqIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(62, 62, 62)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(eqNameLabel)
-                                    .addComponent(eqNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(eqNameInput)
+                                    .addComponent(eqNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,10 +216,11 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(readDescButton)
-                        .addComponent(returnButton)
-                        .addComponent(searchButton))
-                    .addComponent(addButton)
+                        .addComponent(addButton)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(readDescButton)
+                            .addComponent(returnButton)
+                            .addComponent(searchButton)))
                     .addComponent(homeButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
@@ -285,6 +294,22 @@ public class Maintenance extends javax.swing.JFrame {
         // TODO add your handling code here:
         setDefaultDateInput(this.repairedInput);
     }//GEN-LAST:event_repairedInputFocusLost
+
+    private void eqIDInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eqIDInputKeyReleased
+        // TODO add your handling code here:'
+        if(this.equipment.containsKey(this.eqIDInput.getText())){
+            Data temp = this.equipment.get(this.eqIDInput.getText());
+            this.eqNameInput.setText(temp.getEquipmentName());
+            this.eqNameInput.setForeground(Color.green);
+            this.eqNameLabel.setText("<html>Equipment Name(<font color='green'>suggestion</font>):</html>");
+            this.eqNameInput.setEditable(false);
+            return;
+        }
+            this.eqNameInput.setText("");
+            this.eqNameInput.setForeground(Color.black);
+            this.eqNameLabel.setText("<html>Equipment Name:</html>");
+            this.eqNameInput.setEditable(true);
+    }//GEN-LAST:event_eqIDInputKeyReleased
 
     private void dateInputClicked(javax.swing.JTextField importat) {
         if (importat.getText().trim().equals("dd/mm/yyyy")) {
@@ -360,7 +385,11 @@ public class Maintenance extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Maintenance().setVisible(true);
+                try {
+                    new Maintenance().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Maintenance.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
@@ -188,29 +190,9 @@ public class DatabaseUtils {
 
         return dataList;
     }
-    public Hashtable<String, MaintenanceData> fetchHashtableMaintenanceData() {
-        Hashtable<String, MaintenanceData> dataList = new Hashtable<>();
-
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
-                    + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
-                    + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
-                    + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
-                    + "ORDER BY Maintenance.Received DESC;");
-
-            while (rs.next()) {
-                MaintenanceData equipment = new MaintenanceData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getTimestamp(6), rs.getTimestamp(7));
-                dataList.put(equipment.getEqID(), equipment);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }
     
+    
+    //Dmitry modified
     public List<MaintenanceData> fetchHashtableMaintenanceSearchData(String ID, String Name, String received, String returned) {
         List<MaintenanceData> dataList = new ArrayList<>();
         String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
@@ -263,5 +245,24 @@ public class DatabaseUtils {
 
         return dataList;
     } 
+    public Hashtable<String, Data> fetchHashtableMaintenanceData() {
+        Hashtable<String, Data> dataList = new Hashtable<>();
+
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            // Your code for executing queries and processing results
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("Select * From EquipmentLog ");
+
+            while (rs.next()) {
+                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                dataList.put(equipment.getEquipmentID(), equipment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dataList;
+    }
+    
    
 }

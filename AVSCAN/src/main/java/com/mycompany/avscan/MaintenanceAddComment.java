@@ -76,7 +76,6 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
 
         inputArea.setColumns(20);
         inputArea.setRows(5);
-        inputArea.setText("dasdas");
         jScrollPane1.setViewportView(inputArea);
 
         charLimitLabel.setText("Charcter limit:");

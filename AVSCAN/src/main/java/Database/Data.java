@@ -14,6 +14,7 @@ public class Data {
     private String equipmentType= "";
     private String eqyipmentParent = "";
     
+    
     public Data(String equipmentID, String equipmentName, String equipmentType, String eqyipmentParent){
         this.equipmentID=equipmentID;
         this.equipmentName=equipmentName;
@@ -27,10 +28,12 @@ public class Data {
         this.equipmentType = equipmentType;
     }
 
-    public String getEqyipmentParent() {
-        return eqyipmentParent;
+    public Data(Data data){
+        this.equipmentID = data.getEquipmentID();
+        this.equipmentName = data.getEquipmentName();
+        this.equipmentType = data.getEquipmentType();
+        this.eqyipmentParent = data.getEqyipmentParent();
     }
-
     
     @Override
     public String toString() {
@@ -47,6 +50,10 @@ public class Data {
         return equipmentName;
     }
 
+    public String getEqyipmentParent() {
+        return eqyipmentParent;
+    }
+    
     public String getEquipmentType() {
         return equipmentType;
     }

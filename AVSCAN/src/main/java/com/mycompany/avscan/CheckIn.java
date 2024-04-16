@@ -234,7 +234,7 @@ public class CheckIn extends javax.swing.JFrame {
             //creates DatabaseUtils object. 
             DatabaseUtils dbUtil = new DatabaseUtils();
             //insertData method to add user input into database. 
-            dbUtil.insertDataEquipmentLog(equipmentID, equipmentName, equipmentType); 
+            dbUtil.insertData(equipmentID, equipmentName, equipmentType); 
             JOptionPane.showMessageDialog(this, "Successfully Added into the database", "Success", JOptionPane.INFORMATION_MESSAGE);
             
         }catch(SQLException e){
