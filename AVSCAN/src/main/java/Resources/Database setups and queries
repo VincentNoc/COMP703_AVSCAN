@@ -7,12 +7,13 @@ Password: AUT4events_
 URL: "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL"
 
 CREATE TABLE EquipmentLog (
-    EquipmentID varchar(100) NOT NULL PRIMARY KEY,
+	EquipmentID varchar(100) NOT NULL PRIMARY KEY,
     EquipmentName varchar(255) NOT NULL,
     EquipmentType varchar(100),
-    ParentID varchar(100),
+    parentID varchar(100),
     FOREIGN KEY(parentID) references EquipmentLog(EquipmentID)    
-);        
+);
+
 SELECT * FROM EquipmentLog;
 
 INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID)
@@ -86,4 +87,5 @@ INSERT INTO Event(evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSe
 //this is to just create the boolean column so that application is check if email has already been sent so there are no repeat emails.
 ALTER TABLE Event
 ADD COLUMN email_sent BIT NOT NULL DEFAULT 0;
+
 
