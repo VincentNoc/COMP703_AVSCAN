@@ -12,57 +12,67 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.table.DefaultTableModel;
+import java.sql.Timestamp;
 
 
 /**
  *
  * @author vince-kong
  */
+
 public class DatabaseUtils {
+  Connection con;
+  //  private final String URL="jdbc:mysql://localhost:3306/avscan";
+  private final String URL="jdbc:mysql://localhost:3306/mysql";
+  private final String USER= "root";
+  private final String PASSWORD = "AUT4events_";
 
-    Connection con;
-    //private final String URL = "jdbc:mysql://localhost:3306/mysql";//Use that one as default version
-    private final String URL = "jdbc:mysql://localhost:3306/avscan";//Don't use that one!!!!
-    private final String USER = "root";
-    private final String PASSWORD = "AUT4events_";
+  public DatabaseUtils() throws SQLException {
+    this.con = DatabaseConnector.connectToDatabase();
+  }
+  
+  public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
+    insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+  }
+  
+  public DatabaseUtils(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+      insertDataEventTable( evID,  evEquipmentID,  evName,  evDateTime,  evCheckOutStaff,  eqSentDateTime,  eqReturnDateTime);
+  }
+  
+  public DatabaseUtils(String username, String password){
+      loginCredentials(username, password);
+  }
+  
+  public DatabaseUtils(DefaultTableModel table) {
+      insertData(table);
+  }
 
-    public DatabaseUtils() throws SQLException {
-        this.con = DatabaseConnector.connectToDatabase();
+  public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
+    String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
+    try {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+      System.out.println("Connected to Database");
+      
+      Statement stmt = con.createStatement();
+      PreparedStatement prepStmt = con.prepareStatement(query);
+      prepStmt.setString(1, equipmentID);
+      prepStmt.setString(2, equipmentName);
+      prepStmt.setString(3, equipmentType);
+      prepStmt.execute();
+
+      System.out.println("Information added");
+      con.close();
+
+    } catch (Exception e) {
+      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
     }
-
-    public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
-        insertData(equipmentID, equipmentName, equipmentType);
-    }
-
-    public final void insertData(String equipmentID, String equipmentName, String equipmentType) {
-        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Connected to Database");
-
-            Statement stmt = con.createStatement();
-            PreparedStatement prepStmt = con.prepareStatement(query);
-            prepStmt.setString(1, equipmentID);
-            prepStmt.setString(2, equipmentName);
-            prepStmt.setString(3, equipmentType);
-            prepStmt.execute();
-
-            System.out.println("Information added");
-            con.close();
-
-        } catch (Exception e) {
-            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
-        }
-    }
-
+  }
+  
+  
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
-    public DatabaseUtils(DefaultTableModel table) {
-        insertData(table);
-    }
+  
     private final void insertData(DefaultTableModel table) {
         String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
         int size = table.getRowCount();
@@ -94,24 +104,116 @@ public class DatabaseUtils {
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
         }
     } //End of added by Dmitry
+  
 
-    public List<Data> fetchDataFromDatabase() {
-        List<Data> dataList = new ArrayList<>();
+  public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+    String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
+    try {
+      Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
+      Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+      System.out.println("Connected to Database");
+      
+      Statement stmt = con.createStatement();
+      PreparedStatement prepStmt = con.prepareStatement(query);
+      prepStmt.setString(1, evID);
+      prepStmt.setString(2, evEquipmentID);
+      prepStmt.setString(3, evName);
+      prepStmt.setString(4, evDateTime);
+      prepStmt.setString(5, evCheckOutStaff);
+      prepStmt.setTimestamp(6, timeStampSent);
+      prepStmt.setTimestamp(7, timeStampReturn);
 
-            while (rs.next()) {
-                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
-                dataList.add(equipment);
-                System.out.println(equipment.toString());//to show data
+      prepStmt.execute();
+
+      System.out.println("Information added");
+      con.close();
+
+    } catch (Exception e) {
+//      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+      e.printStackTrace();
+    }
+  }
+  
+  
+public List<Data> fetchDataFromEquipmentLog() {
+    List<Data> dataList = new ArrayList<>();
+ 
+    try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
+
+        while (rs.next()) {
+            Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+            dataList.add(equipment);
+        }
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (con != null) {
+                con.close();
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return dataList;
     }
+
+    return dataList;
+}
+  
+   public final boolean loginCredentials(String username, String password){
+      try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
+        String query = "SELECT * FROM Staff WHERE stName = ? AND password = ?";
+        try(PreparedStatement prepStm = con.prepareStatement(query)){
+            prepStm.setString(1, username);
+            prepStm.setString(2, password);
+            try(ResultSet rs = prepStm.executeQuery()){
+                return rs.next();
+            }
+
+        }
+      }catch(SQLException e){
+          e.printStackTrace();
+          return false;
+      }
+  }
+   
+   public final void insertStaff(String Username,String StaffID, String password){
+        String query = "INSERT INTO Staff (stName,stID,password) VALUES (?, ?, ?)";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            DatabaseConnector dbCon= new DatabaseConnector();
+            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
+            Statement stmt = con.createStatement();
+            PreparedStatement prepStmt = con.prepareStatement(query);
+            prepStmt.setString(1, Username);
+            prepStmt.setString(2, StaffID);
+            prepStmt.setString(3, password);
+            prepStmt.execute();
+
+            System.out.println("Information added");
+            con.close();
+
+        }catch (Exception e) {
+            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+        }
+   }
+   
+   public void updateEmailSentStatus() throws SQLException{
+       String updateQuery = "UPDATE Event SET email_sent = true WHERE eqReturnDateTime >= DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false";
+       DatabaseConnector dbCon = new DatabaseConnector();
+       try(
+            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
+            PreparedStatement prepStmt = con.prepareStatement(updateQuery)){
+            prepStmt.executeUpdate();
+       }catch(SQLException e){
+           e.printStackTrace();
+       }
+   }
+   
+
 }

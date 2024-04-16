@@ -3,23 +3,9 @@ Current database setup:
 Name of table: EquipmentLog.
 
 User: root
-Password: AUT4events
+Password: AUT4events_
 URL: "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL"
 
-CREATE TABLE EquipmentLog;
-
-Three Columns should be made in EquipmentLog. 
-
-first EquipmentID: primary key, varchar 225. 
-
-
-
-<Equipment Table>
-CREATE DATABASE AVSCAN;
-USE AVSCAN;
-DROP DATABASE AVSCAN;
-
-DROP TABLE EquipmentLog;
 CREATE TABLE EquipmentLog (
 	EquipmentID varchar(100) NOT NULL PRIMARY KEY,
     EquipmentName varchar(255) NOT NULL,
@@ -27,3 +13,79 @@ CREATE TABLE EquipmentLog (
     parentID varchar(100),
     FOREIGN KEY(parentID) references EquipmentLog(EquipmentID)    
 );
+
+SELECT * FROM EquipmentLog;
+
+INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID)
+VALUES('00000001', 'SuperCamera', 'Camera', NULL),
+('00000002', 'Camera Cables Box', 'Camera support','00000001'),
+('00000003', 'Type-C cable', 'Cable', '00000002'),
+('00000004', 'Type-C FastCharger', 'Cable', '00000002'),
+('00000006', 'Microphone Case','Case', null),
+('00000007', 'The Microphone', 'Microphone', '00000006'),
+('00000008', 'Mic Power Cable', 'Cable', '00000006');
+
+Select * From EquipmentLog 
+WHERE ParentID is NULL || parentID = '00000001' || parentID = '00000002' ;
+
+DROP TABLE Staff;
+
+CREATE TABLE Staff(
+	stID varchar(100) NOT NULL PRIMARY KEY,
+	stName varchar(255),
+	stRole varchar(255)
+);
+INSERT INTO Staff (stID, stName, stRole)
+VALUES('1', 'John', 'Inportant person'),
+('2', 'Peter', 'Manager'),
+('4', 'Sophia', 'Technician'),
+('6', 'Hubert Blaine Wolfeschlegelsteinhausenbergerdorff', 'Money Washer'),
+('7', 'Emma', 'Organizer');
+
+SELECT * FROM Staff;
+
+DROP TABLE Event;
+
+CREATE TABLE Event(
+	evID varchar(100) NOT NULL,
+    evEquipmentID varchar(100) NOT NULL,
+    evName varchar(255),
+    evDateTime timestamp NOT NULL,
+    evCheckOutStaff varchar(100),
+    eqSentDateTime timestamp,
+    eqReturnDateTime timestamp,
+	FOREIGN KEY(evCheckOutStaff) references Staff(stID),
+    FOREIGN KEY(evEquipmentID) references EquipmentLog(EquipmentID)
+);
+INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime)
+VALUES 
+('EventID_1', '00000001', 'Event_1', '2024-03-22 09:00:00', 2, '2024-03-22 10:30:00', '2024-03-22 16:00:00'),
+('EventID_1', '00000002', 'Event_1', '2024-03-23 13:00:00', 4, '2024-03-23 14:45:00', '2024-03-23 17:30:00'),
+('EventID_1', '00000006', 'Event_1', '2024-03-24 10:30:00', 7, '2024-03-24 11:15:00', '2024-03-24 12:30:00'),
+('EventID_2', '00000003', 'Event_2', '2024-03-25 15:00:00', 1, '2024-03-25 16:20:00', '2024-03-25 18:00:00'),
+('EventID_2', '00000001', 'Event_2', '2024-03-26 11:00:00', 6, '2024-03-26 12:45:00', '2024-03-26 15:00:00'),
+('EventID_3', '00000002', 'Event_3', '2024-03-27 14:00:00', 2, '2024-03-27 15:30:00', '2024-03-27 17:00:00'),
+('EventID_4', '00000004', 'Event_4', '2024-03-28 10:00:00', 4, '2024-03-28 11:45:00', '2024-03-28 14:00:00'),
+('EventID_5', '00000002', 'Event_5', '2024-03-29 09:30:00', 7, '2024-03-29 11:00:00', '2024-03-29 13:30:00'),
+('EventID_6', '00000001', 'Event_6', '2024-03-30 13:30:00', 1, '2024-03-30 14:45:00', '2024-03-30 17:00:00'),
+('EventID_6', '00000004', 'Event_6', '2024-03-31 11:30:00', 6, '2024-03-31 13:00:00', '2024-03-31 15:15:00'),
+('EventID_7', '00000003', 'Event_7', '2024-04-01 15:30:00', 2, '2024-04-01 16:45:00', '2024-04-01 18:00:00'),
+('EventID_7', '00000002', 'Event_7', '2024-04-02 10:00:00', 4, '2024-04-02 11:30:00', '2024-04-02 14:00:00'),
+('EventID_8', '00000002', 'Event_8', '2024-04-03 09:00:00', 7, '2024-04-03 10:15:00', '2024-04-03 12:30:00'),
+('EventID_8', '00000003', 'Event_8', '2024-04-04 14:30:00', 1, '2024-04-04 15:45:00', '2024-04-04 17:00:00'),
+('EventID_8', '00000001', 'Event_8', '2024-04-05 11:00:00', 6, '2024-04-05 12:15:00', '2024-04-05 14:30:00'),
+('EventID_8', '00000004', 'Event_8', '2024-04-06 13:30:00', 2, '2024-04-06 14:45:00', '2024-04-06 16:00:00'),
+('EventID_9', '00000002', 'Event_9', '2024-04-07 10:00:00', 4, '2024-04-07 11:30:00', '2024-04-07 13:45:00'),
+('EventID_9', '00000003', 'Event_9', '2024-04-08 09:30:00', 7, '2024-04-08 10:45:00', '2024-04-08 12:00:00'),
+('EventID_10', '00000001', 'Event_10', '2024-04-09 14:00:00', 1, '2024-04-09 15:15:00', '2024-04-09 17:30:00'),
+('EventID_10', '00000004', 'Event_10', '2024-04-10 11:30:00', 6, '2024-04-10 12:45:00', '2024-04-10 15:00:00');
+
+SELECT * FROM Event;
+INSERT INTO Event(evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime)
+	VALUES('56', '00000008', 'Conference', '2024-03-22 09:00:00', null, '2024-03-22 10:30:00', '2024-03-22 16:00:00');
+
+//this is to just create the boolean column so that application is check if email has already been sent so there are no repeat emails.
+ALTER TABLE Event
+ADD COLUMN email_sent BIT NOT NULL DEFAULT 0;
+
+
