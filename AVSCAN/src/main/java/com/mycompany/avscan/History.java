@@ -270,13 +270,13 @@ public class History extends javax.swing.JFrame {
             Statement statement = connection.createStatement();
             
             // Writing out SQL query into String data
-            String sqlQuery = 
-                    "SELECT ev.evID, eq.eqID, eq.eqName, p.parentID, b.eqReturnDateTime, b.stID, eq.eqStatus "
+            String sqlQuery =
+                    "SELECT ev.evID, eq.eqID, eq.eqName, p.parentID, p.eqName, b.eqReturnDateTime, b.stID, eq.eqStatus "
                     + "FROM Event ev, Equipment eq, Equipment p, Booking b, Staff s "
                     + "WHERE eq.eqID = b.eqID "
                     + "AND eq.eqID = p.eqID "
                     + "AND b.stID = s.stID "
-                    + "AND b.evID = ev.evID;";
+                    + "AND b.evID = ev.evID ";
             
             ResultSet rs = statement.executeQuery(sqlQuery);
             
@@ -290,11 +290,13 @@ public class History extends javax.swing.JFrame {
                 String eqID = rs.getString("eqID");
                 String eqName = rs.getString("eqName");
                 String eqPID = rs.getString("parentID");
+                String eqPName = rs.getString("p.eqName");
                 String eqReturnDT = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
-                String stID = String.valueOf(rs.getInt("stID"));
+                String stID = rs.getString("stID");
+                String eqStatus = rs.getString("eqStatus");
                 
                 // An array to store data into jTable
-                String tableData[] = {evID, eqID, eqName, eqPID, eqReturnDT, stID};
+                String tableData[] = {evID, eqID, eqName, eqPID,eqPName, eqReturnDT, stID, eqStatus};
                 DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
                 
                 // Add the String arary into the jTable
@@ -330,56 +332,49 @@ public class History extends javax.swing.JFrame {
             
             //In default(no text writen in textfield)
             // Using SQL query
-            String sqlQuery = "SELECT * FROM EquipmentLog ";
-            // FOR JOINT TABLE
-            /*
-            String sqlQuery = 
-                    "SELECT ev.evID, eq.EquipmentID, eq.EquipmentName, eq.parentID, ev.eqReturnDateTime, s.stID
-                    FROM EquipmentLog eq, Event ev, Staff s
-                    WHERE ...;";
-            */
+            String sqlQuery =
+                    "SELECT ev.evID, eq.eqID, eq.eqName, p.parentID, p.eqName, b.eqReturnDateTime, b.stID, eq.eqStatus "
+                    + "FROM Event ev, Equipment eq, Equipment p, Booking b, Staff s "
+                    + "WHERE eq.eqID = b.eqID "
+                    + "AND eq.eqID = p.eqID "
+                    + "AND b.stID = s.stID "
+                    + "AND b.evID = ev.evID ";
             
-            // WHERE statement will be added for text fields that is not empty
-            if (!searchWords[0].equals("") || !searchWords[1].equals("") || !searchWords[2].equals("") || !searchWords[3].equals("")){
-                sqlQuery += "WHERE ";
-                
-                // If Equipment Name text field is not empty
-                if (!searchWords[0].equals("")){
-                    sqlQuery += "EquipmentName LIKE '" + searchWords[0] + "%'";
-                }
-                // If Equipment ID text field is not empty
-                if (!searchWords[1].equals("") && searchWords[0].equals("")){
-                    sqlQuery += "EquipmentID LIKE '" + searchWords[1] + "%'";
-                } else if (!searchWords[1].equals("")) {
-                    sqlQuery += " AND EquipmentID LIKE '" + searchWords[1] + "%'";
-                }
-                // If Parent ID text field is not empty
-                if (!searchWords[2].equals("") && searchWords[0].equals("") && searchWords[1].equals("")){
-                    sqlQuery += "parentID LIKE '" + searchWords[2] + "%'";
-                } else if (!searchWords[2].equals("")) {
-                    sqlQuery += " AND parentID LIKE '" + searchWords[2] + "%'";
-                }
-                // If Event ID text field is not empty
-                if (!searchWords[3].equals("") && searchWords[0].equals("") && searchWords[1].equals("") && searchWords[2].isEmpty()){
-                    sqlQuery += "evID LIKE '" + searchWords[3] + "%'";
-                } else if (!searchWords[3].equals("")) {
-                    sqlQuery += " AND evID LIKE '" + searchWords[3] + "%'";
-                }
+            // If Equipment Name text field is not empty
+            if (!searchWords[0].equals("")){
+                sqlQuery += "AND eq.eqName LIKE '" + searchWords[0] + "%'";
             }
-              
+            // If Equipment ID text field is not empty
+            if (!searchWords[1].equals("")) {
+                sqlQuery += " AND eq.eqID LIKE '" + searchWords[1] + "%'";
+            }
+            // If Parent ID text field is not empty
+            if (!searchWords[2].equals("")) {
+                sqlQuery += " AND p.parentID LIKE '" + searchWords[2] + "%'";
+            }
+            // If Event ID text field is not empty
+            if (!searchWords[3].equals("")) {
+                sqlQuery += " AND ev.evID LIKE '" + searchWords[3] + "%'";
+            }
+            
             ResultSet rs = statement.executeQuery(sqlQuery);
             
             // loops until it reads all rows from database
             while (rs.next()){
                 // use rs.getInt and rs.getString to get data from each row
                 // use String.valueOf() to convert int to a String               
-                String eqID = String.valueOf(rs.getInt("EquipmentID"));
-                String eqName = rs.getString("EquipmentName");
-                String eqType = rs.getString("EquipmentType");
-                String eqPID = String.valueOf(rs.getInt("parentID"));
+                // getting data for each column
+                String evID = rs.getString("evID");
+                String eqID = rs.getString("eqID");
+                String eqName = rs.getString("eqName");
+                String eqPID = rs.getString("parentID");
+                String eqPName = rs.getString("p.eqName");
+                String eqReturnDT = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
+                String stID = rs.getString("stID");
+                String eqStatus = rs.getString("eqStatus");
                 
                 // An array to store data into jTable
-                String tableData[] = {eqID, eqName, eqType, eqPID};
+                String tableData[] = {evID, eqID, eqName, eqPID,eqPName, eqReturnDT, stID, eqStatus};
                 DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
                 
                 // Add the String arary into the jTable
