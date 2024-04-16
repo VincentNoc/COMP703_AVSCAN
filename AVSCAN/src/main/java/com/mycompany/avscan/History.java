@@ -269,16 +269,14 @@ public class History extends javax.swing.JFrame {
             // Getting Data from SQL Database
             Statement statement = connection.createStatement();
             
-            // Using SQL query
+            // Writing out SQL query into String data
             String sqlQuery = 
-                    "SELECT * FROM EquipmentLog;";
-            // FOR JOINT TABLE
-            /*
-            String sqlQuery = 
-                    "SELECT ev.evID, eq.EquipmentID, eq.EquipmentName, eq.parentID, ev.eqReturnDateTime, s.stID
-                    FROM EquipmentLog eq, Event ev, Staff s
-                    WHERE ...;";
-            */
+                    "SELECT ev.evID, eq.eqID, eq.eqName, p.parentID, b.eqReturnDateTime, b.stID, eq.eqStatus "
+                    + "FROM Event ev, Equipment eq, Equipment p, Booking b, Staff s "
+                    + "WHERE eq.eqID = b.eqID "
+                    + "AND eq.eqID = p.eqID "
+                    + "AND b.stID = s.stID "
+                    + "AND b.evID = ev.evID;";
             
             ResultSet rs = statement.executeQuery(sqlQuery);
             
@@ -287,19 +285,16 @@ public class History extends javax.swing.JFrame {
                 // use rs.getInt and rs.getString to get data from each row
                 // use String.valueOf() to convert int to a String
                 
-                // Commented out values FOR JOINT TABLE
-                //String evID = String.valueOf(rs.getInt("evID"));
-                String eqID = String.valueOf(rs.getInt("EquipmentID"));
-                String eqName = rs.getString("EquipmentName");
-                String eqType = rs.getString("EquipmentType");
-                String eqPID = String.valueOf(rs.getInt("parentID"));
-                //String evEqReturnD = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
-                //String stID = String.valueOf(rs.getInt("stID"));
+                // getting data for each column
+                String evID = rs.getString("evID");
+                String eqID = rs.getString("eqID");
+                String eqName = rs.getString("eqName");
+                String eqPID = rs.getString("parentID");
+                String eqReturnDT = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
+                String stID = String.valueOf(rs.getInt("stID"));
                 
                 // An array to store data into jTable
-                // FOR JOINT TABLE
-                //String tableData[] = {evID, eqID, eqName, eqType, eqPID, evEqReturnD, stID};
-                String tableData[] = {eqID, eqName, eqType, eqPID};
+                String tableData[] = {evID, eqID, eqName, eqPID, eqReturnDT, stID};
                 DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
                 
                 // Add the String arary into the jTable

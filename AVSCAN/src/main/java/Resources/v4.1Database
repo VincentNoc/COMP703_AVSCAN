@@ -33,10 +33,10 @@ CREATE TABLE Booking(
 );
 
 CREATE TABLE Maintenance(
-eqID varchar(100) NOT NULL,
-mntDescription varchar(255),
-mntRecieved timestamp NOT NULL,
-mntRepairedReturned timestamp,
+    eqID varchar(100) NOT NULL,
+    mntDescription varchar(255),
+    mntRecieved timestamp NOT NULL,
+    mntRepairedReturned timestamp,
 
-FOREIGN KEY(eqID) REFERENCES Equipment(eqID)
+    FOREIGN KEY(eqID) REFERENCES Equipment(eqID)
 );
