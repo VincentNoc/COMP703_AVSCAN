@@ -92,6 +92,12 @@ public class History extends javax.swing.JFrame {
 
         parentIDLabel.setText("Parent ID");
 
+        dateTimePicker3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dateTimePicker3MouseClicked(evt);
+            }
+        });
+
         equipmentNameInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 equipmentNameInputActionPerformed(evt);
@@ -263,23 +269,36 @@ public class History extends javax.swing.JFrame {
             // Getting Data from SQL Database
             Statement statement = connection.createStatement();
             
-            
-            //In default(no text writen in textfield)
             // Using SQL query
             String sqlQuery = 
                     "SELECT * FROM EquipmentLog;";
+            // FOR JOINT TABLE
+            /*
+            String sqlQuery = 
+                    "SELECT ev.evID, eq.EquipmentID, eq.EquipmentName, eq.parentID, ev.eqReturnDateTime, s.stID
+                    FROM EquipmentLog eq, Event ev, Staff s
+                    WHERE ...;";
+            */
+            
             ResultSet rs = statement.executeQuery(sqlQuery);
             
             // loops until it reads all rows from database
             while (rs.next()){
                 // use rs.getInt and rs.getString to get data from each row
-                // use String.valueOf() to convert int to a String               
+                // use String.valueOf() to convert int to a String
+                
+                // Commented out values FOR JOINT TABLE
+                //String evID = String.valueOf(rs.getInt("evID"));
                 String eqID = String.valueOf(rs.getInt("EquipmentID"));
                 String eqName = rs.getString("EquipmentName");
                 String eqType = rs.getString("EquipmentType");
                 String eqPID = String.valueOf(rs.getInt("parentID"));
+                //String evEqReturnD = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
+                //String stID = String.valueOf(rs.getInt("stID"));
                 
                 // An array to store data into jTable
+                // FOR JOINT TABLE
+                //String tableData[] = {evID, eqID, eqName, eqType, eqPID, evEqReturnD, stID};
                 String tableData[] = {eqID, eqName, eqType, eqPID};
                 DefaultTableModel tableModel = (DefaultTableModel)jTable1.getModel();
                 
@@ -290,7 +309,7 @@ public class History extends javax.swing.JFrame {
             rs.close();
             
             connection.close();
-        }catch(Exception e) {
+        }catch(ClassNotFoundException | SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -317,6 +336,13 @@ public class History extends javax.swing.JFrame {
             //In default(no text writen in textfield)
             // Using SQL query
             String sqlQuery = "SELECT * FROM EquipmentLog ";
+            // FOR JOINT TABLE
+            /*
+            String sqlQuery = 
+                    "SELECT ev.evID, eq.EquipmentID, eq.EquipmentName, eq.parentID, ev.eqReturnDateTime, s.stID
+                    FROM EquipmentLog eq, Event ev, Staff s
+                    WHERE ...;";
+            */
             
             // WHERE statement will be added for text fields that is not empty
             if (!searchWords[0].equals("") || !searchWords[1].equals("") || !searchWords[2].equals("") || !searchWords[3].equals("")){
@@ -369,47 +395,10 @@ public class History extends javax.swing.JFrame {
             rs.close();
             
             connection.close();
-        }catch(Exception e) {
+        }catch(ClassNotFoundException | SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    public void searchData() {
-        //Getting searching text from textfield
-            equipmentNameInput.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    try {
-                        sqlQuery();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    try {
-                        sqlQuery();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    try {
-                        sqlQuery();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-                public void sqlQuery() throws SQLException{
-                    // Write searching code here...
-                }
-            });
-    }
-    
     
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
@@ -477,6 +466,11 @@ public class History extends javax.swing.JFrame {
             searchButton.doClick();
         }
     }//GEN-LAST:event_eventIDInputKeyPressed
+
+    private void dateTimePicker3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateTimePicker3MouseClicked
+        // IF date OR time picked 
+            // searchButton.doClick();
+    }//GEN-LAST:event_dateTimePicker3MouseClicked
 
     /**
      * @param args the command line arguments
