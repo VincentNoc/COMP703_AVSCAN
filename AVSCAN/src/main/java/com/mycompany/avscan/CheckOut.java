@@ -256,13 +256,6 @@ public class CheckOut extends javax.swing.JFrame {
         }
     }
 
-    //String method formatDateTime to get time from spinner and date from calendar component in the format that works with TimeStamp
-//    private String getFormattedDateTime(Date date, String time) {
-//        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
-//        SimpleDateFormat formattedTime = new SimpleDateFormat("HH:mm:ss");
-//        return formattedTime.format(date) + " " + time;
-//    }
-    
         
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:

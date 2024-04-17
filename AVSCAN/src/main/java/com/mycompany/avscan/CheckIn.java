@@ -45,7 +45,6 @@ public class CheckIn extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jAddButtonToEquipmentLog = new javax.swing.JButton();
         jEquipmentName = new javax.swing.JTextField();
-        connToParent = new javax.swing.JButton();
         jEquipmentType = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -77,13 +76,6 @@ public class CheckIn extends javax.swing.JFrame {
         jAddButtonToEquipmentLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addActionPerformed(evt);
-            }
-        });
-
-        connToParent.setText("Connect to parent");
-        connToParent.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                connectoToParent(evt);
             }
         });
 
@@ -135,16 +127,12 @@ public class CheckIn extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(connToParent)
-                        .addGap(138, 138, 138)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(157, 157, 157)
                         .addComponent(jAddButtonToEquipmentLog, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,10 +154,8 @@ public class CheckIn extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jAddButtonToEquipmentLog, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49))
         );
 
         pack();
@@ -179,15 +165,14 @@ public class CheckIn extends javax.swing.JFrame {
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
-         int selectedRow = jTable1.getSelectedRow();
-        System.out.println(selectedRow);
-        // Check if a row is selected
-        if (selectedRow != -1) {
-            // Remove the selected row from the model
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.removeRow(selectedRow);
-        }
-        
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int[] selectedRow = jTable1.getSelectedRows();
+       
+        //iterates through the selected amount of rows, to delete at once. 
+         for(int i = selectedRow.length - 1; i >= 0; i--){
+            int rowIndex = selectedRow[i];
+            model.removeRow(rowIndex);
+         }
     }//GEN-LAST:event_deleteActionPerformed
 
     // To remove selected row
@@ -213,12 +198,6 @@ public class CheckIn extends javax.swing.JFrame {
         model.setRowCount(0); 
     }//GEN-LAST:event_addActionPerformed
 
-    private void connectoToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectoToParent
-       ConnectItemToParent connectToParent = new ConnectItemToParent();
-       connectToParent.setVisible(true);
-        
-    }//GEN-LAST:event_connectoToParent
-
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
             // TODO add your handling code here:
             this.dispose();
@@ -241,7 +220,7 @@ public class CheckIn extends javax.swing.JFrame {
             jEquipmentName.setText("");
             jEquipmentType.setText("");
         }else{
-            JOptionPane.showMessageDialog(null, "Equipment ID already exists!");
+            JOptionPane.showMessageDialog(null, "Duplicate ID found in the Table, please ensure there are now duplicates.");
         }
     }//GEN-LAST:event_jAddToTableActionPerformed
 
@@ -280,7 +259,6 @@ public class CheckIn extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton JHomeButton;
-    private javax.swing.JButton connToParent;
     private javax.swing.JButton jAddButtonToEquipmentLog;
     private javax.swing.JButton jAddToTable;
     private javax.swing.JButton jButton1;

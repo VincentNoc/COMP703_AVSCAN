@@ -56,19 +56,14 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="112" max="-2" attributes="0"/>
+                      <Component id="JHomeButton" min="-2" pref="112" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="connToParent" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" pref="112" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
                       <Component id="jAddButtonToEquipmentLog" min="-2" pref="112" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="JHomeButton" min="-2" pref="112" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -94,11 +89,9 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButton1" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="jAddButtonToEquipmentLog" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                  <Component id="connToParent" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                  <Component id="JHomeButton" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="JHomeButton" min="-2" pref="37" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -170,14 +163,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jEquipmentName">
-    </Component>
-    <Component class="javax.swing.JButton" name="connToParent">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Connect to parent"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="connectoToParent"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jEquipmentType">
     </Component>
