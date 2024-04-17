@@ -8,6 +8,7 @@ package com.mycompany.avscan;
  *
  * @author 2xkaz
  */
+import com.mycompany.avscan.Login_Signup_pages.LoginPage;
 public class MainMenu extends javax.swing.JFrame {
 
     /**
@@ -228,11 +229,11 @@ public class MainMenu extends javax.swing.JFrame {
         /*
         comment from Misako
         Need to create log in page (logIn class)
-        
-        this.dispose();
-        LogIn logInPage = new LogIn();
-        logInPage.setVisible(true);
         */
+        this.dispose();
+        LoginPage lp = new LoginPage();
+        lp.setVisible(true);
+        
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     /**
