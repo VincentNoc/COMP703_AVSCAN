@@ -12,13 +12,13 @@ public class Data {
     private String equipmentID = "";
     private String equipmentName= "";
     private String equipmentType= "";
-    private String eqyipmentParent = "";
+    private String equipmentParent = "";
     
-    public Data(String equipmentID, String equipmentName, String equipmentType, String eqyipmentParent){
+    public Data(String equipmentID, String equipmentName, String equipmentType, String equipmentParent){
         this.equipmentID=equipmentID;
         this.equipmentName=equipmentName;
         this.equipmentType = equipmentType;
-        this.eqyipmentParent = eqyipmentParent;
+        this.equipmentParent = equipmentParent;
     }
     
     public Data(String equipmentID, String equipmentName, String equipmentType){
@@ -27,14 +27,14 @@ public class Data {
         this.equipmentType = equipmentType;
     }
 
-    public String getEqyipmentParent() {
-        return eqyipmentParent;
+    public String getEquipmentParent() {
+        return equipmentParent;
     }
 
     
     @Override
     public String toString() {
-        return "Data{" + "equipmentID=" + equipmentID + ", equipmentName=" + equipmentName + ", equipmentType=" + equipmentType + ", eqyipmentParent=" + eqyipmentParent + '}';
+        return "Data{" + "equipmentID=" + equipmentID + ", equipmentName=" + equipmentName + ", equipmentType=" + equipmentType + ", eqyipmentParent=" + equipmentParent + '}';
     }
     
     

@@ -28,7 +28,7 @@ public class DatabaseUtils {
     private final String USER= "root";
     private final String PASSWORD = "AUT4events_";
 
-    public DatabaseUtils() throws SQLException {
+    public DatabaseUtils() throws SQLException{
       this.con = DatabaseConnector.connectToDatabase();
     }
 
@@ -47,6 +47,9 @@ public class DatabaseUtils {
     public DatabaseUtils(DefaultTableModel table) {
         insertData(table);
     }
+    
+   
+    
 
     public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) throws SQLException {
         String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, Equipment_Status) VALUES (?, ?, ?, 'Checked In')";
@@ -139,33 +142,36 @@ public class DatabaseUtils {
     }
   }
   
-  
-public List<Data> fetchDataFromEquipmentLog() {
-    List<Data> dataList = new ArrayList<>();
- 
-    try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
 
-        while (rs.next()) {
-            Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
-            dataList.add(equipment);
-        }
-        
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (con != null) {
-                con.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public List<Data> fetchDataFromEquipmentLog() throws SQLException {
+     List<Data> dataList = new ArrayList<>();
+     DatabaseConnector dbCon = new DatabaseConnector();
+     Connection con = null; 
+     String query = "SELECT * FROM equipmentlog";
+
+     try {
+         con = dbCon.connectToDatabase();
+         Statement stmt = con.createStatement();
+         ResultSet rs = stmt.executeQuery(query);
+
+         while (rs.next()) {
+             Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+             dataList.add(equipment);
+         }
+     } catch (SQLException e) {
+         e.printStackTrace();
+     } finally {
+         try {
+             if (con != null) {
+                 con.close();  // Close connection in finally block
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     }
+        return dataList;
     }
 
-    return dataList;
-}
   
    public final boolean loginCredentials(String username, String password){
       try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
