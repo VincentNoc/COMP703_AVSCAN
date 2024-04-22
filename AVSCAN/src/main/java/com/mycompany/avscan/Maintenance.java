@@ -271,11 +271,13 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
                 if (confirmed) {
                     // Unblock Maintenance
                     Maintenance.this.setEnabled(true);
+                    Maintenance.this.toFront();
                 }
             }
         });
         confirmationFrame.setVisible(true);
         Maintenance.this.setEnabled(false);
+        
     }//GEN-LAST:event_descriptionButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed

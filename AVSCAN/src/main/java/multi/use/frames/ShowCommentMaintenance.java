@@ -29,7 +29,7 @@ public class ShowCommentMaintenance extends javax.swing.JFrame {
         initComponents();
         this.showID.setText(data.getEqID());
         this.showName.setText(data.getEqName());
-        this.commentTextPane.setText(data.getDescription());
+        this.showComment.setText("<html>"+data.getDescription()+"</html>");
     }
 
     public void setCallback(ConfirmationCallback callback) {
@@ -51,10 +51,14 @@ public class ShowCommentMaintenance extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         showID = new javax.swing.JLabel();
         showName = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        commentTextPane = new javax.swing.JTextPane();
+        showComment = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -71,9 +75,8 @@ public class ShowCommentMaintenance extends javax.swing.JFrame {
 
         showName.setText("Name");
 
-        commentTextPane.setText("Show Comment");
-        commentTextPane.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jScrollPane1.setViewportView(commentTextPane);
+        showComment.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        showComment.setText("Show Comment");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -82,27 +85,26 @@ public class ShowCommentMaintenance extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(160, 160, 160)
-                                .addComponent(okButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(eqNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(eqIDLabel))
-                                .addGap(14, 14, 14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(showID)
                                     .addComponent(showName))))
-                        .addGap(0, 160, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addComponent(showComment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(162, 162, 162)
+                .addComponent(okButton)
+                .addContainerGap(162, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,12 +118,12 @@ public class ShowCommentMaintenance extends javax.swing.JFrame {
                     .addComponent(eqNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(showName))
                 .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(okButton)
+                .addComponent(showComment, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(okButton)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,6 +136,12 @@ public class ShowCommentMaintenance extends javax.swing.JFrame {
         }
         this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        callback.onConfirmationReceived(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosed
 
     public interface ConfirmationCallback {
 
@@ -179,12 +187,11 @@ public class ShowCommentMaintenance extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane commentTextPane;
     private javax.swing.JLabel eqIDLabel;
     private javax.swing.JLabel eqNameLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton okButton;
+    private javax.swing.JLabel showComment;
     private javax.swing.JLabel showID;
     private javax.swing.JLabel showName;
     // End of variables declaration//GEN-END:variables

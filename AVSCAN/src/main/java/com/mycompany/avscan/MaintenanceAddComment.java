@@ -235,6 +235,7 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
             
             //Just confirmation! NOT error
             new SmallErrorMessage("Successfully added "+this.toString(),this).setVisible(true);//Just confiramtion
+            this.dispose();
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
