@@ -7,13 +7,8 @@ package com.mycompany.avscan;
 import Database.DatabaseUtils;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
+
+import multi.use.frames.SmallErrorMessage;
 
 /**
  *
@@ -215,7 +210,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             for (int i = 0; i < model.getRowCount(); i++) {
                 String toCheck = (String) model.getValueAt(i, 0);
                 if (toCheck.equalsIgnoreCase(text1)) {
-                    new SmallErrorMessage("The Equipment already added to the table.");
+                    new SmallErrorMessage("The Equipment already added to the table.",this).setVisible(true);
                     return;
                 }
             }
@@ -226,7 +221,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             jTextField2.setText("");
             jTextField3.setText("");
         } else {
-            new SmallErrorMessage("Please fill all input areas.");
+            new SmallErrorMessage("Please fill all input areas.",this).setVisible(true);
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -234,7 +229,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     //Will send the selected row to the next windo to add child equipments to the parent equipment.
     private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
         if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
-            new SmallErrorMessage("Please select one Row only");
+            new SmallErrorMessage("Please select one Row only",this).setVisible(true);
             return;
         }
         this.rememberSelectedRow =  jTable1.getSelectedRow();
@@ -287,7 +282,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             new DatabaseUtils(model);
             //new DatabaseUtils(model).fetchDataFromDatabase();
         } else {
-            new SmallErrorMessage("Use button \"Add\" to add new equipment before format!");
+            new SmallErrorMessage("Use button \"Add\" to add new equipment before format!",this).setVisible(true);
         }
 
     }//GEN-LAST:event_formatButtonaddActionPerformed

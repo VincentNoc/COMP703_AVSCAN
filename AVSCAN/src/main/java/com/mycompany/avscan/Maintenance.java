@@ -14,29 +14,37 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import multi.use.frames.ShowCommentMaintenance;
 
 /**
  *
  * @author dmitr
  */
-public class Maintenance extends javax.swing.JFrame {
+public class Maintenance extends javax.swing.JFrame implements MaintenanceAddComment.ConnectCallback {
 
+    ;
     private Hashtable<String, Data> equipment;
+    MaintenanceAddComment maint;
+    private List<MaintenanceData> dataList;
+    private Hashtable<String, MaintenanceData> hashDataList;
+    
+
     /**
      * Creates new form Maintenance
      */
-    public Maintenance() throws SQLException{
+    public Maintenance() throws SQLException {
         initComponents();
-        outPutDataToTable();
+        createAndPutDataToTable();
         getEquipmentData();
     }
-    
-    private void getEquipmentData() throws SQLException{
+
+    private void getEquipmentData() throws SQLException {
         DatabaseUtils temp = new DatabaseUtils();
-        
+
         this.equipment = temp.fetchHashtableMaintenanceData();
-        
+
     }
 
     /**
@@ -216,11 +224,10 @@ public class Maintenance extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(addButton)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(readDescButton)
-                            .addComponent(returnButton)
-                            .addComponent(searchButton)))
+                        .addComponent(readDescButton)
+                        .addComponent(returnButton)
+                        .addComponent(searchButton))
+                    .addComponent(addButton)
                     .addComponent(homeButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
@@ -232,10 +239,43 @@ public class Maintenance extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        if (this.equipment.containsKey(this.eqIDInput.getText())) {
+            Data temp = new Data(this.equipment.get(this.eqIDInput.getText()));
+            this.maint = new MaintenanceAddComment(temp, this);
+            this.setEnabled(false);
+        } else {
+            new SmallErrorMessage("The " + this.eqIDInput.getText() + " ID does not exists.", this).setVisible(true);
+        }
     }//GEN-LAST:event_addButtonActionPerformed
+    //Updating with added maintenance data
+    @Override
+    public void onConnect() {
+        this.setEnabled(true);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        createArrayList();
+
+    }
 
     private void descriptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionButtonActionPerformed
         // TODO add your handling code here:
+        if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
+            new SmallErrorMessage("Please select one Row only",this).setVisible(true);
+            return;
+        }
+        int selectedRow= jTable1.getSelectedRow();
+        //call ConfirmationFrame
+        ShowCommentMaintenance confirmationFrame = new ShowCommentMaintenance(this.dataList.get(selectedRow));
+        confirmationFrame.setCallback(new ShowCommentMaintenance.ConfirmationCallback() {
+            @Override
+            public void onConfirmationReceived(boolean confirmed) {
+                if (confirmed) {
+                    // Unblock Maintenance
+                    Maintenance.this.setEnabled(true);
+                }
+            }
+        });
+        confirmationFrame.setVisible(true);
+        Maintenance.this.setEnabled(false);
     }//GEN-LAST:event_descriptionButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
@@ -248,7 +288,7 @@ public class Maintenance extends javax.swing.JFrame {
         if (this.eqIDInput.getText().trim().equals("") && this.eqNameInput.getText().trim().equals("")
                 && this.receivedInput.getText().trim().equals("dd/mm/yyyy") && this.repairedInput.getText().trim().equals("dd/mm/yyyy")) {
             //new SmallErrorMessage("Enter something in input fields.", this).setVisible(true);
-            outPutDataToTable();
+            createAndPutDataToTable();
             return;
         }
 
@@ -297,7 +337,7 @@ public class Maintenance extends javax.swing.JFrame {
 
     private void eqIDInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eqIDInputKeyReleased
         // TODO add your handling code here:'
-        if(this.equipment.containsKey(this.eqIDInput.getText())){
+        if (this.equipment.containsKey(this.eqIDInput.getText())) {
             Data temp = this.equipment.get(this.eqIDInput.getText());
             this.eqNameInput.setText(temp.getEquipmentName());
             this.eqNameInput.setForeground(Color.green);
@@ -305,10 +345,10 @@ public class Maintenance extends javax.swing.JFrame {
             this.eqNameInput.setEditable(false);
             return;
         }
-            this.eqNameInput.setText("");
-            this.eqNameInput.setForeground(Color.black);
-            this.eqNameLabel.setText("<html>Equipment Name:</html>");
-            this.eqNameInput.setEditable(true);
+        this.eqNameInput.setText("");
+        this.eqNameInput.setForeground(Color.black);
+        this.eqNameLabel.setText("<html>Equipment Name</html>");
+        this.eqNameInput.setEditable(true);
     }//GEN-LAST:event_eqIDInputKeyReleased
 
     private void dateInputClicked(javax.swing.JTextField importat) {
@@ -325,15 +365,19 @@ public class Maintenance extends javax.swing.JFrame {
         }
     }
 
-    public void outPutDataToTable() {
-        // Create an instance of DatabaseUtils
-
-        //Storing data in List
-        useArrayList();//open global value "dataList"
-
+    public void createAndPutDataToTable() {
+        createArrayList();//to put in table in requested order
+        createHashtable();//to easily find the right data
+    }
+    
+    public void createHashtable(){
+        this.hashDataList = new Hashtable<>();
+        for(MaintenanceData data : dataList){
+            this.hashDataList.put(data.getEqID(), new MaintenanceData(data));
+        }
     }
 
-    public void useArrayList() {//using List to store data
+    public void createArrayList() {//using List to store data
         try {
             DatabaseUtils databaseUtils = new DatabaseUtils();
             // Fetch data from the database
@@ -411,5 +455,5 @@ public class Maintenance extends javax.swing.JFrame {
     private javax.swing.JButton returnButton;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
-    private List<MaintenanceData> dataList;
+
 }

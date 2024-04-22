@@ -11,12 +11,13 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
-
+import multi.use.frames.SmallErrorMessage;
 
 /**
  *
@@ -65,6 +66,7 @@ public class DatabaseUtils {
     public DatabaseUtils(DefaultTableModel table) {
         insertData(table);
     }
+
     private final void insertData(DefaultTableModel table) {
         String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
         int size = table.getRowCount();
@@ -73,13 +75,13 @@ public class DatabaseUtils {
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
 
-            while (size > 0 ) {
+            while (size > 0) {
                 size--;
                 String equipmentID = (String) table.getValueAt(size, 0);
                 String equipmentName = (String) table.getValueAt(size, 1);
                 String equipmentType = (String) table.getValueAt(size, 2);
                 String eqyipmentParent = (String) table.getValueAt(size, 3);
-                
+
                 Statement stmt = con.createStatement();
                 PreparedStatement prepStmt = con.prepareStatement(query);
                 prepStmt.setString(1, equipmentID);
@@ -116,6 +118,7 @@ public class DatabaseUtils {
 
         return dataList;
     }
+
     public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) {
         String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
 
@@ -170,7 +173,6 @@ public class DatabaseUtils {
     public List<MaintenanceData> fetchMaintenanceData() {
         List<MaintenanceData> dataList = new ArrayList<>();
 
-        
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
@@ -190,46 +192,45 @@ public class DatabaseUtils {
 
         return dataList;
     }
-    
-    
+
     //Dmitry modified
     public List<MaintenanceData> fetchHashtableMaintenanceSearchData(String ID, String Name, String received, String returned) {
         List<MaintenanceData> dataList = new ArrayList<>();
         String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
-                    + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
-                    + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
-                    + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
-                    + "WHERE ";
-        
+                + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
+                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
+                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
+                + "WHERE ";
+
         boolean canditionAdded = false;
-        
-        if(!ID.equals("")){
-            query += ("Maintenance.EquipmentID = \'"+ ID + "\'");
+
+        if (!ID.equals("")) {
+            query += ("Maintenance.EquipmentID = \'" + ID + "\'");
             canditionAdded = true;
         }
-        if(!Name.equals("")){
-            if(canditionAdded == true){
+        if (!Name.equals("")) {
+            if (canditionAdded == true) {
                 query += " AND";
             }
             query += (" child.EquipmentName = \'" + Name + "\'");
             canditionAdded = true;
         }
-        if(!received.equals("dd/mm/yyyy")){
-            if(canditionAdded == true){
+        if (!received.equals("dd/mm/yyyy")) {
+            if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" Maintenance.Received Like \'"+ received+"\'");
+            query += (" Maintenance.Received Like \'" + received + "\'");
             canditionAdded = true;
         }
-        if(!returned.equals("dd/mm/yyyy")){
-            if(canditionAdded == true){
+        if (!returned.equals("dd/mm/yyyy")) {
+            if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" Maintenance.repairedReturned Like \'"+ returned+"\'");
+            query += (" Maintenance.repairedReturned Like \'" + returned + "\'");
         }
         query += "\n";
         query += "ORDER BY Maintenance.Received DESC;";
-        
+
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
@@ -244,7 +245,35 @@ public class DatabaseUtils {
         }
 
         return dataList;
-    } 
+    }
+
+    public boolean newInsertIntoMaintenanceTable(String eqID, String description,String received) {
+        String query = "INSERT INTO Maintenance (EquipmentID, description, received, repairedReturned)\n"
+                + "VALUES (?, ?, ?, ?);";
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Connected to Database");
+
+            Statement stmt = con.createStatement();
+            PreparedStatement prepStmt = con.prepareStatement(query);
+            prepStmt.setString(1, eqID);
+            prepStmt.setString(2, description);
+            prepStmt.setString(3, received);
+            prepStmt.setString(4, null);
+            prepStmt.execute();
+
+            System.out.println("Information added");
+            con.close();
+            
+            return true;
+        } catch (Exception e) {
+            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+            return false;
+        }
+    }
+
     public Hashtable<String, Data> fetchHashtableMaintenanceData() {
         Hashtable<String, Data> dataList = new Hashtable<>();
 
@@ -263,6 +292,5 @@ public class DatabaseUtils {
 
         return dataList;
     }
-    
-   
+
 }

@@ -4,20 +4,56 @@
  */
 package com.mycompany.avscan;
 
+import Database.Data;
+import Database.DatabaseUtils;
+import Database.MaintenanceData;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
+import multi.use.frames.ShowCommentMaintenance;
+import multi.use.frames.SmallErrorMessage;
+import javax.swing.JDialog;
+
 /**
  *
  * @author dmitr
  */
 public class MaintenanceAddComment extends javax.swing.JFrame {
 
+    private ConnectCallback connectCallback;
     private static final int MAX_CHARACTERS = 254;
+    private MaintenanceData newMaint;
+
     public MaintenanceAddComment() {
         start();
     }
     
-    private void start(){
+
+    public interface ConnectCallback {
+
+        void onConnect();
+    }
+
+    public MaintenanceAddComment(Data data, ConnectCallback callback) {
+        start();
+        this.showEqID.setText(data.getEquipmentID());
+        this.showEqName.setText(data.getEquipmentName());
+        this.connectCallback = callback; // Save the callback instance
+        createNowTimestamp();
+        this.setVisible(true);
+    }
+
+    public void createNowTimestamp() {
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        this.showDate.setText(format.format(timestamp));
+    }
+
+    private void start() {
         initComponents();
 
         // Attach DocumentFilter to limit character input
@@ -44,6 +80,7 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
         int remaining = MAX_CHARACTERS - inputArea.getDocument().getLength();
         limitNumber.setText(String.valueOf(remaining));
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,8 +100,15 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
         limitNumber = new javax.swing.JLabel();
         addButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
+        receivedLabel = new javax.swing.JLabel();
+        showDate = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         eqIDLabel.setText("Equipment ID:");
 
@@ -96,6 +140,10 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
             }
         });
 
+        receivedLabel.setText("Received:");
+
+        showDate.setText("date");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,9 +151,6 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(backButton)
@@ -113,23 +158,32 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
                         .addComponent(addButton)
                         .addGap(161, 161, 161))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(eqIDLabel)
+                                .addGap(34, 34, 34)
+                                .addComponent(showEqID))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(eqNameLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(showDate)
+                                    .addComponent(showEqName))))
+                        .addContainerGap(343, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(charLimitLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(limitNumber))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(eqIDLabel)
-                                        .addGap(34, 34, 34)
-                                        .addComponent(showEqID))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(eqNameLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(showEqName)))
-                                .addGap(326, 326, 326)))
-                        .addContainerGap(17, Short.MAX_VALUE))))
+                                .addComponent(receivedLabel)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,13 +196,17 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(eqNameLabel)
                     .addComponent(showEqName))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(receivedLabel)
+                    .addComponent(showDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(charLimitLabel)
                     .addComponent(limitNumber))
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
                     .addComponent(backButton))
@@ -160,11 +218,45 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+        boolean inserted = false;
+        if (this.inputArea.getText().length() < 1) {
+            new SmallErrorMessage("Please input what happened with the equipment.", this).setVisible(true);
+            return;
+        }
+
+        try {
+            DatabaseUtils insert = new DatabaseUtils();
+            inserted = insert.newInsertIntoMaintenanceTable(this.showEqID.getText(), this.inputArea.getText(), this.showDate.getText());
+        } catch (SQLException ex) {
+            new SmallErrorMessage("Database connection error!", this).setVisible(true);
+        }
+        if (connectCallback != null) {
+            connectCallback.onConnect();
+            
+            //Just confirmation! NOT error
+            new SmallErrorMessage("Successfully added "+this.toString(),this).setVisible(true);//Just confiramtion
+        }
     }//GEN-LAST:event_addButtonActionPerformed
+
+    
+    @Override
+    public String toString() {
+        return "{" + "Equipment ID: " + showEqID.getText() + ", Equipment Name: " + showEqName.getText()
+                + ", Received date: " + showDate.getText() + '}';
+    }
+
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        connectCallback.onConnect();
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        connectCallback.onConnect();
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -210,6 +302,8 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
     private javax.swing.JTextArea inputArea;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel limitNumber;
+    private javax.swing.JLabel receivedLabel;
+    private javax.swing.JLabel showDate;
     private javax.swing.JLabel showEqID;
     private javax.swing.JLabel showEqName;
     // End of variables declaration//GEN-END:variables

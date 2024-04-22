@@ -14,6 +14,7 @@ public class Data {
     private String equipmentType= "";
     private String eqyipmentParent = "";
     
+    public Data(){}
     
     public Data(String equipmentID, String equipmentName, String equipmentType, String eqyipmentParent){
         this.equipmentID=equipmentID;

@@ -28,7 +28,6 @@ public class MaintenanceData {
         this.received = a.getReceived();
         this.returned = a.getReturned();
     }
-
     
     public MaintenanceData(String eqID, String eqName, String parentID, String parentName, String description, Timestamp received, Timestamp returned) {
         this.eqID = eqID;
