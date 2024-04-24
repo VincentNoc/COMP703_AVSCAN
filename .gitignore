@@ -1,2 +1,5 @@
 /AVSCAN/target/
-/AVSCAN/nbproject/
+/AVSCAN/lib/date-chooser-main/build/
+/AVSCAN/lib/date-chooser-main/dist/
+/AVSCAN/lib/date-chooser-main/nbproject/private/
+

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+
   <NonVisualComponents>
     <Component class="com.raven.datechooser.DateChooser" name="dateChooser1">
       <Properties>
@@ -35,7 +36,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="500" max="32767" attributes="0"/>
                   <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="homeButton" min="-2" pref="158" max="-2" attributes="0"/>
@@ -80,6 +81,7 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
+
                       <Component id="jTxtDate" max="32767" attributes="0"/>
                       <Component id="equipmentNameLabel" min="-2" max="-2" attributes="0"/>
                       <Component id="equipmentNameInput" pref="154" max="32767" attributes="0"/>
@@ -106,6 +108,10 @@
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="677" max="-2" attributes="0"/>
                           <Component id="searchButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="-2" pref="260" max="-2" attributes="0"/>
+                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -138,6 +144,7 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
+
                       <Component id="searchButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jTxtDate" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -197,6 +204,12 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtDate">
+
+        </Component>
+        <Component class="javax.swing.JTextField" name="jHistoryDate">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jHistoryDateActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
