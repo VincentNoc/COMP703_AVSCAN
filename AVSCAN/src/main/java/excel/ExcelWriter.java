@@ -8,10 +8,9 @@ package excel;
  *
  * @author dmitr
  */
-import Database.HistoryData;
+
 import java.io.File;
 import org.apache.poi.ss.usermodel.*;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 public class ExcelWriter {
 
@@ -110,4 +110,5 @@ public class ExcelWriter {
             System.out.println("Excel file creation was canceled.");
         }
     }
+
 }
