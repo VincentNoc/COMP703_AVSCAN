@@ -45,8 +45,7 @@ public class History extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dateTimePicker2 = new com.github.lgooddatepicker.components.DateTimePicker();
-        datePicker1 = new com.github.lgooddatepicker.components.DatePicker();
+        dateChooser1 = new com.raven.datechooser.DateChooser();
         jPanel1 = new javax.swing.JPanel();
         equipmentIDInput = new javax.swing.JTextField();
         parentIDInput = new javax.swing.JTextField();
@@ -54,14 +53,16 @@ public class History extends javax.swing.JFrame {
         equipmentNameLabel = new javax.swing.JLabel();
         equipmentIDLabel = new javax.swing.JLabel();
         parentIDLabel = new javax.swing.JLabel();
-        dateTimePicker3 = new com.github.lgooddatepicker.components.DateTimePicker();
         equipmentNameInput = new javax.swing.JTextField();
         eventIDInput = new javax.swing.JTextField();
         eventIDLabel = new javax.swing.JLabel();
+        jTxtDate = new javax.swing.JTextField();
         homeButton = new javax.swing.JButton();
         ExportToCsvButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+
+        dateChooser1.setTextRefernce(jTxtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,12 +93,6 @@ public class History extends javax.swing.JFrame {
 
         parentIDLabel.setText("Parent ID");
 
-        dateTimePicker3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dateTimePicker3MouseClicked(evt);
-            }
-        });
-
         equipmentNameInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 equipmentNameInputActionPerformed(evt);
@@ -123,15 +118,12 @@ public class History extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTxtDate)
+                    .addComponent(equipmentNameLabel)
+                    .addComponent(equipmentNameInput, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(dateTimePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchButton))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(equipmentNameLabel)
-                            .addComponent(equipmentNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(equipmentIDLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,7 +136,10 @@ public class History extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(eventIDLabel)
                             .addComponent(eventIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 251, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(677, 677, 677)
+                        .addComponent(searchButton)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -169,7 +164,7 @@ public class History extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchButton)
-                    .addComponent(dateTimePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -457,11 +452,6 @@ public class History extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_eventIDInputKeyPressed
 
-    private void dateTimePicker3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateTimePicker3MouseClicked
-        // IF date OR time picked 
-            // searchButton.doClick();
-    }//GEN-LAST:event_dateTimePicker3MouseClicked
-
     /**
      * @param args the command line arguments
      */
@@ -499,9 +489,7 @@ public class History extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ExportToCsvButton;
-    private com.github.lgooddatepicker.components.DatePicker datePicker1;
-    private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker2;
-    private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker3;
+    private com.raven.datechooser.DateChooser dateChooser1;
     private javax.swing.JTextField equipmentIDInput;
     private javax.swing.JLabel equipmentIDLabel;
     private javax.swing.JTextField equipmentNameInput;
@@ -512,6 +500,7 @@ public class History extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTxtDate;
     private javax.swing.JTextField parentIDInput;
     private javax.swing.JLabel parentIDLabel;
     private javax.swing.JButton searchButton;
