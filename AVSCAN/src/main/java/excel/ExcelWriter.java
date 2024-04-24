@@ -8,7 +8,7 @@ package excel;
  *
  * @author dmitr
  */
-
+import Database.HistoryData;
 import java.io.File;
 import org.apache.poi.ss.usermodel.*;
 import java.io.FileOutputStream;

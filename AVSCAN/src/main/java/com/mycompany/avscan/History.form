@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="com.raven.datechooser.DateChooser" name="dateChooser1">
+      <Properties>
+        <Property name="autoscrolls" type="boolean" value="true"/>
+        <Property name="textRefernce" type="javax.swing.JTextField" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="jTxtDate"/>
+        </Property>
+      </Properties>
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -116,9 +126,9 @@
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="equipmentIDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="equipmentNameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="equipmentIDLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -186,6 +196,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtDate">
+          <Properties>
+            <Property name="text" type="java.lang.String" value=""/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

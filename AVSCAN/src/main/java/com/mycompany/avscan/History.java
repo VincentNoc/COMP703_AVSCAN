@@ -46,6 +46,7 @@ public class History extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dateChooser1 = new com.raven.datechooser.DateChooser();
         jPanel1 = new javax.swing.JPanel();
         equipmentIDInput = new javax.swing.JTextField();
         parentIDInput = new javax.swing.JTextField();
@@ -61,6 +62,9 @@ public class History extends javax.swing.JFrame {
         ExportToCsvButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+
+        dateChooser1.setAutoscrolls(true);
+        dateChooser1.setTextRefernce(jTxtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,6 +114,8 @@ public class History extends javax.swing.JFrame {
 
         eventIDLabel.setText("Event ID");
 
+        jTxtDate.setText("");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -151,9 +157,9 @@ public class History extends javax.swing.JFrame {
                 .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(equipmentIDLabel)
-                    .addComponent(equipmentNameLabel))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(equipmentNameLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(equipmentIDLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(equipmentNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -349,6 +355,9 @@ public class History extends javax.swing.JFrame {
             if (!searchWords[3].equals("")) {
                 sqlQuery += " AND ev.evID LIKE '" + searchWords[3] + "%'";
             }
+             if (!searchWords[4].equals("")) {
+                sqlQuery += " AND b.eqReturnDateTime LIKE '" + searchWords[4] + "%'";
+            }
             
             ResultSet rs = statement.executeQuery(sqlQuery);
             
@@ -487,6 +496,7 @@ public class History extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ExportToCsvButton;
+    private com.raven.datechooser.DateChooser dateChooser1;
     private javax.swing.JTextField equipmentIDInput;
     private javax.swing.JLabel equipmentIDLabel;
     private javax.swing.JTextField equipmentNameInput;
