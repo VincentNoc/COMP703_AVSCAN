@@ -14,8 +14,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import multi.use.frames.ReturnMaintenance;
 import multi.use.frames.ShowCommentMaintenance;
 
 /**
@@ -26,10 +26,10 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
 
     ;
     private Hashtable<String, Data> equipment;
-    MaintenanceAddComment maint;
+    private MaintenanceAddComment maint;
     private List<MaintenanceData> dataList;
     private Hashtable<String, MaintenanceData> hashDataList;
-    
+    private ReturnMaintenance returnMaint;
 
     /**
      * Creates new form Maintenance
@@ -158,6 +158,11 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         });
 
         returnButton.setText("Return Equipment");
+        returnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -251,18 +256,16 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     @Override
     public void onConnect() {
         this.setEnabled(true);
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         createArrayList();
-
     }
 
     private void descriptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionButtonActionPerformed
         // TODO add your handling code here:
         if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
-            new SmallErrorMessage("Please select one Row only",this).setVisible(true);
+            new SmallErrorMessage("Please select one Row only", this).setVisible(true);
             return;
         }
-        int selectedRow= jTable1.getSelectedRow();
+        int selectedRow = jTable1.getSelectedRow();
         //call ConfirmationFrame
         ShowCommentMaintenance confirmationFrame = new ShowCommentMaintenance(this.dataList.get(selectedRow));
         confirmationFrame.setCallback(new ShowCommentMaintenance.ConfirmationCallback() {
@@ -277,7 +280,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         });
         confirmationFrame.setVisible(true);
         Maintenance.this.setEnabled(false);
-        
+
     }//GEN-LAST:event_descriptionButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
@@ -353,6 +356,36 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         this.eqNameInput.setEditable(true);
     }//GEN-LAST:event_eqIDInputKeyReleased
 
+    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
+        // TODO add your handling code here:
+        if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
+            new SmallErrorMessage("Please select one Row only", this).setVisible(true);
+            return;
+        }
+        
+        int selectedRow = jTable1.getSelectedRow();
+        
+        if(this.dataList.get(selectedRow)!=null){
+            new SmallErrorMessage("The seleceted equipment is already returned!", this).setVisible(true);
+            return;
+        }
+        //call ConfirmationFrame
+        ReturnMaintenance returnMaint = new ReturnMaintenance(this.dataList.get(selectedRow));
+        returnMaint.setCallback(new ReturnMaintenance.ConfirmationCallback() {
+            @Override
+            public void onConfirmationReceived(boolean confirmed) {
+                if (confirmed) {
+                    // Unblock Maintenance
+                    Maintenance.this.setEnabled(true);
+                    Maintenance.this.toFront();
+                }
+            }
+        });
+        returnMaint.setVisible(true);
+        Maintenance.this.setEnabled(false);
+
+    }//GEN-LAST:event_returnButtonActionPerformed
+
     private void dateInputClicked(javax.swing.JTextField importat) {
         if (importat.getText().trim().equals("dd/mm/yyyy")) {
             importat.setText("");
@@ -371,10 +404,10 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         createArrayList();//to put in table in requested order
         createHashtable();//to easily find the right data
     }
-    
-    public void createHashtable(){
+
+    public void createHashtable() {
         this.hashDataList = new Hashtable<>();
-        for(MaintenanceData data : dataList){
+        for (MaintenanceData data : dataList) {
             this.hashDataList.put(data.getEqID(), new MaintenanceData(data));
         }
     }

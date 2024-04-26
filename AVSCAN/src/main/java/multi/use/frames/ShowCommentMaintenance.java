@@ -1,14 +1,11 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package multi.use.frames;
 
 import Database.MaintenanceData;
-import java.awt.Dimension;
-import javax.security.auth.callback.ConfirmationCallback;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
+
 
 /**
  *

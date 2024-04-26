@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -247,7 +248,7 @@ public class DatabaseUtils {
         return dataList;
     }
 
-    public boolean newInsertIntoMaintenanceTable(String eqID, String description,String received) {
+    public boolean newInsertIntoMaintenanceTable(String eqID, String description, String received) {
         String query = "INSERT INTO Maintenance (EquipmentID, description, received, repairedReturned)\n"
                 + "VALUES (?, ?, ?, ?);";
 
@@ -266,7 +267,7 @@ public class DatabaseUtils {
 
             System.out.println("Information added");
             con.close();
-            
+
             return true;
         } catch (Exception e) {
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
@@ -291,6 +292,25 @@ public class DatabaseUtils {
         }
 
         return dataList;
+    }
+
+    public boolean equipmentRetunMaintenance(MaintenanceData insert) throws SQLException {
+        String query = "UPDATE Maintenance \n"
+                + "SET RepairedReturned = ? WHERE EquipmentID = ? AND Description= ? AND "
+                + "Received = ?;";
+
+        Statement stmt = con.createStatement();
+        PreparedStatement prepStmt = con.prepareStatement(query);
+        prepStmt.setString(1, String.valueOf(insert.getReturned()));
+        prepStmt.setString(2, insert.getEqID());
+        prepStmt.setString(3, insert.getDescription());
+        prepStmt.setString(4, String.valueOf(insert.getReceived()));
+        prepStmt.execute();
+
+        System.out.println("Information added");
+        con.close();
+
+        return true;
     }
 
 }

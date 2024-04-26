@@ -10,13 +10,9 @@ import Database.MaintenanceData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
-import multi.use.frames.ShowCommentMaintenance;
 import multi.use.frames.SmallErrorMessage;
-import javax.swing.JDialog;
 
 /**
  *
@@ -28,7 +24,7 @@ public class MaintenanceAddComment extends javax.swing.JFrame {
     private static final int MAX_CHARACTERS = 254;
     private MaintenanceData newMaint;
 
-    public MaintenanceAddComment() {
+    private MaintenanceAddComment() {
         start();
     }
     
