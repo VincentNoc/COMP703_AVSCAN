@@ -243,7 +243,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     public void onConnect() {
         // Continue execution after connect action is performed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        var temp = model.getValueAt(rememberSelectedRow, 0);
+        Object temp = model.getValueAt(rememberSelectedRow, 0);
         DefaultTableModel toConnect = childs.getChildsInfo();
         
         for (int i = 0; i < model.getRowCount(); i++) {
