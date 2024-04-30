@@ -23,7 +23,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
      */
     public NewEq() {
         initComponents();
-        addFakeInfoRow();//Just simple dummy data to do not input it manualy. Comment it out if needed.
+        //addFakeInfoRow();//Just simple dummy data to do not input it manualy. Comment it out if needed.
     }
 
     /**

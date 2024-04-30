@@ -28,7 +28,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     private Hashtable<String, Data> equipment;
     private MaintenanceAddComment maint;
     private List<MaintenanceData> dataList;
-    private Hashtable<String, MaintenanceData> hashDataList;
+    private Hashtable<String, MaintenanceData> hashUnreturned;
     private ReturnMaintenance returnMaint;
 
     /**
@@ -244,12 +244,17 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
+
         if (this.equipment.containsKey(this.eqIDInput.getText())) {
+            if (this.hashUnreturned.containsKey(this.eqIDInput.getText())) {
+                new SmallErrorMessage("The equipment is already repairing!", this).setVisible(true);
+                return;
+            }
             Data temp = new Data(this.equipment.get(this.eqIDInput.getText()));
             this.maint = new MaintenanceAddComment(temp, this);
             this.setEnabled(false);
         } else {
-            new SmallErrorMessage("The " + this.eqIDInput.getText() + " ID does not exists.", this).setVisible(true);
+            new SmallErrorMessage("The  ID:(" + this.eqIDInput.getText() + ") does not exists.", this).setVisible(true);
         }
     }//GEN-LAST:event_addButtonActionPerformed
     //Updating with added maintenance data
@@ -362,10 +367,10 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
             new SmallErrorMessage("Please select one Row only", this).setVisible(true);
             return;
         }
-        
+
         int selectedRow = jTable1.getSelectedRow();
-        
-        if(this.dataList.get(selectedRow)!=null){
+
+        if (this.dataList.get(selectedRow) != null) {
             new SmallErrorMessage("The seleceted equipment is already returned!", this).setVisible(true);
             return;
         }
@@ -406,9 +411,11 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     }
 
     public void createHashtable() {
-        this.hashDataList = new Hashtable<>();
-        for (MaintenanceData data : dataList) {
-            this.hashDataList.put(data.getEqID(), new MaintenanceData(data));
+        try {
+            DatabaseUtils database = new DatabaseUtils();
+            this.hashUnreturned = database.fetchMaintenanceUnreturned();
+        } catch (SQLException ex) {
+            Logger.getLogger(Maintenance.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

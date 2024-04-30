@@ -70,18 +70,16 @@ public class DatabaseUtils {
 
     private final void insertData(DefaultTableModel table) {
         String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
-        int size = table.getRowCount();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
-
-            while (size > 0) {
-                size--;
-                String equipmentID = (String) table.getValueAt(size, 0);
-                String equipmentName = (String) table.getValueAt(size, 1);
-                String equipmentType = (String) table.getValueAt(size, 2);
-                String eqyipmentParent = (String) table.getValueAt(size, 3);
+            
+            for (int i = 0; i<table.getRowCount();i++) {
+                String equipmentID = (String) table.getValueAt(i, 0);
+                String equipmentName = (String) table.getValueAt(i, 1);
+                String equipmentType = (String) table.getValueAt(i, 2);
+                String eqyipmentParent = (String) table.getValueAt(i, 3);
 
                 Statement stmt = con.createStatement();
                 PreparedStatement prepStmt = con.prepareStatement(query);
@@ -97,6 +95,7 @@ public class DatabaseUtils {
 
         } catch (Exception e) {
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+            e.printStackTrace();
         }
     } //End of added by Dmitry
 
@@ -181,7 +180,7 @@ public class DatabaseUtils {
                     + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
                     + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
                     + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
-                    + "ORDER BY Maintenance.Received;");
+                    + "ORDER BY Maintenance.Received DESC;");
 
             while (rs.next()) {
                 MaintenanceData equipment = new MaintenanceData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getTimestamp(6), rs.getTimestamp(7));
@@ -312,5 +311,30 @@ public class DatabaseUtils {
 
         return true;
     }
+    
+    public Hashtable<String, MaintenanceData> fetchMaintenanceUnreturned(){
+        Hashtable<String, MaintenanceData> toReturn = new Hashtable<>();
+        
+        String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n" +
+                        "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n" +
+                        "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n" +
+                        "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n" +
+                        "WHERE Maintenance.repairedReturned IS null\n" +
+                        "ORDER BY Maintenance.Received DESC;";
 
+        
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            // Your code for executing queries and processing results
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                MaintenanceData equipment = new MaintenanceData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getTimestamp(6), rs.getTimestamp(7));
+                toReturn.put(equipment.getEqID(), equipment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
 }
