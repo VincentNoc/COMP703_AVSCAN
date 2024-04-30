@@ -337,7 +337,8 @@ public class History extends javax.swing.JFrame {
                     + "WHERE eq.eqID = b.eqID "
                     + "AND eq.eqID = p.eqID "
                     + "AND b.stID = s.stID "
-                    + "AND b.evID = ev.evID ";
+                    + "AND b.evID = ev.evID "
+                    + "AND DATE(b.eqReturnDateTime) = ?";
             
             // If Equipment Name text field is not empty
             if (!searchWords[0].equals("")){
