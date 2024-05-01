@@ -116,7 +116,7 @@ public class DatabaseUtils {
       Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
   
       Class.forName("com.mysql.cj.jdbc.Driver");
-      try(Connection con = dbCon.connectToDatabase();){
+      try(Connection con = dbCon.connectToDatabase()){
           con.setAutoCommit(false);
           try(PreparedStatement eventStmt = con.prepareStatement(eventQuery, Statement.RETURN_GENERATED_KEYS);
               PreparedStatement bookStmt = con.prepareStatement(bookingQuery)){
