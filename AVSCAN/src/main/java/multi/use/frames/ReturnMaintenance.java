@@ -4,9 +4,13 @@
  */
 package multi.use.frames;
 
+import Database.DatabaseUtils;
 import Database.MaintenanceData;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
 /**
@@ -20,6 +24,7 @@ public class ReturnMaintenance extends javax.swing.JFrame {
      */
     private ConnectCallback connectCallback;
     private ConfirmationCallback callback;
+    private MaintenanceData insert;
     
     public interface ConnectCallback {
 
@@ -43,8 +48,8 @@ public class ReturnMaintenance extends javax.swing.JFrame {
         this.showEqName.setText(data.getEqName());
         this.showReceived.setText(String.valueOf(data.getReceived()));
         this.connectCallback = callback;
-        createNowTimestamp();
         this.setVisible(true);
+        this.insert=new MaintenanceData(data, createNowTimestamp());
     }
     public ReturnMaintenance(MaintenanceData data) {
         initComponents();
@@ -52,15 +57,16 @@ public class ReturnMaintenance extends javax.swing.JFrame {
         this.showEqName.setText(data.getEqName());
         this.showReceived.setText(String.valueOf(data.getReceived()));
         this.showComment.setText("<html>"+data.getDescription()+"</html>");
-        createNowTimestamp();
+        this.insert=new MaintenanceData(data, createNowTimestamp());
     }
 
     
     
-    public void createNowTimestamp() {
+    public final Timestamp createNowTimestamp() {
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         this.showReturning.setText(format.format(timestamp));
+        return timestamp;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -200,7 +206,19 @@ public class ReturnMaintenance extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            
+            DatabaseUtils updateReturn = new DatabaseUtils();
+            boolean added = updateReturn.equipmentRetunMaintenance(insert);
+            if(added == true){
+                new SmallErrorMessage("The equipment successfully retruned from Maintenance.", this).setVisible(true);//Just notifiacation(not error)
+            }else{
+                new SmallErrorMessage("Sumething went wrong! Please try again!", this).setVisible(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ReturnMaintenance.class.getName()).log(Level.SEVERE, null, ex);
+        }
         callback.onConfirmationReceived(true);
         this.dispose();
     }//GEN-LAST:event_returnButtonActionPerformed

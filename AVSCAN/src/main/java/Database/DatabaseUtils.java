@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.table.DefaultTableModel;
 import multi.use.frames.SmallErrorMessage;
@@ -74,8 +76,8 @@ public class DatabaseUtils {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
-            
-            for (int i = 0; i<table.getRowCount();i++) {
+
+            for (int i = 0; i < table.getRowCount(); i++) {
                 String equipmentID = (String) table.getValueAt(i, 0);
                 String equipmentName = (String) table.getValueAt(i, 1);
                 String equipmentType = (String) table.getValueAt(i, 2);
@@ -205,31 +207,31 @@ public class DatabaseUtils {
         boolean canditionAdded = false;
 
         if (!ID.equals("")) {
-            query += ("Maintenance.EquipmentID = \'" + ID + "\'");
+            query += ("Maintenance.EquipmentID LIKE \'%" + ID + "%\'");
             canditionAdded = true;
         }
         if (!Name.equals("")) {
             if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" child.EquipmentName = \'" + Name + "\'");
+            query += (" child.EquipmentName LIKE \'%" + Name + "%\'");
             canditionAdded = true;
         }
-        if (!received.equals("dd/mm/yyyy")) {
+        if (!received.equals("yyyy-mm-dd")) {
             if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" Maintenance.Received Like \'" + received + "\'");
+            query += (" Maintenance.Received LIKE \'%" + received + "%\'");
             canditionAdded = true;
         }
-        if (!returned.equals("dd/mm/yyyy")) {
+        if (!returned.equals("yyyy-mm-dd")) {
             if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" Maintenance.repairedReturned Like \'" + returned + "\'");
+            query += (" Maintenance.repairedReturned LIKE \'%" + returned + "%\'");
         }
-        query += "\n";
-        query += "ORDER BY Maintenance.Received DESC;";
+        query += " ";
+        query += "ORDER BY Maintenance.Received DESC";
 
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
@@ -293,36 +295,47 @@ public class DatabaseUtils {
         return dataList;
     }
 
-    public boolean equipmentRetunMaintenance(MaintenanceData insert) throws SQLException {
-        String query = "UPDATE Maintenance \n"
+    public boolean equipmentRetunMaintenance(MaintenanceData insert) {
+        String query = "UPDATE Maintenance "
                 + "SET RepairedReturned = ? WHERE EquipmentID = ? AND Description= ? AND "
-                + "Received = ?;";
+                + "Received = ?";
 
-        Statement stmt = con.createStatement();
-        PreparedStatement prepStmt = con.prepareStatement(query);
-        prepStmt.setString(1, String.valueOf(insert.getReturned()));
-        prepStmt.setString(2, insert.getEqID());
-        prepStmt.setString(3, insert.getDescription());
-        prepStmt.setString(4, String.valueOf(insert.getReceived()));
-        prepStmt.execute();
+        System.out.println("\nBEFORE ADD TO DATABASE RETURN_MAINT:  "+insert.toString());
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Connected to Database");
+            
+            Statement stmt = con.createStatement();
+            PreparedStatement prepStmt = con.prepareStatement(query);
+            prepStmt.setString(1, String.valueOf(insert.getReturned()));
+            prepStmt.setString(2, insert.getEqID());
+            prepStmt.setString(3, insert.getDescription());
+            prepStmt.setString(4, String.valueOf(insert.getReceived()));
+            prepStmt.execute();
 
-        System.out.println("Information added");
-        con.close();
-
-        return true;
+            System.out.println("Information added");
+            con.close();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseUtils.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DatabaseUtils.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
-    
-    public Hashtable<String, MaintenanceData> fetchMaintenanceUnreturned(){
-        Hashtable<String, MaintenanceData> toReturn = new Hashtable<>();
-        
-        String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n" +
-                        "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n" +
-                        "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n" +
-                        "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n" +
-                        "WHERE Maintenance.repairedReturned IS null\n" +
-                        "ORDER BY Maintenance.Received DESC;";
 
-        
+    public Hashtable<String, MaintenanceData> fetchMaintenanceUnreturned() {
+        Hashtable<String, MaintenanceData> toReturn = new Hashtable<>();
+
+        String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
+                + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
+                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
+                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
+                + "WHERE Maintenance.repairedReturned IS null\n"
+                + "ORDER BY Maintenance.Received DESC;";
+
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();

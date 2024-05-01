@@ -107,7 +107,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         });
 
         receivedInput.setForeground(new java.awt.Color(204, 204, 204));
-        receivedInput.setText("dd/mm/yyyy");
+        receivedInput.setText("yyyy-mm-dd");
         receivedInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 receivedInputFocusGained(evt);
@@ -118,7 +118,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         });
 
         repairedInput.setForeground(new java.awt.Color(204, 204, 204));
-        repairedInput.setText("dd/mm/yyyy");
+        repairedInput.setText("yyyy-mm-dd");
         repairedInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 repairedInputFocusGained(evt);
@@ -261,7 +261,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     @Override
     public void onConnect() {
         this.setEnabled(true);
-        createArrayList();
+        createAndPutDataToTable();
     }
 
     private void descriptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionButtonActionPerformed
@@ -296,7 +296,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         if (this.eqIDInput.getText().trim().equals("") && this.eqNameInput.getText().trim().equals("")
-                && this.receivedInput.getText().trim().equals("dd/mm/yyyy") && this.repairedInput.getText().trim().equals("dd/mm/yyyy")) {
+                && this.receivedInput.getText().trim().equals("yyyy-mm-dd") && this.repairedInput.getText().trim().equals("yyyy-mm-dd")) {
             //new SmallErrorMessage("Enter something in input fields.", this).setVisible(true);
             createAndPutDataToTable();
             return;
@@ -363,19 +363,16 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
         // TODO add your handling code here:
-        if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
-            new SmallErrorMessage("Please select one Row only", this).setVisible(true);
+        if(this.eqIDInput.getText().equals("")){
+            new SmallErrorMessage("Please enter equipment ID!", this).setVisible(true);
             return;
         }
-
-        int selectedRow = jTable1.getSelectedRow();
-
-        if (this.dataList.get(selectedRow) != null) {
+        if (!this.hashUnreturned.containsKey(this.eqIDInput.getText())) {
             new SmallErrorMessage("The seleceted equipment is already returned!", this).setVisible(true);
             return;
         }
         //call ConfirmationFrame
-        ReturnMaintenance returnMaint = new ReturnMaintenance(this.dataList.get(selectedRow));
+        ReturnMaintenance returnMaint = new ReturnMaintenance(this.hashUnreturned.get(this.eqIDInput.getText()));
         returnMaint.setCallback(new ReturnMaintenance.ConfirmationCallback() {
             @Override
             public void onConfirmationReceived(boolean confirmed) {
@@ -383,6 +380,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
                     // Unblock Maintenance
                     Maintenance.this.setEnabled(true);
                     Maintenance.this.toFront();
+                    createAndPutDataToTable();
                 }
             }
         });
@@ -392,7 +390,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     }//GEN-LAST:event_returnButtonActionPerformed
 
     private void dateInputClicked(javax.swing.JTextField importat) {
-        if (importat.getText().trim().equals("dd/mm/yyyy")) {
+        if (importat.getText().trim().equals("yyyy-mm-dd")) {
             importat.setText("");
             importat.setForeground(Color.black);
         }
@@ -400,7 +398,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
 
     private void setDefaultDateInput(javax.swing.JTextField importat) {
         if (importat.getText().trim().equals("")) {
-            importat.setText("dd/mm/yyyy");
+            importat.setText("yyyy-mm-dd");
             importat.setForeground(new Color(140, 140, 140));
         }
     }

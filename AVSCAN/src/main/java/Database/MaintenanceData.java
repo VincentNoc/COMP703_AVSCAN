@@ -38,6 +38,16 @@ public class MaintenanceData {
         this.received = received;
         this.returned = returned;
     }
+    
+    public MaintenanceData(MaintenanceData a, Timestamp returned) {
+        this.eqID = a.getEqID();
+        this.eqName = a.getEqName();
+        this.parentID = a.getParentID();
+        this.parentName = a.getParentName();
+        this.description = a.getDescription();
+        this.received = a.getReceived();
+        this.returned = returned;
+    }
 
     public String getDescription() {
         return description;
