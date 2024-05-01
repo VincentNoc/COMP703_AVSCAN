@@ -11,7 +11,7 @@ CREATE TABLE Equipment (
 CREATE TABLE Event (
     evID varchar(100) NOT NULL PRIMARY KEY,
     evName varchar(255) NOT NULL,
-    evEmailSent timestamp
+    evEmailSent BIT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Staff (

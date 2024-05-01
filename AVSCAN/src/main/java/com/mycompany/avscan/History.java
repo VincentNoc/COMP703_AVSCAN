@@ -263,8 +263,9 @@ public class History extends javax.swing.JFrame {
             // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
             Class.forName("com.mysql.cj.jdbc.Driver");
             // for getConnection, use (Database name, "root", SQL password)
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
-            
+            //Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+
             // Getting Data from SQL Database
             Statement statement = connection.createStatement();
             
@@ -320,7 +321,9 @@ public class History extends javax.swing.JFrame {
             // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
             Class.forName("com.mysql.cj.jdbc.Driver");
             // for getConnection, use (Database name, "root", SQL password)
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "w)E4JD65");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+
             
             // Clearing the jTable before adding the filtered data
             DefaultTableModel clearTable = (DefaultTableModel)jTable1.getModel();

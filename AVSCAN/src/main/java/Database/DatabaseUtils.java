@@ -108,30 +108,42 @@ public class DatabaseUtils {
   
 
   public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
-    String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
+    String eventQuery = "INSERT INTO Event (evID, evName, evEmailSent) VALUES (?, ?, ?)";
+    String bookingQuery ="INSERT INTO Booking (eqID, evID, eqSentDateTime, eqReturnDateTime)";
+    
     try {
       Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
       Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
-
+  
       Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-      System.out.println("Connected to Database");
-      
-      Statement stmt = con.createStatement();
-      PreparedStatement prepStmt = con.prepareStatement(query);
-      prepStmt.setString(1, evID);
-      prepStmt.setString(2, evEquipmentID);
-      prepStmt.setString(3, evName);
-      prepStmt.setString(4, evDateTime);
-      prepStmt.setString(5, evCheckOutStaff);
-      prepStmt.setTimestamp(6, timeStampSent);
-      prepStmt.setTimestamp(7, timeStampReturn);
-
-      prepStmt.execute();
-
-      System.out.println("Information added");
-      con.close();
-
+      try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
+          con.setAutoCommit(false);
+          try(PreparedStatement eventStmt = con.prepareStatement(eventQuery, Statement.RETURN_GENERATED_KEYS);
+              PreparedStatement bookStmt = con.prepareStatement(bookingQuery)){
+              
+                eventStmt.setString(1, evID);
+                eventStmt.setString(3, evName);
+                eventStmt.executeUpdate();
+                
+                ResultSet generatedKeys = eventStmt.getGeneratedKeys();
+                int eventID = 0;
+                if(generatedKeys.next()){
+                    eventID = generatedKeys.getInt(1);
+                }
+                
+                bookStmt.setString(1, evEquipmentID);
+                bookStmt.setInt(2, eventID);
+                bookStmt.setTimestamp(3, timeStampSent);
+                bookStmt.setTimestamp(4, timeStampReturn);
+                bookStmt.executeUpdate();
+                
+                con.commit();
+                System.out.println("Information Added");
+          }
+      }catch(SQLException e){
+          con.rollback();
+          throw e;
+      }
     } catch (Exception e) {
 //      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
       e.printStackTrace();
