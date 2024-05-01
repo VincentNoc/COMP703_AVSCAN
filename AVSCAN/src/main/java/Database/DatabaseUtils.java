@@ -107,16 +107,16 @@ public class DatabaseUtils {
     } //End of added by Dmitry
   
 
-  public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+  public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) throws SQLException{
     String eventQuery = "INSERT INTO Event (evID, evName, evEmailSent) VALUES (?, ?, ?)";
     String bookingQuery ="INSERT INTO Booking (eqID, evID, eqSentDateTime, eqReturnDateTime)";
-    
+    DatabaseConnector dbCon= new DatabaseConnector();
     try {
       Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
       Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
   
       Class.forName("com.mysql.cj.jdbc.Driver");
-      try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
+      try(Connection con = dbCon.connectToDatabase();){
           con.setAutoCommit(false);
           try(PreparedStatement eventStmt = con.prepareStatement(eventQuery, Statement.RETURN_GENERATED_KEYS);
               PreparedStatement bookStmt = con.prepareStatement(bookingQuery)){
@@ -178,8 +178,9 @@ public List<Data> fetchDataFromEquipmentLog() {
     return dataList;
 }
   
-   public final boolean loginCredentials(String username, String password){
-      try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
+   public final boolean loginCredentials(String username, String password) throws SQLException{
+       DatabaseConnector dbCon= new DatabaseConnector();
+      try(Connection con = dbCon.connectToDatabase();){
         String query = "SELECT * FROM Staff WHERE stName = ? AND password = ?";
         try(PreparedStatement prepStm = con.prepareStatement(query)){
             prepStm.setString(1, username);

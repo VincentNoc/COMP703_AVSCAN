@@ -26,6 +26,7 @@ CREATE TABLE Booking(
     eqSentDateTime timestamp,
     eqReturnDateTime timestamp,
     stID varchar(100),
+    email_sent NOT NULL DEFAULT 0,
 
     FOREIGN KEY(eqID) REFERENCES Equipment(eqID),
     FOREIGN KEY(evID) REFERENCES Event(evID),
