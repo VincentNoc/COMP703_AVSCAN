@@ -223,5 +223,29 @@ public class DatabaseUtils {
        }
    }
    
+    public List<HistoryData> fetchHistoryFromDatabase() {
+        List<HistoryData> dataList = new ArrayList<>();
+
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            // Your code for executing queries and processing results
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Event.evID, Event.evEquipmentID, Child.EquipmentName AS EquipmentName, Child.ParentID, Parent.EquipmentName AS ParentEquipmentName,\n" +
+                " Event.eqReturnDateTime, Event.evCheckOutStaff\n" +
+                " FROM Event LEFT JOIN EquipmentLog AS Child ON Event.evEquipmentID = Child.EquipmentID\n" +
+                " LEFT JOIN EquipmentLog AS Parent ON Child.ParentID = Parent.EquipmentID\n" +
+                " ORDER BY Event.evID;");
+
+            while (rs.next()) {
+                HistoryData event = new HistoryData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+                 rs.getString(5), rs.getTimestamp(6), rs.getString(7));
+                dataList.add(event);
+                //System.out.println(event.toString());//to show data
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dataList;
+    }
 
 }

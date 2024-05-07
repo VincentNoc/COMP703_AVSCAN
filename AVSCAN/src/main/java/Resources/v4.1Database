@@ -1,0 +1,42 @@
+CREATE TABLE Equipment (
+    eqID varchar(100) NOT NULL PRIMARY KEY,
+    eqName varchar(255) NOT NULL,
+    eqType varchar(100),
+    eqStatus varchar(100) NOT NULL,
+    parentID varchar(100),
+
+    FOREIGN KEY(parentID) REFERENCES Equipment(eqID)
+);
+
+CREATE TABLE Event (
+    evID varchar(100) NOT NULL PRIMARY KEY,
+    evName varchar(255) NOT NULL,
+    evEmailSent timestamp
+);
+
+CREATE TABLE Staff (
+    stID varchar(100) NOT NULL PRIMARY KEY,
+    stName varchar(255),
+    stRole varchar(255)
+);
+
+CREATE TABLE Booking(
+    eqID varchar(100) NOT NULL,
+    evID varchar(100) NOT NULL,
+    eqSentDateTime timestamp,
+    eqReturnDateTime timestamp,
+    stID varchar(100),
+
+    FOREIGN KEY(eqID) REFERENCES Equipment(eqID),
+    FOREIGN KEY(evID) REFERENCES Event(evID),
+    FOREIGN KEY(stID) REFERENCES Staff(stID)
+);
+
+CREATE TABLE Maintenance(
+    eqID varchar(100) NOT NULL,
+    mntDescription varchar(255),
+    mntRecieved timestamp NOT NULL,
+    mntRepairedReturned timestamp,
+
+    FOREIGN KEY(eqID) REFERENCES Equipment(eqID)
+);
