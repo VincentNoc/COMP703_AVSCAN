@@ -17,6 +17,7 @@ CREATE TABLE EquipmentLog (
 	EquipmentID varchar(100) NOT NULL PRIMARY KEY,
     EquipmentName varchar(255) NOT NULL,
     EquipmentType varchar(100),
+    Equipment_Status varchar(20),
     parentID varchar(100),
     FOREIGN KEY(parentID) references EquipmentLog(EquipmentID)    
 );

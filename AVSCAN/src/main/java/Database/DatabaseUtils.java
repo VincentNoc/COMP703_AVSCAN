@@ -22,54 +22,58 @@ import javax.swing.table.DefaultTableModel;
  */
 
 public class DatabaseUtils {
-  Connection con;
-  //  private final String URL="jdbc:mysql://localhost:3306/avscan";
-  private final String URL="jdbc:mysql://localhost:3306/mysql";
-  private final String USER= "root";
-  private final String PASSWORD = "AUT4events_";
+    Connection con;
+    //  private final String URL="jdbc:mysql://localhost:3306/avscan";
+    private final String URL="jdbc:mysql://localhost:3306/mysql";
+    private final String USER= "root";
+    private final String PASSWORD = "AUT4events_";
 
-  public DatabaseUtils() throws SQLException {
-    this.con = DatabaseConnector.connectToDatabase();
-  }
-  
-  public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) {
-    insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
-  }
-  
-  public DatabaseUtils(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
-      insertDataEventTable( evID,  evEquipmentID,  evName,  evDateTime,  evCheckOutStaff,  eqSentDateTime,  eqReturnDateTime);
-  }
-  
-  public DatabaseUtils(String username, String password){
-      loginCredentials(username, password);
-  }
-  
-  public DatabaseUtils(DefaultTableModel table) {
-      insertData(table);
-  }
-
-  public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
-    String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
-    try {
-      Class.forName("com.mysql.cj.jdbc.Driver");
-      Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-      System.out.println("Connected to Database");
-      
-      Statement stmt = con.createStatement();
-      PreparedStatement prepStmt = con.prepareStatement(query);
-      prepStmt.setString(1, equipmentID);
-      prepStmt.setString(2, equipmentName);
-      prepStmt.setString(3, equipmentType);
-      prepStmt.execute();
-
-      System.out.println("Information added");
-      con.close();
-
-    } catch (Exception e) {
-      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+    public DatabaseUtils() throws SQLException{
+      this.con = DatabaseConnector.connectToDatabase();
     }
-  }
-  
+
+    public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) throws SQLException {
+      insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+    }
+
+    public DatabaseUtils(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime){
+        insertDataEventTable( evID,  evEquipmentID,  evName,  evDateTime,  evCheckOutStaff,  eqSentDateTime,  eqReturnDateTime);
+    }
+
+    public DatabaseUtils(String username, String password){
+        loginCredentials(username, password);
+    }
+
+    public DatabaseUtils(DefaultTableModel table) {
+        insertData(table);
+    }
+    
+   
+    
+
+    public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) throws SQLException {
+        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, Equipment_Status) VALUES (?, ?, ?, 'Checked In')";
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase();
+             PreparedStatement prepStmt = con.prepareStatement(query)) {
+
+            // Set parameters for the prepared statement (for a single equipment record)
+            prepStmt.setString(1, equipmentID);
+            prepStmt.setString(2, equipmentName);
+            prepStmt.setString(3, equipmentType);
+
+            // Execute the prepared statement to insert the record into the database
+            prepStmt.executeUpdate();
+
+            System.out.println("Information added successfully");
+
+        } catch (SQLException e) {
+            System.out.println("Error adding information to database: " + e.getMessage());
+            throw e; // Rethrow the SQLException to handle it elsewhere if needed
+        }
+    }
+
   
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
@@ -138,33 +142,36 @@ public class DatabaseUtils {
     }
   }
   
-  
-public List<Data> fetchDataFromEquipmentLog() {
-    List<Data> dataList = new ArrayList<>();
- 
-    try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
 
-        while (rs.next()) {
-            Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
-            dataList.add(equipment);
-        }
-        
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (con != null) {
-                con.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public List<Data> fetchDataFromEquipmentLog() throws SQLException {
+     List<Data> dataList = new ArrayList<>();
+     DatabaseConnector dbCon = new DatabaseConnector();
+     Connection con = null; 
+     String query = "SELECT * FROM equipmentlog";
+
+     try {
+         con = dbCon.connectToDatabase();
+         Statement stmt = con.createStatement();
+         ResultSet rs = stmt.executeQuery(query);
+
+         while (rs.next()) {
+             Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+             dataList.add(equipment);
+         }
+     } catch (SQLException e) {
+         e.printStackTrace();
+     } finally {
+         try {
+             if (con != null) {
+                 con.close();  // Close connection in finally block
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+     }
+        return dataList;
     }
 
-    return dataList;
-}
   
    public final boolean loginCredentials(String username, String password){
       try(Connection con = DriverManager.getConnection(URL, USER, PASSWORD)){
