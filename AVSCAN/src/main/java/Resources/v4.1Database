@@ -1,17 +1,16 @@
-CREATE TABLE Equipment (
+CREATE TABLE EquipmentLog (
     eqID varchar(100) NOT NULL PRIMARY KEY,
     eqName varchar(255) NOT NULL,
     eqType varchar(100),
     eqStatus varchar(100) NOT NULL,
     parentID varchar(100),
 
-    FOREIGN KEY(parentID) REFERENCES Equipment(eqID)
+    FOREIGN KEY(parentID) REFERENCES EquipmentLog(eqID)
 );
 
 CREATE TABLE Event (
     evID varchar(100) NOT NULL PRIMARY KEY,
-    evName varchar(255) NOT NULL,
-    evEmailSent BIT NOT NULL DEFAULT 0
+    evName varchar(255) NOT NULL
 );
 
 CREATE TABLE Staff (
@@ -22,13 +21,14 @@ CREATE TABLE Staff (
 
 CREATE TABLE Booking(
     eqID varchar(100) NOT NULL,
-    evID varchar(100) NOT NULL,
+    evID varchar(100) NOT NULL, 
+    evName varchar(225)NOT NUll,
     eqSentDateTime timestamp,
     eqReturnDateTime timestamp,
     stID varchar(100),
-    email_sent NOT NULL DEFAULT 0,
+    email_sent BIT NOT NULL DEFAULT 0,
 
-    FOREIGN KEY(eqID) REFERENCES Equipment(eqID),
+    FOREIGN KEY(eqID) REFERENCES EquipmentLog(eqID),
     FOREIGN KEY(evID) REFERENCES Event(evID),
     FOREIGN KEY(stID) REFERENCES Staff(stID)
 );
@@ -39,5 +39,5 @@ CREATE TABLE Maintenance(
     mntRecieved timestamp NOT NULL,
     mntRepairedReturned timestamp,
 
-    FOREIGN KEY(eqID) REFERENCES Equipment(eqID)
+    FOREIGN KEY(eqID) REFERENCES EquipmentLog(eqID)
 );
