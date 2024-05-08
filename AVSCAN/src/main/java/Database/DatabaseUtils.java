@@ -52,7 +52,7 @@ public class DatabaseUtils {
     
 
     public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) throws SQLException {
-        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, Equipment_Status) VALUES (?, ?, ?, 'Checked In')";
+        String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, eqStatus) VALUES (?, ?, ?, 'Checked In')";
         DatabaseConnector dbCon = new DatabaseConnector();
 
         try (Connection con = dbCon.connectToDatabase();
