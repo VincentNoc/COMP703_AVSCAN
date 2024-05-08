@@ -60,7 +60,7 @@ public final void insertDataEquipmentLog(String equipmentID, String equipmentNam
         prepStmt.setString(1, equipmentID);
         prepStmt.setString(2, equipmentName);
         prepStmt.setString(3, equipmentType);
-        prepStmt.setString(4, "Returned"); // Set the boolean value for the fourth parameter
+        prepStmt.setString(4, "Checked In"); // Set the boolean value for the fourth parameter
 
         prepStmt.executeUpdate(); // Use executeUpdate for INSERT operations
 
@@ -112,14 +112,14 @@ public final void insertDataEquipmentLog(String equipmentID, String equipmentNam
 
   public final void insertDataEventTable(String evID, String evName, String eqID, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
     String eventQuery = "INSERT INTO Event (evID, evName) VALUES (?, ?)";
-    String bookingQuery = "INSERT INTO Booking (evID, eqID, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?)";
+    String bookingQuery = "INSERT INTO Booking (evID, evName, eqID, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?)";
 
     DatabaseConnector dbCon = new DatabaseConnector();
     Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
     Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
     try (Connection con = dbCon.connectToDatabase();
    
-         PreparedStatement eventStmt = con.prepareStatement(eventQuery, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement eventStmt = con.prepareStatement(eventQuery);
          PreparedStatement bookingStmt = con.prepareStatement(bookingQuery)) {
 
         // Insert into Event table
@@ -129,9 +129,10 @@ public final void insertDataEquipmentLog(String equipmentID, String equipmentNam
 
         // Insert into Booking table
         bookingStmt.setString(1, evID);
-        bookingStmt.setString(2, eqID);
-        bookingStmt.setTimestamp(3, timeStampSent);
-        bookingStmt.setTimestamp(4, timeStampReturn);
+        bookingStmt.setString(2, evName);
+        bookingStmt.setString(3, eqID);
+        bookingStmt.setTimestamp(4, timeStampSent);
+        bookingStmt.setTimestamp(5, timeStampReturn);
         bookingStmt.executeUpdate();
 
         System.out.println("Data inserted into Event and Booking tables successfully");

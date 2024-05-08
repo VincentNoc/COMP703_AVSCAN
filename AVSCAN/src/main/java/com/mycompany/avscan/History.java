@@ -229,34 +229,7 @@ public class History extends javax.swing.JFrame {
 
     // For default table(before search)
     public void outPutDataToTable() {
-        /*
-        COMMENTING OUT TEMPORARY AS IT LOOKS INCOMPLETE (By Misako)
-        
-        // Create an instance of DatabaseUtils
-        try {
-          DatabaseUtils databaseUtils = new DatabaseUtils();
 
-          // Fetch data from the database
-          List <HistoryData> dataList = databaseUtils.fetchHistoryFromDatabase();
-
-          // Update the JTable with the fetched data
-          DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-          model.setRowCount(0); // Clear existing data
-
-          for (HistoryData data: dataList) {
-            // Add each row of data to the JTable
-            model.addRow(new Object[] {
-              data.getEvID(), data.getEvEquipmentID(), data.getEquipmentName(),data.getParentID(), 
-                data.getParentName(), data.getEqReturnDateTime(), data.getEvCheckOutStaff()//WORKING
-            });
-          }
-
-
-        } catch (SQLException e) {
-          e.printStackTrace();
-        }
-        */
-        
         // Database connection
         try {
             // Opening connection
