@@ -26,8 +26,10 @@ import javax.swing.UIManager;
  *
  * @author vince-kong
  */
+
 public class CheckOut extends javax.swing.JFrame {
     private Set<String> enteredIDs;
+
 
     /**
      * Creates new form CheckOut
@@ -274,8 +276,7 @@ public class CheckOut extends javax.swing.JFrame {
             return null; // or throw an exception or return a default value
         }
     }
-
-        
+    
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -309,6 +310,7 @@ public class CheckOut extends javax.swing.JFrame {
         String evName = jEventName.getText();
         String dateIssue = jTxtDate.getText();
         String dateReturn = jTxtReturnDate.getText();
+        
         //formatting date and time. 
         String dateTimeSent = formatDateTime((Date) jTimeIssued.getValue(), dateIssue);
         String dateTimeReturn = formatDateTime((Date) jTimeReturn.getValue(), dateReturn);
@@ -321,7 +323,15 @@ public class CheckOut extends javax.swing.JFrame {
               // Check if a row is selected
                     //this will be changed latter on. 
 //                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
-            dbUtils.insertDataEventTable(evID, equipmentID, evName, "2024-10-03 13:19:00", "7", dateTimeSent, dateTimeReturn);
+
+                    dbUtils.insertDataEventTable(evID, evName, selectedEqID,  "01", dateTimeSent, dateTimeReturn);
+                    dbUtils.updateEquipmentStatus(selectedEqID);
+//            System.out.println(selectedValue);
+                }else{
+                    JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
+                    System.out.println("Must select an Equipment");
+                }
+
         }catch(SQLException e){
             JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
@@ -351,7 +361,6 @@ public class CheckOut extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-      
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
