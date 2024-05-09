@@ -24,8 +24,7 @@ import javax.swing.UIManager;
  *
  * @author vince-kong
  */
-public class CheckOut extends javax.swing.JFrame {
- 
+public class CheckOut extends javax.swing.JFrame{
 
     /**
      * Creates new form CheckOut
@@ -255,14 +254,6 @@ public class CheckOut extends javax.swing.JFrame {
             return null; // or throw an exception or return a default value
         }
     }
-
-    //String method formatDateTime to get time from spinner and date from calendar component in the format that works with TimeStamp
-//    private String getFormattedDateTime(Date date, String time) {
-//        SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
-//        SimpleDateFormat formattedTime = new SimpleDateFormat("HH:mm:ss");
-//        return formattedTime.format(date) + " " + time;
-//    }
-    
         
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
@@ -277,6 +268,7 @@ public class CheckOut extends javax.swing.JFrame {
         String evName = jEventName.getText();
         String dateIssue = jTxtDate.getText();
         String dateReturn = jTxtReturnDate.getText();
+        
         //formatting date and time. 
         String dateTimeSent = formatDateTime((Date) jTimeIssued.getValue(), dateIssue);
         String dateTimeReturn = formatDateTime((Date) jTimeReturn.getValue(), dateReturn);
@@ -310,7 +302,6 @@ public class CheckOut extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-      
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
