@@ -245,7 +245,7 @@ public class History extends javax.swing.JFrame {
             // Writing out SQL query into String data
             String sqlQuery =
                     "SELECT ev.evID, eq.eqID, eq.eqName, p.parentID, p.eqName, b.eqReturnDateTime, b.stID, eq.eqStatus "
-                    + "FROM Event ev, Equipment eq, Equipment p, Booking b, Staff s "
+                    + "FROM Event ev, Equipmentlog eq, Equipmentlog p, Booking b, Staff s "
                     + "WHERE eq.eqID = b.eqID "
                     + "AND eq.eqID = p.eqID "
                     + "AND b.stID = s.stID "
@@ -309,7 +309,7 @@ public class History extends javax.swing.JFrame {
             // Using SQL query
             String sqlQuery =
                     "SELECT ev.evID, eq.eqID, eq.eqName, p.parentID, p.eqName, b.eqReturnDateTime, b.stID, eq.eqStatus "
-                    + "FROM Event ev, Equipment eq, Equipment p, Booking b, Staff s "
+                    + "FROM Event ev, Equipmentlog eq, Equipmentlog p, Booking b, Staff s "
                     + "WHERE eq.eqID = b.eqID "
                     + "AND eq.eqID = p.eqID "
                     + "AND b.stID = s.stID "

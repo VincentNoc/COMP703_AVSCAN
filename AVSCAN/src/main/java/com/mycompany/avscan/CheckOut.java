@@ -291,8 +291,9 @@ public class CheckOut extends javax.swing.JFrame {
                     String selectedEqID = (String)selectedValue;
                     //this will be changed latter on. 
 //                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
-                    dbUtils.insertDataEventTable(evID, evName, selectedEqID,  "123", dateTimeSent, dateTimeReturn);
-        //            System.out.println(selectedValue);
+                    dbUtils.insertDataEventTable(evID, evName, selectedEqID,  "01", dateTimeSent, dateTimeReturn);
+                    dbUtils.updateEquipmentStatus(selectedEqID);
+//            System.out.println(selectedValue);
                 }else{
                     JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
                     System.out.println("Must select an Equipment");

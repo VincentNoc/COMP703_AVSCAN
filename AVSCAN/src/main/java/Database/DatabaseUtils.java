@@ -113,7 +113,7 @@ public class DatabaseUtils {
   public final void insertDataEventTable(String evID, String evName, String eqID, String stID, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
     String eventQuery = "INSERT INTO Event (evID, evName) VALUES (?, ?)";
     String bookingQuery = "INSERT INTO Booking (evID, evName, eqID, stID ,eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?)";
-
+    
     DatabaseConnector dbCon = new DatabaseConnector();
     Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
     Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
@@ -143,6 +143,20 @@ public class DatabaseUtils {
     }
 }
   
+public final void updateEquipmentStatus(String selectedEquipmentIDs) throws SQLException{
+    String query ="UPDATE equipmentlog SET eqStatus = 'Checked Out' WHERE eqID = ?";
+    DatabaseConnector dbCon = new DatabaseConnector();
+    
+    try(Connection con = dbCon.connectToDatabase();
+            PreparedStatement prepStmt = con.prepareStatement(query)){
+       
+            prepStmt.setString(1, selectedEquipmentIDs);
+            prepStmt.executeUpdate();
+  
+    }catch(SQLException e){
+        e.printStackTrace();
+    }
+}
   
 public List<Data> fetchDataFromEquipmentLog() {
     List<Data> dataList = new ArrayList<>();
@@ -167,7 +181,6 @@ public List<Data> fetchDataFromEquipmentLog() {
             e.printStackTrace();
         }
     }
-
     return dataList;
 }
   
@@ -195,7 +208,6 @@ public List<Data> fetchDataFromEquipmentLog() {
             Class.forName("com.mysql.cj.jdbc.Driver");
             DatabaseConnector dbCon= new DatabaseConnector();
             Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
-            Statement stmt = con.createStatement();
             PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, Username);
             prepStmt.setString(2, StaffID);

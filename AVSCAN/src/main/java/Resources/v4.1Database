@@ -16,16 +16,17 @@ CREATE TABLE Event (
 CREATE TABLE Staff (
     stID varchar(100) NOT NULL PRIMARY KEY,
     stName varchar(255),
-    stRole varchar(255)
+    stRole varchar(255),
+    password varchar(255)
 );
 
 CREATE TABLE Booking(
-    eqID varchar(100) NOT NULL,
-    evID varchar(100) NOT NULL, 
+    evID varchar(100) NOT NULL,
     evName varchar(225)NOT NUll,
+    eqID varchar(100) NOT NULL,
+    stID varchar(100),
     eqSentDateTime timestamp,
     eqReturnDateTime timestamp,
-    stID varchar(100),
     email_sent BIT NOT NULL DEFAULT 0,
 
     FOREIGN KEY(eqID) REFERENCES EquipmentLog(eqID),
