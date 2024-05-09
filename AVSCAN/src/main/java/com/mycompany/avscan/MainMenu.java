@@ -8,6 +8,7 @@ package com.mycompany.avscan;
  *
  * @author 2xkaz
  */
+import com.mycompany.avscan.Login_Signup_pages.LoginPage;
 public class MainMenu extends javax.swing.JFrame {
 
     /**
@@ -135,13 +136,13 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jButtonDataList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56)
+                        .addGap(59, 59, 59)
                         .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jButtonCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
                         .addComponent(jButtonCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -228,11 +229,11 @@ public class MainMenu extends javax.swing.JFrame {
         /*
         comment from Misako
         Need to create log in page (logIn class)
-        
-        this.dispose();
-        LogIn logInPage = new LogIn();
-        logInPage.setVisible(true);
         */
+        this.dispose();
+        LoginPage lp = new LoginPage();
+        lp.setVisible(true);
+        
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     /**

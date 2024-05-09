@@ -10,6 +10,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableCellRenderer;
@@ -20,7 +23,7 @@ import javax.swing.table.TableColumn;
  * @author vince-kong
  */
 public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.ConnectCallback{
-
+    private Set<String> enteredIDs;
     private ConnectItemToParent childs;
     private int rememberSelectedRow;
     /**
@@ -28,6 +31,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
      */
     public NewEq() {
         initComponents();
+        enteredIDs = new HashSet<>();
         addFakeInfoRow();//Just simple dummy data to do not input it manualy. Comment it out if needed.
     }
 
@@ -51,9 +55,12 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         jTextField3 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        formatButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jAddToTable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("ID");
 
@@ -93,10 +100,20 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
 
         jLabel3.setText("Type");
 
-        formatButton.setText("Format");
-        formatButton.addActionListener(new java.awt.event.ActionListener() {
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Equipment ID", "Equipment Name", "Equipment Type"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        jAddToTable.setText("+");
+        jAddToTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                formatButtonaddActionPerformed(evt);
+                jAddToTableActionPerformed(evt);
             }
         });
 
@@ -105,34 +122,31 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                        .addComponent(connToParent)
+                        .addGap(107, 107, 107)
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
-                        .addGap(143, 143, 143)
+                        .addGap(80, 80, 80)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(80, 80, 80)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(42, 42, 42))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(connToParent)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16)
-                        .addComponent(formatButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jAddToTable))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,18 +160,18 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jAddToTable))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(formatButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         pack();
@@ -201,46 +215,65 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     // Adding new row based on information inputed in jTextField(1&2&3)
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        if (!this.jTextField1.getText().equals("") && !this.jTextField2.getText().equals("") && !this.jTextField3.getText().equals("")) {
+//        if (!this.jTextField1.getText().equals("") && !this.jTextField2.getText().equals("") && !this.jTextField3.getText().equals("")) {
+//
+//            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//
+//            // Get text from JTextFields
+//            String text1 = jTextField1.getText();
+//            String text2 = jTextField2.getText();
+//            String text3 = jTextField3.getText();
+//
+//            // Add new row to the table model
+//            boolean dublicates = false;
+//            for (int i = 0; i < model.getRowCount(); i++) {
+//                String toCheck = (String) model.getValueAt(i, 0);
+//                if (toCheck.equalsIgnoreCase(text1)) {
+//                    new SmallErrorMessage("The Equipment already added to the table.");
+//                    return;
+//                }
+//            }
+//            model.addRow(new Object[]{text1, text2, text3});
+//
+//            // Optionally, clear the text fields after adding
+//            jTextField1.setText("");
+//            jTextField2.setText("");
+//            jTextField3.setText("");
+//        } else {
+//            new SmallErrorMessage("Please fill all input areas.");
+//        }
+           // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+     
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String equipmentID = model.getValueAt(i, 0).toString();
+            String equipmentName = model.getValueAt(i, 1).toString();
+            String equipmentType = model.getValueAt(i, 2).toString();
 
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
-            // Get text from JTextFields
-            String text1 = jTextField1.getText();
-            String text2 = jTextField2.getText();
-            String text3 = jTextField3.getText();
-
-            // Add new row to the table model
-            boolean dublicates = false;
-            for (int i = 0; i < model.getRowCount(); i++) {
-                String toCheck = (String) model.getValueAt(i, 0);
-                if (toCheck.equalsIgnoreCase(text1)) {
-                    new SmallErrorMessage("The Equipment already added to the table.");
-                    return;
-                }
+            try {
+                DatabaseUtils dbUtil = new DatabaseUtils();
+                dbUtil.insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+                
+            } catch (SQLException ex) {
+                // Handle the exception (e.g., display error message)
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error adding data to database: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            model.addRow(new Object[]{text1, text2, text3});
-
-            // Optionally, clear the text fields after adding
-            jTextField1.setText("");
-            jTextField2.setText("");
-            jTextField3.setText("");
-        } else {
-            new SmallErrorMessage("Please fill all input areas.");
         }
+        model.setRowCount(0); 
     }//GEN-LAST:event_addButtonActionPerformed
 
     //Open new window to create parent-child(super-sub) equipment realtion.
     //Will send the selected row to the next windo to add child equipments to the parent equipment.
     private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
-        if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
+        if (jTable2.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
             new SmallErrorMessage("Please select one Row only");
             return;
         }
-        this.rememberSelectedRow =  jTable1.getSelectedRow();
+        this.rememberSelectedRow =  jTable2.getSelectedRow();
 
         // Assuming model is the DefaultTableModel associated with your JTable
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
 
         // Assuming 0, 1, 2 and 3 are the column indices for Equipment ID, Equipment Name, and Equipment Type, ParentID
         String equipmentID = (String) model.getValueAt(rememberSelectedRow, 0);
@@ -251,12 +284,34 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         
     }//GEN-LAST:event_connectToParent
 
+    private void jAddToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddToTableActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        String equipmentID = jTextField1.getText();
+        String equipmentName = jTextField2.getText();
+        String equipmentType = jTextField3.getText();
+        
+        
+        if(!enteredIDs.contains(equipmentID) ){
+            model.addRow(new Object[]{equipmentID, equipmentName, equipmentType});
+            enteredIDs.add(equipmentID);
+            // Optionally, clear the text fields after adding
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jTextField3.setText("");
+
+           
+        }else{
+            JOptionPane.showMessageDialog(null, "Duplicate ID found in the Table, please ensure there are now duplicates.");
+        }
+    }//GEN-LAST:event_jAddToTableActionPerformed
+
     //Updating child-parent relation information after adding childs
     @Override
     public void onConnect() {
         // Continue execution after connect action is performed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        var temp = model.getValueAt(rememberSelectedRow, 0);
+        Object temp = model.getValueAt(rememberSelectedRow, 0);
         DefaultTableModel toConnect = childs.getChildsInfo();
         
         for (int i = 0; i < model.getRowCount(); i++) {
@@ -279,19 +334,6 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         //this.jTable1 = new JTable(model);
     }
     
-    //Sending data to database.
-    private void formatButtonaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formatButtonaddActionPerformed
-        // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        if (model.getRowCount() > 0) {
-            new DatabaseUtils(model);
-            //new DatabaseUtils(model).fetchDataFromDatabase();
-        } else {
-            new SmallErrorMessage("Use button \"Add\" to add new equipment before format!");
-        }
-
-    }//GEN-LAST:event_formatButtonaddActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -338,12 +380,14 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     private javax.swing.JButton addButton;
     private javax.swing.JButton connToParent;
     private javax.swing.JButton deleteButton;
-    private javax.swing.JButton formatButton;
+    private javax.swing.JButton jAddToTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
