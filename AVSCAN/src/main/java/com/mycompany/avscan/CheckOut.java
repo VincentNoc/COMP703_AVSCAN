@@ -317,20 +317,17 @@ public class CheckOut extends javax.swing.JFrame {
         
         for(int i =0; i < tableModel.getRowCount(); i++){
             String equipmentID = tableModel.getValueAt(i, 0).toString();
-            
+             
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
               // Check if a row is selected
+
                     //this will be changed latter on. 
 //                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
-
-                    dbUtils.insertDataEventTable(evID, evName, selectedEqID,  "01", dateTimeSent, dateTimeReturn);
-                    dbUtils.updateEquipmentStatus(selectedEqID);
+                    dbUtils.insertDataEventTable(evID, evName, equipmentID,  "01", dateTimeSent, dateTimeReturn);
+                    dbUtils.updateEquipmentStatus(equipmentID);
 //            System.out.println(selectedValue);
-                }else{
-                    JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
-                    System.out.println("Must select an Equipment");
-                }
+                
 
         }catch(SQLException e){
             JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
@@ -414,4 +411,5 @@ public class CheckOut extends javax.swing.JFrame {
     private javax.swing.JTextField jTxtDate;
     private javax.swing.JTextField jTxtReturnDate;
     // End of variables declaration//GEN-END:variables
+    
 }
