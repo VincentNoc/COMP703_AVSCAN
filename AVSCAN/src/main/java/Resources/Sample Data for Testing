@@ -1,0 +1,29 @@
+/* INSERTING SAMPLE DATA */
+INSERT INTO Equipment(eqID, eqName, eqType, eqStatus)
+VALUES
+    ('1', 'MM-MCU12BK', 'Microphone', 'available'),
+    ('2', 'FUJIFILM X100VI', 'Camera', 'available'),
+    ('3', 'EPSON EB-E01', 'Projector', 'not available'),
+    ('4', 'ECM-PCV80U', 'Microphone', 'maintenance');
+
+INSERT INTO Event (evID, evName, evEmailSent)
+VALUES
+    ('86429', 'SparkFest', '2024-10-15 15:45:00'),
+    ('51783', 'HarmonyGala', '2025-03-28 10:20:00'),
+    ('32957', 'UnityFete', '2024-08-09 18:30:00'),
+    ('70814', 'BlissCon', '2025-01-05 13:55:00'),
+    ('94621', 'SerenitySummit', '2024-06-17 09:10:00');
+
+INSERT INTO Staff (stID, stName, stRole)
+VALUES 
+    ('7392', 'Emily', 'Casual staff'),
+    ('5021', 'Benjamin', 'Casual staff'),
+    ('1689', 'Sophia', 'Administrator staff');
+
+INSERT INTO Booking (eqID, evID, stID)
+VALUES
+    ('3', '86429', '5021'),
+    ('2', '51783', '7392'),
+    ('4','32957', '1689'),
+    ('1','70814', '5021'),
+    ('3','94621', '1689');

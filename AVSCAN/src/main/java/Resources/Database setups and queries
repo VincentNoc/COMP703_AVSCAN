@@ -6,10 +6,18 @@ User: root
 Password: AUT4events_
 URL: "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL"
 
+
+CREATE TABLE EquipmentLog;
+
+Three Columns should be made in EquipmentLog. 
+
+first EquipmentID: primary key, varchar 225. 
+=======
 CREATE TABLE EquipmentLog (
 	EquipmentID varchar(100) NOT NULL PRIMARY KEY,
     EquipmentName varchar(255) NOT NULL,
     EquipmentType varchar(100),
+    Equipment_Status varchar(20),
     parentID varchar(100),
     FOREIGN KEY(parentID) references EquipmentLog(EquipmentID)    
 );
@@ -47,14 +55,13 @@ SELECT * FROM Staff;
 DROP TABLE Event;
 
 CREATE TABLE Event(
-	evID varchar(100) NOT NULL,
+    evID varchar(100) NOT NULL,
     evEquipmentID varchar(100) NOT NULL,
     evName varchar(255),
-    evDateTime timestamp NOT NULL,
     evCheckOutStaff varchar(100),
     eqSentDateTime timestamp,
     eqReturnDateTime timestamp,
-	FOREIGN KEY(evCheckOutStaff) references Staff(stID),
+    FOREIGN KEY(evCheckOutStaff) references Staff(stID),
     FOREIGN KEY(evEquipmentID) references EquipmentLog(EquipmentID)
 );
 INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime)
