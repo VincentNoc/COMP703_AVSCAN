@@ -9,6 +9,9 @@
           <ComponentRef name="jTxtDate"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="History_dateChooser1"/>
+      </AuxValues>
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -152,7 +155,7 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jTxtDate" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTxtDate" min="-2" pref="23" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -210,7 +213,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtDate">
           <Properties>
+            <Property name="editable" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value=""/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
