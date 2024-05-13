@@ -231,9 +231,8 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(readDescButton)
                         .addComponent(searchButton))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(addButton)
-                        .addComponent(returnButton))
+                    .addComponent(returnButton)
+                    .addComponent(addButton)
                     .addComponent(homeButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
@@ -295,7 +294,6 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         if (this.eqIDInput.getText().trim().equals("") && this.eqNameInput.getText().trim().equals("")
                 && this.receivedInput.getText().trim().equals("yyyy-mm-dd") && this.repairedInput.getText().trim().equals("yyyy-mm-dd")) {
             //new SmallErrorMessage("Enter something in input fields.", this).setVisible(true);
@@ -303,6 +301,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
             return;
         }
 
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         try {
             String ID = this.eqIDInput.getText();
             String Name = this.eqNameInput.getText();
