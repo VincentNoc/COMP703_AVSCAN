@@ -262,13 +262,23 @@ public class DatabaseUtils {
         String query = "INSERT INTO Maintenance (eqID, mntDescription, mntRecieved, mntRepairedReturned)\n"
                 + "VALUES (?, ?, ?, ?);";
 //Checked In
-
+//Checked out
+        String updateEquipmentStatus = "UPDATE EquipmentLog " +
+                                        "SET eqStatus = 'In Maintenance' " +
+                                        "WHERE eqID = ?";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
+            
 
             Statement stmt = con.createStatement();
+            
+            PreparedStatement findEqStatus = con.prepareStatement(updateEquipmentStatus);
+            findEqStatus.setString(1, eqID);
+            findEqStatus.execute();
+            
+            
             PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, eqID);
             prepStmt.setString(2, description);
@@ -310,6 +320,10 @@ public class DatabaseUtils {
                 + "SET mntRepairedReturned = ? WHERE eqID = ? AND mntDescription = ? AND "
                 + "mntRecieved = ?";
 
+        String updateEquipmentStatus = "UPDATE EquipmentLog " +
+                                        "SET eqStatus = 'Checked In' " +
+                                        "WHERE eqID = ?";
+        
         System.out.println("\nBEFORE ADD TO DATABASE RETURN_MAINT:  "+insert.toString());
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -317,6 +331,10 @@ public class DatabaseUtils {
             System.out.println("Connected to Database");
             
             Statement stmt = con.createStatement();
+            PreparedStatement findEqStatus = con.prepareStatement(updateEquipmentStatus);
+            findEqStatus.setString(1, insert.getEqID());
+            findEqStatus.execute();
+            
             PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, String.valueOf(insert.getReturned()));
             prepStmt.setString(2, insert.getEqID());

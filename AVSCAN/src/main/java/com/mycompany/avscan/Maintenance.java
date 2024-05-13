@@ -24,7 +24,6 @@ import multi.use.frames.ShowCommentMaintenance;
  */
 public class Maintenance extends javax.swing.JFrame implements MaintenanceAddComment.ConnectCallback {
 
-    ;
     private Hashtable<String, Data> equipment;
     private MaintenanceAddComment maint;
     private List<MaintenanceData> dataList;
