@@ -71,7 +71,7 @@ public class DatabaseUtils {
     }
 
     private final void insertData(DefaultTableModel table) {
-        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID) VALUES (?, ?, ?, ?)";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -178,11 +178,20 @@ public class DatabaseUtils {
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
+            
+            String oldQery="SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
                     + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
                     + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
                     + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
-                    + "ORDER BY Maintenance.Received DESC;");
+                    + "ORDER BY Maintenance.Received DESC;";
+            
+            String qery = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
+                    + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
+                    + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
+                    + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
+                    + "ORDER BY Maintenance.mntRecieved DESC;";
+            
+            ResultSet rs = stmt.executeQuery(qery);
 
             while (rs.next()) {
                 MaintenanceData equipment = new MaintenanceData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getTimestamp(6), rs.getTimestamp(7));
@@ -198,40 +207,40 @@ public class DatabaseUtils {
     //Dmitry modified
     public List<MaintenanceData> fetchHashtableMaintenanceSearchData(String ID, String Name, String received, String returned) {
         List<MaintenanceData> dataList = new ArrayList<>();
-        String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
-                + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
-                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
-                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
+        String query = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
+                + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
+                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
+                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
                 + "WHERE ";
 
         boolean canditionAdded = false;
 
         if (!ID.equals("")) {
-            query += ("Maintenance.EquipmentID LIKE \'%" + ID + "%\'");
+            query += ("Maintenance.eqID LIKE \'%" + ID + "%\'");
             canditionAdded = true;
         }
         if (!Name.equals("")) {
             if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" child.EquipmentName LIKE \'%" + Name + "%\'");
+            query += (" child.eqName LIKE \'%" + Name + "%\'");
             canditionAdded = true;
         }
         if (!received.equals("yyyy-mm-dd")) {
             if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" Maintenance.Received LIKE \'%" + received + "%\'");
+            query += (" Maintenance.mntRecieved LIKE \'%" + received + "%\'");
             canditionAdded = true;
         }
         if (!returned.equals("yyyy-mm-dd")) {
             if (canditionAdded == true) {
                 query += " AND";
             }
-            query += (" Maintenance.repairedReturned LIKE \'%" + returned + "%\'");
+            query += (" Maintenance.mntRepairedReturned LIKE \'%" + returned + "%\'");
         }
         query += " ";
-        query += "ORDER BY Maintenance.Received DESC";
+        query += "ORDER BY Maintenance.mntRecieved DESC";
 
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
@@ -250,7 +259,7 @@ public class DatabaseUtils {
     }
 
     public boolean newInsertIntoMaintenanceTable(String eqID, String description, String received) {
-        String query = "INSERT INTO Maintenance (EquipmentID, description, received, repairedReturned)\n"
+        String query = "INSERT INTO Maintenance (eqID, mntDescription, mntRecieved, mntRepairedReturned)\n"
                 + "VALUES (?, ?, ?, ?);";
 
         try {
@@ -297,8 +306,8 @@ public class DatabaseUtils {
 
     public boolean equipmentRetunMaintenance(MaintenanceData insert) {
         String query = "UPDATE Maintenance "
-                + "SET RepairedReturned = ? WHERE EquipmentID = ? AND Description= ? AND "
-                + "Received = ?";
+                + "SET mntRepairedReturned = ? WHERE eqID = ? AND mntDescription = ? AND "
+                + "mntRecieved = ?";
 
         System.out.println("\nBEFORE ADD TO DATABASE RETURN_MAINT:  "+insert.toString());
         try {
@@ -329,13 +338,13 @@ public class DatabaseUtils {
     public Hashtable<String, MaintenanceData> fetchMaintenanceUnreturned() {
         Hashtable<String, MaintenanceData> toReturn = new Hashtable<>();
 
-        String query = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
-                + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
-                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
-                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
-                + "WHERE Maintenance.repairedReturned IS null\n"
-                + "ORDER BY Maintenance.Received DESC;";
-
+        String query = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
+                + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
+                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
+                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
+                + "WHERE Maintenance.mntRepairedReturned IS null\n"
+                + "ORDER BY Maintenance.mntRecieved DESC;";
+        
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();

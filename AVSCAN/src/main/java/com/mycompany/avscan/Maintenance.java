@@ -171,12 +171,14 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 844, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(homeButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                                .addComponent(returnButton)
+                                .addGap(18, 18, 18)
                                 .addComponent(addButton))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +188,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(eqNameInput)
                                     .addComponent(eqNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,8 +200,6 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
                                     .addComponent(repairedInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(readDescButton, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(returnButton)
                                 .addGap(18, 18, 18)
                                 .addComponent(searchButton)))))
                 .addContainerGap())
@@ -230,9 +230,10 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(readDescButton)
-                        .addComponent(returnButton)
                         .addComponent(searchButton))
-                    .addComponent(addButton)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(addButton)
+                        .addComponent(returnButton))
                     .addComponent(homeButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
@@ -267,7 +268,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     private void descriptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionButtonActionPerformed
         // TODO add your handling code here:
         if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
-            new SmallErrorMessage("Please select one Row only", this).setVisible(true);
+            new SmallErrorMessage("Please select one Row only in data Table.", this).setVisible(true);
             return;
         }
         int selectedRow = jTable1.getSelectedRow();
@@ -364,7 +365,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
         // TODO add your handling code here:
         if(this.eqIDInput.getText().equals("")){
-            new SmallErrorMessage("Please enter equipment ID!", this).setVisible(true);
+            new SmallErrorMessage("Please enter Equipment ID!", this).setVisible(true);
             return;
         }
         if (!this.hashUnreturned.containsKey(this.eqIDInput.getText())) {
