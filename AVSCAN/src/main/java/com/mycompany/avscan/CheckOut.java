@@ -286,24 +286,7 @@ public class CheckOut extends javax.swing.JFrame {
 
     private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckOutButtonActionPerformed
         // TODO add your handling code here:
-        
-//             
-//        for (int i = 0; i < model.getRowCount(); i++) {
-//            String equipmentID = model.getValueAt(i, 0).toString();
-//            String equipmentName = model.getValueAt(i, 1).toString();
-//            String equipmentType = model.getValueAt(i, 2).toString();
-//
-//            try {
-//                DatabaseUtils dbUtil = new DatabaseUtils();
-//                dbUtil.insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
-//                
-//            } catch (SQLException ex) {
-//                // Handle the exception (e.g., display error message)
-//                ex.printStackTrace();
-//                JOptionPane.showMessageDialog(this, "Error adding data to database: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
-//        model.setRowCount(0); 
+
         DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
 
         String evID = JEventID.getText();
@@ -320,10 +303,8 @@ public class CheckOut extends javax.swing.JFrame {
              
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
-              // Check if a row is selected
 
                     //this will be changed latter on. 
-//                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
                     dbUtils.insertDataEventTable(evID, evName, equipmentID,  "01", dateTimeSent, dateTimeReturn);
                     dbUtils.updateEquipmentStatus(equipmentID);
 //            System.out.println(selectedValue);
