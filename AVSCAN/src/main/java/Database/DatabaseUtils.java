@@ -261,6 +261,7 @@ public class DatabaseUtils {
     public boolean newInsertIntoMaintenanceTable(String eqID, String description, String received) {
         String query = "INSERT INTO Maintenance (eqID, mntDescription, mntRecieved, mntRepairedReturned)\n"
                 + "VALUES (?, ?, ?, ?);";
+//Checked In
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
