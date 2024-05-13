@@ -55,11 +55,11 @@ public class CheckOut extends javax.swing.JFrame {
         dateChooser1 = new com.raven.datechooser.DateChooser();
         JHomeButton = new javax.swing.JButton();
         jCheckOutButton = new javax.swing.JButton();
-        JEventID = new javax.swing.JTextField();
+        JEventName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jEventName = new javax.swing.JTextField();
+        jEventID = new javax.swing.JTextField();
         jTxtDate = new javax.swing.JTextField();
         jTxtReturnDate = new javax.swing.JTextField();
         Date d = new Date();
@@ -185,8 +185,8 @@ public class CheckOut extends javax.swing.JFrame {
                                     .addComponent(jLabel5))
                                 .addGap(78, 78, 78)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(JEventID, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                    .addComponent(jEventName))))))
+                                    .addComponent(JEventName, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                    .addComponent(jEventID))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -204,11 +204,11 @@ public class CheckOut extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jEventName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jEventID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(JEventID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JEventName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -306,8 +306,8 @@ public class CheckOut extends javax.swing.JFrame {
 //        model.setRowCount(0); 
         DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
 
-        String evID = JEventID.getText();
-        String evName = jEventName.getText();
+        String evID = jEventID.getText();
+        String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
         String dateReturn = jTxtReturnDate.getText();
         
@@ -391,14 +391,14 @@ public class CheckOut extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField JEventID;
+    private javax.swing.JTextField JEventName;
     private javax.swing.JButton JHomeButton;
     private com.raven.datechooser.DateChooser dateChooser1;
     private com.raven.datechooser.DateChooser dateChooser2;
     private javax.swing.JButton jAddToTable;
     private javax.swing.JButton jCheckOutButton;
     private javax.swing.JTextField jEquipmentID;
-    private javax.swing.JTextField jEventName;
+    private javax.swing.JTextField jEventID;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -13,15 +13,17 @@ import java.sql.SQLException;
  * @author vince-kong
  */
 public class DatabaseConnector {
-  //these three could potentially change depending on how you've set up your DB. 
-  private static final String URL = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
-  private static final String USER = "root";
-  private static final String PASSWORD = "AUT4events_";
+    //these three could potentially change depending on how you've set up your DB. 
 
-  public DatabaseConnector() throws SQLException{
-      connectToDatabase();
-  }
-  
+    private static final String URL = "jdbc:mysql://localhost:3306/avscan?zeroDateTimeBehavior=CONVERT_TO_NULL";
+    //private static final String URL = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
+    private static final String USER = "root";
+    private static final String PASSWORD = "AUT4events_";
+
+    public DatabaseConnector() throws SQLException {
+        connectToDatabase();
+    }
+
     public static Connection connectToDatabase() throws SQLException {
         try {
             // Optionally load the JDBC driver (not always required in modern JDBC versions)
