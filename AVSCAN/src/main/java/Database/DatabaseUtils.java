@@ -43,7 +43,7 @@ public class DatabaseUtils {
     }
 
     public final void insertData(String equipmentID, String equipmentName, String equipmentType) {
-        String query = "INSERT INTO Equipment (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
+        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType) VALUES (?, ?, ?)";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -71,7 +71,7 @@ public class DatabaseUtils {
     }
 
     private final void insertData(DefaultTableModel table) {
-        String query = "INSERT INTO Equipment (eqID, eqName, eqType, parentID) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID) VALUES (?, ?, ?, ?)";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -107,7 +107,7 @@ public class DatabaseUtils {
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * from Equipment");
+            ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
 
             while (rs.next()) {
                 Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
@@ -159,7 +159,7 @@ public class DatabaseUtils {
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * from Equipment");
+            ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
 
             while (rs.next()) {
                 Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
@@ -181,14 +181,14 @@ public class DatabaseUtils {
             
             String oldQery="SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
                     + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
-                    + "From Maintenance LEFT JOIN Equipment AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
-                    + "LEFT JOIN Equipment AS parent ON child.ParentID = parent.EquipmentID\n"
+                    + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
+                    + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
                     + "ORDER BY Maintenance.Received DESC;";
             
             String qery = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
                     + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
-                    + "From Maintenance LEFT JOIN Equipment AS child ON Maintenance.eqID = child.eqID\n"
-                    + "LEFT JOIN Equipment AS parent ON child.ParentID = parent.eqID\n"
+                    + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
+                    + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
                     + "ORDER BY Maintenance.mntRecieved DESC;";
             
             ResultSet rs = stmt.executeQuery(qery);
@@ -209,8 +209,8 @@ public class DatabaseUtils {
         List<MaintenanceData> dataList = new ArrayList<>();
         String query = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
                 + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
-                + "From Maintenance LEFT JOIN Equipment AS child ON Maintenance.eqID = child.eqID\n"
-                + "LEFT JOIN Equipment AS parent ON child.ParentID = parent.eqID\n"
+                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
+                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
                 + "WHERE ";
 
         boolean canditionAdded = false;
@@ -291,7 +291,7 @@ public class DatabaseUtils {
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("Select * From Equipment ");
+            ResultSet rs = stmt.executeQuery("Select * From EquipmentLog ");
 
             while (rs.next()) {
                 Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
@@ -340,8 +340,8 @@ public class DatabaseUtils {
 
         String query = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
                 + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
-                + "From Maintenance LEFT JOIN Equipment AS child ON Maintenance.eqID = child.eqID\n"
-                + "LEFT JOIN Equipment AS parent ON child.ParentID = parent.eqID\n"
+                + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
+                + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
                 + "WHERE Maintenance.mntRepairedReturned IS null\n"
                 + "ORDER BY Maintenance.mntRecieved DESC;";
         
