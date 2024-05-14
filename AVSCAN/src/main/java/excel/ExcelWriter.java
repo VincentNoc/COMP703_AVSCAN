@@ -42,7 +42,7 @@ public class ExcelWriter {
 
         // Create some data rows
         int rowNum = 0;
-        String[] headers = {"Event ID", "Equipment ID", "Equipment Name", "Parent ID", "Parent Name", "Returned", "Staff"};
+        String[] headers = {"Event ID", "Equipment ID", "Equipment Name", "Parent ID", "Parent Name", "Returned", "Staff", "Status"};
         Row headerRow = sheet.createRow(rowNum++);
 
         Font headerFont = workbook.createFont();
@@ -72,6 +72,7 @@ public class ExcelWriter {
                     createHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
             dateCell.setCellStyle(cellStyle);
             row.createCell(6).setCellValue(data.getEvCheckOutStaff());
+            row.createCell(7).setCellValue(data.getStatus());
         }
 
         for (int i = 0; i < headers.length; i++) {
@@ -87,6 +88,7 @@ public class ExcelWriter {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
             String filePath = fileToSave.getAbsolutePath();
+            filePath=filePath.trim();
 
             // Append ".xlsx" extension if not already present
             if (!filePath.toLowerCase().endsWith(".xlsx")) {

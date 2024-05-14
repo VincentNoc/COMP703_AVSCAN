@@ -256,14 +256,15 @@ public final void updateEquipmentStatus(String selectedEquipmentIDs) throws SQLE
        }
    }
    
-    public List<HistoryData> fetchHistoryFromDatabase() {
+   //Don't need any more??
+    /*public List<HistoryData> fetchHistoryFromDatabase() {
         List<HistoryData> dataList = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT Event.evID, Event.evEquipmentID, Child.EquipmentName AS EquipmentName, Child.ParentID, Parent.EquipmentName AS ParentEquipmentName,\n" +
-                " Event.eqReturnDateTime, Event.evCheckOutStaff\n" +
+                " Event.eqReturnDateTime, Event.evCheckOutStaff, \n" +
                 " FROM Event LEFT JOIN EquipmentLog AS Child ON Event.evEquipmentID = Child.EquipmentID\n" +
                 " LEFT JOIN EquipmentLog AS Parent ON Child.ParentID = Parent.EquipmentID\n" +
                 " ORDER BY Event.evID;");
@@ -279,6 +280,6 @@ public final void updateEquipmentStatus(String selectedEquipmentIDs) throws SQLE
         }
 
         return dataList;
-    }
+    }*/
 
 }

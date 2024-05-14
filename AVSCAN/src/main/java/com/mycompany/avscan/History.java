@@ -278,7 +278,8 @@ public class History extends javax.swing.JFrame {
             // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
             Class.forName("com.mysql.cj.jdbc.Driver");
             // for getConnection, use (Database name, "root", SQL password)
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+            //Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/avscan", "root", "AUT4events_");
             
             // Getting Data from SQL Database
             Statement statement = connection.createStatement();
@@ -425,7 +426,7 @@ public class History extends javax.swing.JFrame {
         if (selectedRow != null) {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             ExcelWriter ex = new ExcelWriter();
-            for (int i = selectedRow.length - 1; i >= 0; i--) {
+            for (int i = 0; i < selectedRow.length; i++) {
                 String evID         =     (String) model.getValueAt(selectedRow[i], 0);
                 String equipmentID  =     (String) model.getValueAt(selectedRow[i], 1);
                 String euipmentName =     (String) model.getValueAt(selectedRow[i], 2);
@@ -433,8 +434,9 @@ public class History extends javax.swing.JFrame {
                 String parentName   =     (String) model.getValueAt(selectedRow[i], 4);
                 String returnDate   =      String.valueOf(model.getValueAt(selectedRow[i], 5));
                 String staffID      =     (String) model.getValueAt(selectedRow[i], 6);
+                String status       =     (String)model.getValueAt(selectedRow[i], 7);
                 
-                HistoryData temp = new HistoryData(evID, equipmentID, euipmentName, parentID, parentName, returnDate, staffID);
+                HistoryData temp = new HistoryData(evID, equipmentID, euipmentName, parentID, parentName, returnDate, staffID, status);
                 ex.addToExcel(temp);
             }
             ex.createAndWriteHistory();
