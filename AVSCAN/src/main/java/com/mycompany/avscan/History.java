@@ -336,7 +336,8 @@ public class History extends javax.swing.JFrame {
             // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
             Class.forName("com.mysql.cj.jdbc.Driver");
             // for getConnection, use (Database name, "root", SQL password)
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/avscan", "root", "AUT4events_");
+            //Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
             
             // Clearing the jTable before adding the filtered data
             DefaultTableModel clearTable = (DefaultTableModel)jTable1.getModel();
@@ -358,25 +359,23 @@ public class History extends javax.swing.JFrame {
             
             // If Equipment Name text field is not empty
             if (!searchWords[0].equals("")){
-                sqlQuery += "AND eq.eqName LIKE '" + searchWords[0] + "%'";
+                sqlQuery += " AND eq.eqName LIKE \'%" + searchWords[0] + "%\'";
             }
             // If Equipment ID text field is not empty
             if (!searchWords[1].equals("")) {
-                sqlQuery += " AND eq.eqID LIKE '" + searchWords[1] + "%'";
+                sqlQuery += " AND eq.eqID LIKE \'%" + searchWords[1] + "%\'";
             }
             // If Parent ID text field is not empty
             if (!searchWords[2].equals("")) {
-                sqlQuery += " AND p.parentID LIKE '" + searchWords[2] + "%'";
+                sqlQuery += " AND p.parentID LIKE \'%" + searchWords[2] + "%\'";
             }
             // If Event ID text field is not empty
             if (!searchWords[3].equals("")) {
-                sqlQuery += " AND ev.evID LIKE '" + searchWords[3] + "%'";
+                sqlQuery += " AND ev.evID LIKE \'%" + searchWords[3] + "%\'";
             }
-             if (!searchWords[3].equals("")) {
-                sqlQuery += " AND ev.evID LIKE '" + searchWords[3] + "%'";
-            }
+            
             if (searchWords[4] != null && !searchWords[4].isEmpty()) {
-                sqlQuery += " AND b.eqReturnDateTime LIKE '" + searchWords[4] + "%'";
+                sqlQuery += " AND b.eqReturnDateTime LIKE \'%" + searchWords[4] + "%\'";
             }
             
             ResultSet rs = statement.executeQuery(sqlQuery);
