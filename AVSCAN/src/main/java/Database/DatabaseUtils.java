@@ -33,8 +33,8 @@ public class DatabaseUtils {
       this.con = DatabaseConnector.connectToDatabase();
     }
 
-    public DatabaseUtils(String equipmentID, String equipmentName, String equipmentType) throws SQLException {
-      insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+    public DatabaseUtils(String equipmentID) throws SQLException {
+      updateEquipmentLogStatusCheckedIn(equipmentID);
     }
 
      public DatabaseUtils(String evID, String evName, String evEquipmentID, String stID,  String eqSentDateTime, String eqReturnDateTime) throws SQLException{
@@ -46,11 +46,11 @@ public class DatabaseUtils {
     }
 
     public DatabaseUtils(DefaultTableModel table) {
-        insertData(table);
+        insertDataEquipmentLog(table);
     }
     
 
-    public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
+    public final void updateEquipmentLogStatusCheckedIn(String equipmentID) {
         String query = "UPDATE EquipmentLog " +
                         "SET eqStatus = \'Checked In\' " +
                         "WHERE eqID = ?";
@@ -77,7 +77,7 @@ public class DatabaseUtils {
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
   
-    private final void insertData(DefaultTableModel table) {
+    public final void insertDataEquipmentLog(DefaultTableModel table) {
         String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
         int size = table.getRowCount();
         try {
@@ -161,7 +161,7 @@ public final void insertDataEventTable(String evID, String evName) throws SQLExc
 
 
 public final void updateEquipmentStatus(String selectedEquipmentIDs) throws SQLException{
-    String query ="UPDATE equipmentlog SET eqStatus = 'Checked Out' WHERE eqID = ?";
+    String query ="UPDATE equipmentlog SET eqStatus = \'Checked Out\' WHERE eqID = ?";
     DatabaseConnector dbCon = new DatabaseConnector();
     
     try(Connection con = dbCon.connectToDatabase();
