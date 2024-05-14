@@ -323,7 +323,7 @@ public class CheckOut extends javax.swing.JFrame {
                 //this will be changed latter on. 
 //                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
                 dbUtils.insertDataBookingTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
-                dbUtils.updateEquipmentStatus(equipmentID);
+                dbUtils.updateEquipmentStatusCheckedOut(equipmentID);
 //            System.out.println(selectedValue);
 
             }

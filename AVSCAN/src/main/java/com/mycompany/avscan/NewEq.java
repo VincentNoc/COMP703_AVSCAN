@@ -252,7 +252,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
 
             try {
                 DatabaseUtils dbUtil = new DatabaseUtils();
-                dbUtil.insertDataEquipmentLog(equipmentID, equipmentName, equipmentType);
+                dbUtil.insertDataEquipmentLog(model);
                 
             } catch (SQLException ex) {
                 // Handle the exception (e.g., display error message)
