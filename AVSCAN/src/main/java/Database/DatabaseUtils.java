@@ -160,8 +160,8 @@ public final void insertDataEventTable(String evID, String evName) throws SQLExc
 
 
 
-public final void updateEquipmentStatus(String selectedEquipmentIDs) throws SQLException{
-    String query ="UPDATE equipmentlog SET eqStatus = \'Checked Out\' WHERE eqID = ?";
+public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) throws SQLException{
+    String query ="UPDATE equipmentlog SET eqStatus = 'Checked Out' WHERE eqID = ?";
     DatabaseConnector dbCon = new DatabaseConnector();
     
     try(Connection con = dbCon.connectToDatabase();
