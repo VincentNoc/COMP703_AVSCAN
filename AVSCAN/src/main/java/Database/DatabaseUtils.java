@@ -79,18 +79,16 @@ public class DatabaseUtils {
   
     public final void insertDataEquipmentLog(DefaultTableModel table) {
         String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
-        int size = table.getRowCount();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
 
-            while (size > 0 ) {
-                size--;
-                String equipmentID = (String) table.getValueAt(size, 0);
-                String equipmentName = (String) table.getValueAt(size, 1);
-                String equipmentType = (String) table.getValueAt(size, 2);
-                String eqyipmentParent = (String) table.getValueAt(size, 3);
+            for (int i = 0; i<table.getRowCount();i++ ) {
+                String equipmentID = (String) table.getValueAt(i, 0);
+                String equipmentName = (String) table.getValueAt(i, 1);
+                String equipmentType = (String) table.getValueAt(i, 2);
+                String eqyipmentParent = (String) table.getValueAt(i, 3);
                 
                 Statement stmt = con.createStatement();
                 PreparedStatement prepStmt = con.prepareStatement(query);
