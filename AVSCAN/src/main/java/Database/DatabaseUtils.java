@@ -24,8 +24,8 @@ import javax.swing.table.DefaultTableModel;
 public class DatabaseUtils {
 
     Connection con;
-    private final String URL="jdbc:mysql://localhost:3306/avscan";
-    //private final String URL="jdbc:mysql://localhost:3306/mysql";
+//    private final String URL="jdbc:mysql://localhost:3306/avscan";
+    private final String URL="jdbc:mysql://localhost:3306/mysql";
     private final String USER= "root";
     private final String PASSWORD = "AUT4events_";
 
@@ -78,7 +78,7 @@ public class DatabaseUtils {
     //the same method as default one but using different value to store data and also using parrent ID
   
     public final void insertDataEquipmentLog(DefaultTableModel table) {
-        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, eqStatus,parentID) VALUES (?, ?, ?, 'Checked In',?)";
         int size = table.getRowCount();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -92,7 +92,6 @@ public class DatabaseUtils {
                 String equipmentType = (String) table.getValueAt(size, 2);
                 String eqyipmentParent = (String) table.getValueAt(size, 3);
                 
-                Statement stmt = con.createStatement();
                 PreparedStatement prepStmt = con.prepareStatement(query);
                 prepStmt.setString(1, equipmentID);
                 prepStmt.setString(2, equipmentName);
@@ -105,6 +104,7 @@ public class DatabaseUtils {
             con.close();
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
         }
     } //End of added by Dmitry

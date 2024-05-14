@@ -32,7 +32,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     public NewEq() {
         initComponents();
         enteredIDs = new HashSet<>();
-        addFakeInfoRow();//Just simple dummy data to do not input it manualy. Comment it out if needed.
+//        addFakeInfoRow();//Just simple dummy data to do not input it manualy. Comment it out if needed.
     }
 
     /**
@@ -178,25 +178,25 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     }// </editor-fold>//GEN-END:initComponents
 
     //Creating dummy data. Comment out the caller in the constructor to stop generating.
-    public void addFakeInfoRow() {
-        //jTable1 = new javax.swing.JTable();
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
-        final JTable table = new JTable(model);
-        table.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-        // Add 100 rows of dummy data
-        for (int i = 0; i < 15; i++) {
-            model.addRow(new Object[]{"ID " + i + "A", "Name " + i, "camera"});
-        }
-
-        // Assuming jScrollPane1 is already set up to display jTable1
-        // You might need to refresh jScrollPane1 if it's not automatically updating
-        jScrollPane1.setViewportView(jTable1);
-
-        // Assuming jScrollPane1 is a JScrollPane declared elsewhere
-        // jScrollPane1.setViewportView(jTable1);
-    }
+//    public void addFakeInfoRow() {
+//        //jTable1 = new javax.swing.JTable();
+//        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//
+//        final JTable table = new JTable(model);
+//        table.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+//
+//        // Add 100 rows of dummy data
+//        for (int i = 0; i < 15; i++) {
+//            model.addRow(new Object[]{"ID " + i + "A", "Name " + i, "camera"});
+//        }
+//
+//        // Assuming jScrollPane1 is already set up to display jTable1
+//        // You might need to refresh jScrollPane1 if it's not automatically updating
+//        jScrollPane1.setViewportView(jTable1);
+//
+//        // Assuming jScrollPane1 is a JScrollPane declared elsewhere
+//        // jScrollPane1.setViewportView(jTable1);
+//    }
 
 
     //To remove Selected rows
@@ -243,7 +243,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
 //            new SmallErrorMessage("Please fill all input areas.");
 //        }
            // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
      
         for (int i = 0; i < model.getRowCount(); i++) {
             String equipmentID = model.getValueAt(i, 0).toString();
@@ -266,14 +266,14 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     //Open new window to create parent-child(super-sub) equipment realtion.
     //Will send the selected row to the next windo to add child equipments to the parent equipment.
     private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
-        if (jTable2.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
+        if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
             new SmallErrorMessage("Please select one Row only");
             return;
         }
-        this.rememberSelectedRow =  jTable2.getSelectedRow();
+        this.rememberSelectedRow =  jTable1.getSelectedRow();
 
         // Assuming model is the DefaultTableModel associated with your JTable
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         // Assuming 0, 1, 2 and 3 are the column indices for Equipment ID, Equipment Name, and Equipment Type, ParentID
         String equipmentID = (String) model.getValueAt(rememberSelectedRow, 0);
@@ -286,7 +286,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
 
     private void jAddToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddToTableActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         String equipmentID = jTextField1.getText();
         String equipmentName = jTextField2.getText();
         String equipmentType = jTextField3.getText();
