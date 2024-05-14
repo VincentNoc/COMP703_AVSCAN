@@ -8,8 +8,11 @@ package com.mycompany.avscan;
  *
  * @author 2xkaz
  */
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.mycompany.avscan.Login_Signup_pages.LoginPage;
-import javax.swing.UIManager;
+import java.awt.EventQueue;
 public class MainMenu extends javax.swing.JFrame {
 
     /**
@@ -40,6 +43,9 @@ public class MainMenu extends javax.swing.JFrame {
         jButtonCheckIn = new javax.swing.JButton();
         jButtonCheckOut = new javax.swing.JButton();
         jButtonLogOut = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        DarkModeButton = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 700));
@@ -154,14 +160,14 @@ public class MainMenu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(welcometxt))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(120, 120, 120)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(recentlyIssuedEquipment)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(welcometxt)))
                 .addContainerGap(108, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -177,6 +183,20 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
+
+        jMenu3.setText("Option");
+
+        DarkModeButton.setText("Dark Mode");
+        DarkModeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DarkModeButtonActionPerformed(evt);
+            }
+        });
+        jMenu3.add(DarkModeButton);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -237,6 +257,29 @@ public class MainMenu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
+    //this button changes the layout to dark or light
+    private void DarkModeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DarkModeButtonActionPerformed
+        // TODO add your handling code here:
+        //checks if the dark mode button has been selected or not.
+        if(DarkModeButton.isSelected()){ 
+            EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run(){
+                FlatDarkLaf.setup();
+                FlatLaf.updateUI();
+            }
+            });   
+        }else{
+            EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run(){
+                FlatLightLaf.setup();
+                FlatLaf.updateUI();
+            }
+            }); 
+        }
+    }//GEN-LAST:event_DarkModeButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -246,12 +289,7 @@ public class MainMenu extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            UIManager.setLookAndFeel( new FlatLightLaf() );
-        } catch( Exception ex ) {
-            System.err.println( "Failed to initialize LaF" );
-        }
-
+     
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -261,11 +299,14 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem DarkModeButton;
     private javax.swing.JButton jButtonCheckIn;
     private javax.swing.JButton jButtonCheckOut;
     private javax.swing.JButton jButtonDataList;
     private javax.swing.JButton jButtonHelp;
     private javax.swing.JButton jButtonLogOut;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
