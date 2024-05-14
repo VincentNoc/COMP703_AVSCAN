@@ -51,7 +51,9 @@ public class DatabaseUtils {
     
 
     public final void insertDataEquipmentLog(String equipmentID, String equipmentName, String equipmentType) {
-        String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, eqStatus) VALUES (?, ?, ?, ?)";
+        String query = "UPDATE EquipmentLog " +
+                        "SET eqStatus = \'Checked In\' " +
+                        "WHERE eqID = ?";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -60,9 +62,6 @@ public class DatabaseUtils {
             // Use PreparedStatement to prevent SQL injection
             PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, equipmentID);
-            prepStmt.setString(2, equipmentName);
-            prepStmt.setString(3, equipmentType);
-            prepStmt.setString(4, "Checked In"); // Set the boolean value for the fourth parameter
 
             prepStmt.executeUpdate(); // Use executeUpdate for INSERT operations
 
