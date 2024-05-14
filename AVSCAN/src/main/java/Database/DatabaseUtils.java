@@ -38,7 +38,7 @@ public class DatabaseUtils {
     }
 
      public DatabaseUtils(String evID, String evName, String evEquipmentID, String stID,  String eqSentDateTime, String eqReturnDateTime) throws SQLException{
-      insertDataEventTable( evID,  evName, evEquipmentID, stID, eqSentDateTime,  eqReturnDateTime);
+      insertDataBookingTable( evID,  evName, evEquipmentID, stID, eqSentDateTime,  eqReturnDateTime);
     }
 
     public DatabaseUtils(String username, String password) throws SQLException{
@@ -111,22 +111,18 @@ public class DatabaseUtils {
     } //End of added by Dmitry
   
 
-  public final void insertDataEventTable(String evID, String evName, String eqID, String stID, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
-    String eventQuery = "INSERT INTO Event (evID, evName) VALUES (?, ?)";
+  public final void insertDataBookingTable(String evID, String evName, String eqID, String stID, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
+    
     String bookingQuery = "INSERT INTO Booking (evID, evName, eqID, stID ,eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?)";
     
     DatabaseConnector dbCon = new DatabaseConnector();
     Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
     Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
     try (Connection con = dbCon.connectToDatabase();
-   
-         PreparedStatement eventStmt = con.prepareStatement(eventQuery);
          PreparedStatement bookingStmt = con.prepareStatement(bookingQuery)) {
 
         // Insert into Event table
-        eventStmt.setString(1, evID);
-        eventStmt.setString(2, evName);
-        eventStmt.executeUpdate();
+        
 
         // Insert into Booking table
         bookingStmt.setString(1, evID);
@@ -137,13 +133,33 @@ public class DatabaseUtils {
         bookingStmt.setTimestamp(6, timeStampReturn);
         bookingStmt.executeUpdate();
 
-        System.out.println("Data inserted into Event and Booking tables successfully");
+        System.out.println("Data inserted into Booking tables successfully");
     } catch (SQLException e) {
         e.printStackTrace();
-        System.out.println("Failed to insert data into Event and Booking tables");
+        System.out.println("Failed to insert data into Booking tables");
     }
 }
   
+public final void insertDataEventTable(String evID, String evName) throws SQLException {
+    String eventQuery = "INSERT INTO Event (evID, evName) VALUES (?, ?)";
+    DatabaseConnector dbCon = new DatabaseConnector();
+    
+    try (Connection con = dbCon.connectToDatabase();
+            PreparedStatement eventStmt = con.prepareStatement(eventQuery);){
+        
+        eventStmt.setString(1, evID);
+        eventStmt.setString(2, evName);
+        eventStmt.executeUpdate();
+        System.out.println("Data inserted into Event tables successfully");
+    }catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Failed to insert data into Event tables");
+    }
+}
+  
+
+
+
 
 public final void updateEquipmentStatus(String selectedEquipmentIDs) throws SQLException{
     String query ="UPDATE equipmentlog SET eqStatus = 'Checked Out' WHERE eqID = ?";

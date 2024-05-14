@@ -312,23 +312,24 @@ public class CheckOut extends javax.swing.JFrame {
         String dateTimeSent = formatDateTime((Date) jTimeIssued.getValue(), dateIssue);
         String dateTimeReturn = formatDateTime((Date) jTimeReturn.getValue(), dateReturn);
 
-        for (int i = 0; i < tableModel.getRowCount(); i++) {
-            String equipmentID = tableModel.getValueAt(i, 0).toString();
+        try {
+            DatabaseUtils dbUtils = new DatabaseUtils();
+            dbUtils.insertDataEventTable(evID, evName);
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                String equipmentID = tableModel.getValueAt(i, 0).toString();
 
-            try {
-                DatabaseUtils dbUtils = new DatabaseUtils();
                 // Check if a row is selected
 
                 //this will be changed latter on. 
 //                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
-                dbUtils.insertDataEventTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
+                dbUtils.insertDataBookingTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
                 dbUtils.updateEquipmentStatus(equipmentID);
 //            System.out.println(selectedValue);
 
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
-                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }//GEN-LAST:event_jCheckOutButtonActionPerformed
 
