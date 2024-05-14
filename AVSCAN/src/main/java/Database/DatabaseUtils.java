@@ -24,8 +24,8 @@ import javax.swing.table.DefaultTableModel;
 public class DatabaseUtils {
 
     Connection con;
-    private final String URL="jdbc:mysql://localhost:3306/avscan";
-    //private final String URL="jdbc:mysql://localhost:3306/mysql";
+//    private final String URL="jdbc:mysql://localhost:3306/avscan";
+    private final String URL="jdbc:mysql://localhost:3306/mysql";
     private final String USER= "root";
     private final String PASSWORD = "AUT4events_";
 
@@ -90,7 +90,6 @@ public class DatabaseUtils {
                 String equipmentType = (String) table.getValueAt(i, 2);
                 String eqyipmentParent = (String) table.getValueAt(i, 3);
                 
-                Statement stmt = con.createStatement();
                 PreparedStatement prepStmt = con.prepareStatement(query);
                 prepStmt.setString(1, equipmentID);
                 prepStmt.setString(2, equipmentName);
@@ -103,6 +102,7 @@ public class DatabaseUtils {
             con.close();
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
         }
     } //End of added by Dmitry
