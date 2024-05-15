@@ -4,6 +4,7 @@
  */
 package com.mycompany.avscan;
 
+import TimePicker.TimePickerExample;
 import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
@@ -36,6 +37,7 @@ public class CheckOut extends javax.swing.JFrame {
      */
     public CheckOut() {
         initComponents();
+       
 //        outPutDataToTable();
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
@@ -229,6 +231,8 @@ public class CheckOut extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
   
+    
+
     
     public void outPutDataToTable() {
         try {
