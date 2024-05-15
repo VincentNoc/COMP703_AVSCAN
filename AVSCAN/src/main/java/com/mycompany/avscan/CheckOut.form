@@ -58,39 +58,18 @@
                               <Component id="jCheckOutButton" min="-2" pref="130" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="jTxtReturnDate" min="-2" pref="130" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="jTxtDate" min="-2" pref="130" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="timePicker1" min="-2" max="-2" attributes="0"/>
-                                          <Component id="timePicker2" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="jTxtReturnDate" min="-2" pref="130" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="JEventID" pref="130" max="32767" attributes="0"/>
-                                          <Component id="jEventName" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jTxtDate" min="-2" pref="130" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jTimeIssued" min="-2" pref="91" max="-2" attributes="0"/>
@@ -107,7 +86,6 @@
                                   <Component id="JEventName" pref="130" max="32767" attributes="0"/>
                                   <Component id="jEventID" max="32767" attributes="0"/>
                               </Group>
-
                           </Group>
                       </Group>
                   </Group>
@@ -140,18 +118,16 @@
                           <Component id="JEventName" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="timePicker1" alignment="0" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTxtDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTxtDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTimeIssued" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTxtReturnDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="timePicker2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTimeReturn" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -220,6 +196,26 @@
         <Property name="horizontalAlignment" type="int" value="2"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JSpinner" name="jTimeIssued">
+      <Properties>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Default Cursor"/>
+        </Property>
+        <Property name="doubleBuffered" type="boolean" value="true"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(timeIssue)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Date d = new Date();&#xa;  SpinnerDateModel timeIssue = &#xa;  new SpinnerDateModel(d, null, null, Calendar.HOUR_OF_DAY);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JSpinner.DateEditor de = new JSpinner.DateEditor(jTimeIssued, &quot;HH:mm&quot;);&#xa;jTimeIssued.setEditor(de);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="jTimeReturn">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(timeReturn)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="// Code adding the component to the parent container - not shown here&#xa;Date dReturn = new Date();&#xa;  SpinnerDateModel timeReturn = &#xa;  new SpinnerDateModel(dReturn, null, null, Calendar.HOUR_OF_DAY);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JSpinner.DateEditor dateEdit = new JSpinner.DateEditor(jTimeReturn, &quot;HH:mm&quot;);&#xa;jTimeReturn.setEditor(dateEdit);&#xa;jTimeReturn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));&#xa;&#xa;jTimeReturn.setDoubleBuffered(true);"/>
+      </AuxValues>
+    </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -275,24 +271,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jAddToTableActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="timePicker1">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(generateTimes())" type="code"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="String[] times = generateTimes();&#xa;        timePicker1 = new JComboBox&lt;&gt;(times);&#xa;        timePicker1.setEditable(true); // Make the dropdown editable&#xa;        timePicker1.setEditor(new CustomComboBoxEditor());&#xa;timePicker1.setModel(new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Item 1&quot;, &quot;Item 2&quot;, &quot;Item 3&quot;, &quot;Item 4&quot; }));"/>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JComboBox" name="timePicker2">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="// Code adding the component to the parent container - not shown here"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="timePicker2 = new JComboBox&lt;&gt;(times);&#xa;        timePicker2.setEditable(true); // Make the dropdown editable&#xa;        timePicker2.setEditor(new CustomComboBoxEditor());&#xa;timePicker2.setModel(new javax.swing.DefaultComboBoxModel&lt;&gt;(generateTimes()));"/>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

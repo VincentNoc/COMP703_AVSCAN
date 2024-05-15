@@ -7,7 +7,6 @@ package com.mycompany.avscan;
 import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
-import java.awt.Component;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -15,13 +14,12 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 
 /**
@@ -38,7 +36,6 @@ public class CheckOut extends javax.swing.JFrame {
      */
     public CheckOut() {
         initComponents();
-       
 //        outPutDataToTable();
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
@@ -65,14 +62,21 @@ public class CheckOut extends javax.swing.JFrame {
         jEventID = new javax.swing.JTextField();
         jTxtDate = new javax.swing.JTextField();
         jTxtReturnDate = new javax.swing.JTextField();
+        Date d = new Date();
+        SpinnerDateModel timeIssue =
+        new SpinnerDateModel(d, null, null, Calendar.HOUR_OF_DAY);
+        jTimeIssued = new javax.swing.JSpinner(timeIssue);
+        // Code adding the component to the parent container - not shown here
+        Date dReturn = new Date();
+        SpinnerDateModel timeReturn =
+        new SpinnerDateModel(dReturn, null, null, Calendar.HOUR_OF_DAY);
+        jTimeReturn = new javax.swing.JSpinner(timeReturn);
         jLabel6 = new javax.swing.JLabel();
         jEquipmentID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jAddToTable = new javax.swing.JButton();
-        timePicker1 = new javax.swing.JComboBox<>();
-        timePicker2 = new javax.swing.JComboBox<>();
 
         dateChooser2.setTextRefernce(jTxtReturnDate);
 
@@ -107,6 +111,17 @@ public class CheckOut extends javax.swing.JFrame {
 
         jTxtReturnDate.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
+        JSpinner.DateEditor de = new JSpinner.DateEditor(jTimeIssued, "HH:mm");
+        jTimeIssued.setEditor(de);
+        jTimeIssued.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jTimeIssued.setDoubleBuffered(true);
+
+        JSpinner.DateEditor dateEdit = new JSpinner.DateEditor(jTimeReturn, "HH:mm");
+        jTimeReturn.setEditor(dateEdit);
+        jTimeReturn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jTimeReturn.setDoubleBuffered(true);
+
         jLabel6.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
         jLabel6.setText("Event ID:");
 
@@ -130,18 +145,6 @@ public class CheckOut extends javax.swing.JFrame {
             }
         });
 
-        String[] times = generateTimes();
-        timePicker1 = new JComboBox<>(times);
-        timePicker1.setEditable(true); // Make the dropdown editable
-        timePicker1.setEditor(new CustomComboBoxEditor());
-        timePicker1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        timePicker1.setModel(new javax.swing.DefaultComboBoxModel<>(generateTimes()));
-
-        timePicker2 = new JComboBox<>(times);
-        timePicker2.setEditable(true); // Make the dropdown editable
-        timePicker2.setEditor(new CustomComboBoxEditor());
-        timePicker2.setModel(new javax.swing.DefaultComboBoxModel<>(generateTimes()));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,32 +166,27 @@ public class CheckOut extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jCheckOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel4)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jTxtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel3)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(timePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(timePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel5))
-                                        .addGap(78, 78, 78)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(JEventID, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                                            .addComponent(jEventName))))
-                                .addGap(19, 19, 19)))))
-
+                                        .addComponent(jTxtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTimeIssued, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTimeReturn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5))
+                                .addGap(78, 78, 78)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(JEventName, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                                    .addComponent(jEventID))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -212,16 +210,15 @@ public class CheckOut extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(JEventName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(timePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3)
-                                .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTimeIssued, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jTxtReturnDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(timePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTimeReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,40 +226,9 @@ public class CheckOut extends javax.swing.JFrame {
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        // Code adding the component to the parent container - not shown here
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
   
-    
-    private String[] generateTimes() {
-        String[] times = new String[24 * 4]; // 24 hours * 4 quarters per hour
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        for (int i = 0; i < times.length; i++) {
-            times[i] = sdf.format(calendar.getTime());
-            calendar.add(Calendar.MINUTE, 30);
-        }
-        return times;
-    }
-    
-     private class CustomComboBoxEditor extends BasicComboBoxEditor {
-        private JTextField textField;
-
-        public CustomComboBoxEditor() {
-            super();
-            textField = (JTextField) editor;
-            textField.setEditable(true);
-            textField.setBorder(UIManager.getBorder("ComboBox.editorBorder"));
-        }
-
-        @Override
-        public Component getEditorComponent() {
-            return editor;
-        }
-    }
     
     public void outPutDataToTable() {
         try {
@@ -290,25 +256,22 @@ public class CheckOut extends javax.swing.JFrame {
         }
     }
     
-    private String formatDateTime(String time, String date) {
+    //String formatDateTime to get time from spinner and date from calendar component  in the format that works with TimeStamp
+    private String formatDateTime(Date time, String date) {
+        /*originalDateFormat is created so that we can parse String Date as a Date object, which can later be formatted to yyyy-MM-dd format
+        */
         SimpleDateFormat originalDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         try {
             // Parse the date string into a Date object
-            Date formattedDate = originalDateFormat.parse(date);
-
-            // Format the date
+            Date formattedDate =  originalDateFormat.parse(date);
             String formattedDateString = dateFormat.format(formattedDate);
-
-            // Append default seconds (00) to the time string and format it
-            String formattedTimeString = timeFormat.format(timeFormat.parse(time + ":00"));
+            String formattedTime = timeFormat.format(time);
             
-            
-            System.out.println(date);
-            System.out.println(formattedDateString + " " +formattedTimeString);
-            return formattedDateString + " " + formattedTimeString;
+            return formattedDateString + " " + formattedTime;
         } catch (ParseException e) {
+            // Handle any parsing errors
             e.printStackTrace();
             return null; // or throw an exception or return a default value
         }
@@ -323,6 +286,7 @@ public class CheckOut extends javax.swing.JFrame {
 
     private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckOutButtonActionPerformed
         // TODO add your handling code here:
+
         DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
 
         String evID = jEventID.getText();
@@ -331,8 +295,8 @@ public class CheckOut extends javax.swing.JFrame {
         String dateReturn = jTxtReturnDate.getText();
         
         //formatting date and time. 
-        String dateTimeSent = formatDateTime((String)timePicker1.getSelectedItem(), dateIssue);
-        String dateTimeReturn = formatDateTime((String)timePicker2.getSelectedItem(), dateReturn);
+        String dateTimeSent = formatDateTime((Date) jTimeIssued.getValue(), dateIssue);
+        String dateTimeReturn = formatDateTime((Date) jTimeReturn.getValue(), dateReturn);
         
         for(int i =0; i < tableModel.getRowCount(); i++){
             String equipmentID = tableModel.getValueAt(i, 0).toString();
@@ -343,7 +307,8 @@ public class CheckOut extends javax.swing.JFrame {
                     //this will be changed latter on. 
                     dbUtils.insertDataEventTable(evID, evName, equipmentID,  "01", dateTimeSent, dateTimeReturn);
                     dbUtils.updateEquipmentStatus(equipmentID);
-
+//            System.out.println(selectedValue);
+                
 
         }catch(SQLException e){
             JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
@@ -422,10 +387,10 @@ public class CheckOut extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
+    private javax.swing.JSpinner jTimeIssued;
+    private javax.swing.JSpinner jTimeReturn;
     private javax.swing.JTextField jTxtDate;
     private javax.swing.JTextField jTxtReturnDate;
-    private javax.swing.JComboBox<String> timePicker1;
-    private javax.swing.JComboBox<String> timePicker2;
     // End of variables declaration//GEN-END:variables
     
 }
