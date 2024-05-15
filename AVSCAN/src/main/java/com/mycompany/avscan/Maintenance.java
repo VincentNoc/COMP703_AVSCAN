@@ -9,6 +9,8 @@ import multi.use.frames.SmallErrorMessage;
 import Database.DatabaseUtils;
 import Database.MaintenanceData;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.List;
@@ -72,6 +74,11 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
         returnButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -251,7 +258,8 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
             }
             Data temp = new Data(this.equipment.get(this.eqIDInput.getText()));
             this.maint = new MaintenanceAddComment(temp, this);
-            this.setEnabled(false);
+            //this.setEnabled(false);
+            setDisable();
         } else {
             new SmallErrorMessage("The  ID:(" + this.eqIDInput.getText() + ") does not exists.", this).setVisible(true);
         }
@@ -259,8 +267,10 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     //Updating with added maintenance data
     @Override
     public void onConnect() {
-        this.setEnabled(true);
+        //this.setEnabled(true);
+        setEnable();
         createAndPutDataToTable();
+        this.maint=null;
     }
 
     private void descriptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descriptionButtonActionPerformed
@@ -277,13 +287,15 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
             public void onConfirmationReceived(boolean confirmed) {
                 if (confirmed) {
                     // Unblock Maintenance
-                    Maintenance.this.setEnabled(true);
+                    //Maintenance.this.setEnabled(true);
+                    setEnable();
                     Maintenance.this.toFront();
                 }
             }
         });
         confirmationFrame.setVisible(true);
-        Maintenance.this.setEnabled(false);
+        setDisable();
+        //Maintenance.this.setEnabled(false);
 
     }//GEN-LAST:event_descriptionButtonActionPerformed
 
@@ -377,16 +389,27 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
             public void onConfirmationReceived(boolean confirmed) {
                 if (confirmed) {
                     // Unblock Maintenance
-                    Maintenance.this.setEnabled(true);
+                    //Maintenance.this.setEnabled(true);
+                    setEnable();
                     Maintenance.this.toFront();
                     createAndPutDataToTable();
                 }
             }
         });
         returnMaint.setVisible(true);
-        Maintenance.this.setEnabled(false);
+        setDisable();
+        //Maintenance.this.setEnabled(false);
 
     }//GEN-LAST:event_returnButtonActionPerformed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        // TODO add your handling code here:
+        if(this.maint!=null&&evt.getButton() == MouseEvent.BUTTON1){
+            this.maint.setVisible(true);
+            this.maint.toFront();
+            System.out.println("Mouse Clicked");
+        }
+    }//GEN-LAST:event_formMouseClicked
 
     private void dateInputClicked(javax.swing.JTextField importat) {
         if (importat.getText().trim().equals("yyyy-mm-dd")) {
@@ -437,7 +460,33 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
             e.printStackTrace();
         }
     }
-
+    
+    private void setDisable(){
+        this.addButton.setEnabled(false);
+        this.eqIDInput.setEnabled(false);
+        this.eqNameInput.setEnabled(false);
+        this.homeButton.setEnabled(false);
+        this.jScrollPane1.setEnabled(false);
+        this.jTable1.setEnabled(false);
+        this.readDescButton.setEnabled(false);
+        this.receivedInput.setEnabled(false);
+        this.repairedInput.setEnabled(false);
+        this.returnButton.setEnabled(false);
+        this.searchButton.setEnabled(false);
+    }private void setEnable(){
+        this.addButton.setEnabled(true);
+        this.eqIDInput.setEnabled(true);
+        this.eqNameInput.setEnabled(true);
+        this.homeButton.setEnabled(true);
+        this.jScrollPane1.setEnabled(true);
+        this.jTable1.setEnabled(true);
+        this.readDescButton.setEnabled(true);
+        this.receivedInput.setEnabled(true);
+        this.repairedInput.setEnabled(true);
+        this.returnButton.setEnabled(true);
+        this.searchButton.setEnabled(true);
+    }
+    
     /**
      * @param args the command line arguments
      */
