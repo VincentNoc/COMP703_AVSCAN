@@ -6,6 +6,7 @@ package com.mycompany.avscan;
 
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
+import multi.use.frames.SmallErrorMessage;
 
 /**
  *
@@ -247,7 +248,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 if (((String) model.getValueAt(i, 0)).equals(this.childIDInput.getText())) {
-                    new SmallErrorMessage("The \"" + this.childIDInput.getText() + "\" ID already added");
+                    new SmallErrorMessage("The \"" + this.childIDInput.getText() + "\" ID already added",this).setVisible(true);
                     return;//or return;??
                 }
             }
@@ -255,7 +256,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
                 if (((String) this.importModel.getValueAt(i, 0)).equals(this.childIDInput.getText())) {
                     if ((this.importModel.getValueAt(i, 3)) != null
                             && !((String) this.importModel.getValueAt(i, 3)).equals("")) {
-                        new SmallErrorMessage("THIS ERROR MESSAGE REQUIRED MULTICHOISE??!! The \"" + this.childIDInput.getText() + "\" already has an parrent");
+                        new SmallErrorMessage("THIS ERROR MESSAGE REQUIRED MULTICHOISE??!! The \"" + this.childIDInput.getText() + "\" already has an parrent",this).setVisible(true);
                         return;
                     }
                 }
@@ -265,7 +266,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
             this.childNameInput.setText("");
             this.childTypeInput.setText("");
         } else {
-            new SmallErrorMessage("Empty input field!");//Error message window
+            new SmallErrorMessage("Empty input field!",this).setVisible(true);//Error message window
 
         }
     }//GEN-LAST:event_addButtonActionPerformed
@@ -344,7 +345,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(this.childNameInput.isEditable()==false){
             new SmallErrorMessage(this.childIDInput.getText()+"|"+this.childNameInput.getText()+"|"+this.childTypeInput.getText()+" - "
-            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name");
+            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name",this).setVisible(true);
         }
     }//GEN-LAST:event_childNameInputKeyPressed
 
@@ -352,7 +353,7 @@ public class ConnectItemToParent extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(this.childTypeInput.isEditable()==false){
             new SmallErrorMessage(this.childIDInput.getText()+"|"+this.childNameInput.getText()+"|"+this.childTypeInput.getText()+" - "
-            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name");
+            + "already exist and can't be changed here. Please go back, delete and add the equipment again with correct name",this).setVisible(true);
         }
     }//GEN-LAST:event_childTypeInputKeyPressed
 
