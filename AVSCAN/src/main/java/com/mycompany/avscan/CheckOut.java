@@ -296,9 +296,9 @@ public class CheckOut extends javax.swing.JFrame {
             // Parse the date string into a Date object
             Date formattedDate =  originalDateFormat.parse(date);
             String formattedDateString = dateFormat.format(formattedDate);
-            String formattedTime = timeFormat.format(time);
+            String formattedTimeString = timeFormat.format(timeFormat.parse(time + ":00")); 
             
-            return formattedDateString + " " + formattedTime;
+            return formattedDateString + " " + formattedTimeString;
         } catch (ParseException e) {
             // Handle any parsing errors
             e.printStackTrace();
