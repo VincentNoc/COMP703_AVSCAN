@@ -289,14 +289,15 @@ public class CheckOut extends javax.swing.JFrame {
     }
     
     private String formatDateTime(String time, String date) {
+        //original format the date chooser is. 
         SimpleDateFormat originalDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         try {
-            // Parse the date string into a Date object
+            // Parse the date string into a Date object 
             Date formattedDate = originalDateFormat.parse(date);
 
-            // Format the date
+            // Format the date into the wanted format 
             String formattedDateString = dateFormat.format(formattedDate);
 
             // Append default seconds (00) to the time string and format it
