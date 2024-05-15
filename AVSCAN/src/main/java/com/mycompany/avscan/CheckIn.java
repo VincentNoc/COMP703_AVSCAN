@@ -160,8 +160,8 @@ public class CheckIn extends javax.swing.JFrame {
      
         for (int i = 0; i < model.getRowCount(); i++) {
             String equipmentID = model.getValueAt(i, 0).toString();
-            String equipmentName = model.getValueAt(i, 1).toString();
-            String equipmentType = model.getValueAt(i, 2).toString();
+            //String equipmentName = model.getValueAt(i, 1).toString();
+            //String equipmentType = model.getValueAt(i, 2).toString();
 
             try {
                 DatabaseUtils dbUtil = new DatabaseUtils();

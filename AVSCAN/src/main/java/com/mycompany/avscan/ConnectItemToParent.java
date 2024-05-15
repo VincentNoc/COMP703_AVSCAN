@@ -265,6 +265,8 @@ public class ConnectItemToParent extends javax.swing.JFrame {
             this.childIDInput.setText("");
             this.childNameInput.setText("");
             this.childTypeInput.setText("");
+            childNameLB.setText("Enter Child Name:");
+            childTypeLB.setText("Enter Child Type:");
         } else {
             new SmallErrorMessage("Empty input field!",this).setVisible(true);//Error message window
 

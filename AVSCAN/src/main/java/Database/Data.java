@@ -16,7 +16,7 @@ public class Data {
     
     public Data(){}
     
-    public Data(String equipmentID, String equipmentName, String equipmentType, String eqyipmentParent){
+    public Data(String equipmentID, String equipmentName, String equipmentType, String equipmentParent){
         this.equipmentID=equipmentID;
         this.equipmentName=equipmentName;
         this.equipmentType = equipmentType;
@@ -33,7 +33,9 @@ public class Data {
         this.equipmentID = data.getEquipmentID();
         this.equipmentName = data.getEquipmentName();
         this.equipmentType = data.getEquipmentType();
-        this.eqyipmentParent = data.getEqyipmentParent();
+        this.equipmentParent = data.getEqyipmentParent();
+    }
+    
     public String getEquipmentParent() {
         return equipmentParent;
     }
@@ -54,7 +56,7 @@ public class Data {
     }
 
     public String getEqyipmentParent() {
-        return eqyipmentParent;
+        return equipmentParent;
     }
     
     public String getEquipmentType() {

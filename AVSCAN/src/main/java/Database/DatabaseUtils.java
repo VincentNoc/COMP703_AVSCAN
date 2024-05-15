@@ -30,8 +30,8 @@ import multi.use.frames.SmallErrorMessage;
 public class DatabaseUtils {
 
     Connection con;
-//    private final String URL="jdbc:mysql://localhost:3306/avscan";
-    private final String URL="jdbc:mysql://localhost:3306/mysql";
+    private final String URL="jdbc:mysql://localhost:3306/avscan";
+    //private final String URL="jdbc:mysql://localhost:3306/mysql";
     private final String USER= "root";
     private final String PASSWORD = "AUT4events_";
 
@@ -84,7 +84,7 @@ public class DatabaseUtils {
     //the same method as default one but using different value to store data and also using parrent ID
   
     public final void insertDataEquipmentLog(DefaultTableModel table) {
-        String query = "INSERT INTO EquipmentLog (EquipmentID, EquipmentName, EquipmentType, parentID) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID, eqStatus) VALUES (?, ?, ?, ?, ?)";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -101,6 +101,7 @@ public class DatabaseUtils {
                 prepStmt.setString(2, equipmentName);
                 prepStmt.setString(3, equipmentType);
                 prepStmt.setString(4, eqyipmentParent);
+                prepStmt.setString(5, "Checked In");
                 prepStmt.execute();
             }
 
@@ -285,7 +286,7 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
         }
 
         return dataList;
-    }
+    }*/
 
     public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) {
         String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
@@ -319,7 +320,7 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
         }
     }
 
-    public List<Data> fetchDataFromEquipmentLog() {
+    /*public List<Data> fetchDataFromEquipmentLog() {
         List<Data> dataList = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
@@ -336,7 +337,7 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
         }
 
         return dataList;
-    }
+    }*/
 
     public List<MaintenanceData> fetchMaintenanceData() {
         List<MaintenanceData> dataList = new ArrayList<>();

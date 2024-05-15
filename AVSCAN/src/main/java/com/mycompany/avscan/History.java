@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import multi.use.frames.SmallErrorMessage;
 
 /**
  *
@@ -440,7 +441,7 @@ public class History extends javax.swing.JFrame {
             }
             ex.createAndWriteHistory();
         }else{
-            new SmallErrorMessage("Please select at least one row.");
+            new SmallErrorMessage("Please select at least one row.",this).setVisible(true);
         }
     }//GEN-LAST:event_ExportToCsvButtonActionPerformed
 

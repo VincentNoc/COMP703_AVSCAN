@@ -249,14 +249,14 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     public void onConnect() {
         // Continue execution after connect action is performed
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        var temp = model.getValueAt(rememberSelectedRow, 0);
+        //var temp = model.getValueAt(rememberSelectedRow, 0);
         DefaultTableModel toConnect = childs.getChildsInfo();
         
         for (int i = 0; i < model.getRowCount(); i++) {
             for (int b = 0; b < toConnect.getRowCount(); b++) {
                 if (model.getValueAt(i, 0).equals(toConnect.getValueAt(b, 0))) {
                     
-                    model.setValueAt(temp, i, 3);
+                    model.setValueAt(model.getValueAt(rememberSelectedRow, 0), i, 3);
                     toConnect.removeRow(b);
                 }
             }
@@ -266,7 +266,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             String ID = (String) toConnect.getValueAt(0, 0);
             String Name = (String) toConnect.getValueAt(0, 1);
             String Type = (String) toConnect.getValueAt(0, 2);
-            model.addRow(new Object[]{ID, Name, Type, temp});
+            model.addRow(new Object[]{ID, Name, Type, model.getValueAt(rememberSelectedRow, 0)});
             toConnect.removeRow(0);
         }
         //this.jTable1 = new JTable(model);
