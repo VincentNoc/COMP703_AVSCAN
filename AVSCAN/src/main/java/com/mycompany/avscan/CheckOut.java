@@ -293,14 +293,17 @@ public class CheckOut extends javax.swing.JFrame {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         try {
             // Parse the date string into a Date object
-            Date formattedDate = dateFormat.parse(date);
+            Date formattedDate = originalDateFormat.parse(date);
 
             // Format the date
             String formattedDateString = dateFormat.format(formattedDate);
 
             // Append default seconds (00) to the time string and format it
             String formattedTimeString = timeFormat.format(timeFormat.parse(time + ":00"));
-
+            
+            
+            System.out.println(date);
+            System.out.println(formattedDateString + " " +formattedTimeString);
             return formattedDateString + " " + formattedTimeString;
         } catch (ParseException e) {
             e.printStackTrace();
