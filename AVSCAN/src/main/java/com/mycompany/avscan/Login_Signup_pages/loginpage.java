@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  * @author vince-kong
  */
 public class LoginPage extends javax.swing.JFrame {
-
+//yes pleases
     /**
      * Creates new form loginpage
      */
