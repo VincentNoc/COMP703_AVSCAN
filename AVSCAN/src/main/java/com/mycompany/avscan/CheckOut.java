@@ -24,15 +24,13 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-
 /**
  *
  * @author vince-kong
  */
-
 public class CheckOut extends javax.swing.JFrame {
-    private Set<String> enteredIDs;
 
+    private Set<String> enteredIDs;
 
     /**
      * Creates new form CheckOut
@@ -43,7 +41,7 @@ public class CheckOut extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
 //        BackgroundColour();
-    } 
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -269,7 +267,7 @@ public class CheckOut extends javax.swing.JFrame {
 
             //calls object of noneditabletable model to make the jtable noneditable
             NonEditableTableModel model = new NonEditableTableModel();
-            
+
             model.setColumnIdentifiers(new Object[]{"EquipmentID", "EquipmentName"});
 
             for (Data data : dataList) {
@@ -284,17 +282,17 @@ public class CheckOut extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     //String formatDateTime to get time from spinner and date from calendar component  in the format that works with TimeStamp
     private String formatDateTime(String time, String date) {
         /*originalDateFormat is created so that we can parse String Date as a Date object, which can later be formatted to yyyy-MM-dd format
-        */
+         */
         SimpleDateFormat originalDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         try {
             // Parse the date string into a Date object
-            Date formattedDate =  originalDateFormat.parse(date);
+            Date formattedDate = originalDateFormat.parse(date);
             String formattedDateString = dateFormat.format(formattedDate);
             String formattedTimeString = timeFormat.format(timeFormat.parse(time + ":00")); 
             
@@ -305,7 +303,7 @@ public class CheckOut extends javax.swing.JFrame {
             return null; // or throw an exception or return a default value
         }
     }
-    
+
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -322,7 +320,7 @@ public class CheckOut extends javax.swing.JFrame {
         String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
         String dateReturn = jTxtReturnDate.getText();
-        
+
         //formatting date and time. 
         String dateTimeSent = formatDateTime((String) timePicker1.getSelectedItem(), dateIssue);
         String dateTimeReturn = formatDateTime((String) timePicker2.getSelectedItem(), dateReturn);
@@ -332,37 +330,40 @@ public class CheckOut extends javax.swing.JFrame {
              
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
+            dbUtils.insertDataEventTable(evID, evName);
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                String equipmentID = tableModel.getValueAt(i, 0).toString();
 
-                    //this will be changed latter on. 
-                    dbUtils.insertDataEventTable(evID, evName, equipmentID,  "01", dateTimeSent, dateTimeReturn);
-                    dbUtils.updateEquipmentStatus(equipmentID);
+                // Check if a row is selected
+
+                //this will be changed latter on. 
+//                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
+                dbUtils.insertDataBookingTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
+                dbUtils.updateEquipmentStatusCheckedOut(equipmentID);
 //            System.out.println(selectedValue);
-                
 
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(this,"Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error has Occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-        }
         }
     }//GEN-LAST:event_jCheckOutButtonActionPerformed
 
     private void jAddToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddToTableActionPerformed
         // TODO add your handling code here:
-          DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         String equipmentID = jEquipmentID.getText();
-        
-        
-        if(!enteredIDs.contains(equipmentID) ){
+
+        if (!enteredIDs.contains(equipmentID)) {
             model.addRow(new Object[]{equipmentID});
             enteredIDs.add(equipmentID);
             // Optionally, clear the text fields after adding
             jEquipmentID.setText("");
-           
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "Duplicate ID found in the Table, please ensure there are now duplicates.");
         }
     }//GEN-LAST:event_jAddToTableActionPerformed
-    
 
     /**
      * @param args the command line arguments
@@ -374,8 +375,8 @@ public class CheckOut extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -421,5 +422,5 @@ public class CheckOut extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> timePicker1;
     private javax.swing.JComboBox<String> timePicker2;
     // End of variables declaration//GEN-END:variables
-    
+
 }

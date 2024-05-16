@@ -18,10 +18,11 @@ public class HistoryData {
     private String ParentName;
     private Timestamp eqReturnDateTime;
     private String evCheckOutStaff;//FOREIGN KEY not null
+    private String status;
 
     
 
-    public HistoryData(String evID, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, Timestamp eqReturnDateTime, String evCheckOutStaff) {
+    public HistoryData(String evID, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, Timestamp eqReturnDateTime, String evCheckOutStaff, String status) {
         this.evID = evID;
         this.evEquipmentID = evEquipmentID;
         this.EquipmentName = EquipmentName;
@@ -29,9 +30,10 @@ public class HistoryData {
         this.ParentName = ParentName;
         this.eqReturnDateTime = eqReturnDateTime;
         this.evCheckOutStaff = evCheckOutStaff;
+        this.status=status;
     }
     
-    public HistoryData(String evID, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, String eqReturnDateTime, String evCheckOutStaff) {
+    public HistoryData(String evID, String evEquipmentID, String EquipmentName, String ParentID, String ParentName, String eqReturnDateTime, String evCheckOutStaff, String status) {
         this.evID = evID;
         this.evEquipmentID = evEquipmentID;
         this.EquipmentName = EquipmentName;
@@ -39,6 +41,7 @@ public class HistoryData {
         this.ParentName = ParentName;
         this.eqReturnDateTime = Timestamp.valueOf(eqReturnDateTime);
         this.evCheckOutStaff = evCheckOutStaff;
+        this.status = status;
     }
 
     public String getEvID() {
@@ -69,8 +72,14 @@ public class HistoryData {
         return eqReturnDateTime;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    
+    
     @Override
     public String toString() {
-        return "HistoryData{" + "evID=" + evID + ", evEquipmentID=" + evEquipmentID + ", EquipmentName=" + EquipmentName + ", ParentID=" + ParentID + ", ParentName=" + ParentName + ", evCheckOutStaff=" + evCheckOutStaff + ", eqReturnDateTime=" + eqReturnDateTime + '}';
+        return "HistoryData{" + "evID=" + evID + ", evEquipmentID=" + evEquipmentID + ", EquipmentName=" + EquipmentName + ", ParentID=" + ParentID + ", ParentName=" + ParentName + ", evCheckOutStaff=" + evCheckOutStaff + ", eqReturnDateTime=" + eqReturnDateTime + "eqStatus="+this.status+'}';
     }
 }
