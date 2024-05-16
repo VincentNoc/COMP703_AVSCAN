@@ -226,9 +226,8 @@ public class CheckOut extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-  
-    
-        private String[] generateTimes() {
+
+    private String[] generateTimes() {
         String[] times = new String[24 * 4]; // 24 hours * 4 quarters per hour
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Calendar calendar = Calendar.getInstance();
@@ -240,8 +239,9 @@ public class CheckOut extends javax.swing.JFrame {
         }
         return times;
     }
-    
-     private class CustomComboBoxEditor extends BasicComboBoxEditor {
+
+    private class CustomComboBoxEditor extends BasicComboBoxEditor {
+
         private JTextField textField;
 
         public CustomComboBoxEditor() {
@@ -256,7 +256,7 @@ public class CheckOut extends javax.swing.JFrame {
             return editor;
         }
     }
-    
+
     public void outPutDataToTable() {
         try {
             //
@@ -294,8 +294,8 @@ public class CheckOut extends javax.swing.JFrame {
             // Parse the date string into a Date object
             Date formattedDate = originalDateFormat.parse(date);
             String formattedDateString = dateFormat.format(formattedDate);
-            String formattedTimeString = timeFormat.format(timeFormat.parse(time + ":00")); 
-            
+            String formattedTimeString = timeFormat.format(timeFormat.parse(time + ":00"));
+
             return formattedDateString + " " + formattedTimeString;
         } catch (ParseException e) {
             // Handle any parsing errors
@@ -324,18 +324,16 @@ public class CheckOut extends javax.swing.JFrame {
         //formatting date and time. 
         String dateTimeSent = formatDateTime((String) timePicker1.getSelectedItem(), dateIssue);
         String dateTimeReturn = formatDateTime((String) timePicker2.getSelectedItem(), dateReturn);
-        
-        for(int i =0; i < tableModel.getRowCount(); i++){
-            String equipmentID = tableModel.getValueAt(i, 0).toString();
-             
-        try{
+
+        try {
             DatabaseUtils dbUtils = new DatabaseUtils();
             dbUtils.insertDataEventTable(evID, evName);
             for (int i = 0; i < tableModel.getRowCount(); i++) {
                 String equipmentID = tableModel.getValueAt(i, 0).toString();
 
+                // for (int i = 0; i < tableModel.getRowCount(); i++) {
+                //String equipmentID = tableModel.getValueAt(i, 0).toString();
                 // Check if a row is selected
-
                 //this will be changed latter on. 
 //                   dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime", evCheckOutStaff, dateTimeSent, dateTimeReturn);
                 dbUtils.insertDataBookingTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
