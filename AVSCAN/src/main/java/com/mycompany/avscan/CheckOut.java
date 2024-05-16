@@ -15,8 +15,6 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
@@ -327,6 +325,8 @@ public class CheckOut extends javax.swing.JFrame {
         String dateTimeSent = formatDateTime((String) timePicker1.getSelectedItem(), dateIssue);
         String dateTimeReturn = formatDateTime((String) timePicker2.getSelectedItem(), dateReturn);
         
+        
+        
         for(int i =0; i < tableModel.getRowCount(); i++){
             String equipmentID = tableModel.getValueAt(i, 0).toString();
              
@@ -334,7 +334,7 @@ public class CheckOut extends javax.swing.JFrame {
             DatabaseUtils dbUtils = new DatabaseUtils();
 
                     //this will be changed latter on. 
-                    dbUtils.insertDataEventTable(evID, evName, equipmentID,  "01", dateTimeSent, dateTimeReturn);
+                    dbUtils.insertDataEventTable(evID, evName, equipmentID,  "123", dateTimeSent, dateTimeReturn);
                     dbUtils.updateEquipmentStatus(equipmentID);
 //            System.out.println(selectedValue);
                 

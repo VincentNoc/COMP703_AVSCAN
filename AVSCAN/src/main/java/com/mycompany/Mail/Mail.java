@@ -23,8 +23,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  *
@@ -67,7 +65,7 @@ public class Mail {
         String emailSubject = "AV Equipment Due for Return";
         StringBuilder emailBody = new StringBuilder();
         DatabaseConnector dbCon = new DatabaseConnector();
-        String query = "SELECT evID, evName, evEquipmentID, eqSentDateTime, eqReturnDateTime FROM Event WHERE DATE(eqReturnDateTime) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false;";
+        String query = "SELECT evID, evName, eqID, eqSentDateTime, eqReturnDateTime FROM Booking WHERE DATE(eqReturnDateTime) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false;";
 
 
       try(Connection con = dbCon.connectToDatabase();
@@ -87,9 +85,9 @@ public class Mail {
 
         // Iterate over the query results and populate the table rows
         while (rs.next()) {
-          String evName = rs.getString("evName");
-          String evID = rs.getString("evID");
-          String eqID = rs.getString("evEquipmentID");
+          String evName = rs.getString("evID");
+          String evID = rs.getString("evName");
+          String eqID = rs.getString("eqID");
           emailBody.append("<tr>");
           emailBody.append("<td>").append(evName).append("</td>");
           emailBody.append("<td>").append(evID).append("</td>");
@@ -142,51 +140,10 @@ public class Mail {
     }
     
     
-//    public static boolean checkOneDayEvent(String daySent, String dayReturn){
-//       try{
-//           Timestamp timeStamp1 = Timestamp.valueOf(daySent);
-//           Timestamp timeStamp2 = Timestamp.valueOf(dayReturn);
-//           
-//           //calculates difference in milliseconds between the two timestamps
-//           long diffMillis = Math.abs(timeStamp2.getTime() - timeStamp1.getTime());
-//           //one day in milliseconds
-//           long oneDayMillis = 24 * 60 * 60 * 1000;
-//           
-//           return diffMillis > oneDayMillis;
-//       }catch(IllegalArgumentException e){
-//           return false;
-//       }
-//    }
-//    
-//    public void checkTimeStampInDB() throws SQLException, MessagingException{
-//       String query = "SELECT evID, eqSentDateTime, eqReturnDateTime FROM Event";
-//       DatabaseConnector dbCon= new DatabaseConnector();
-//       try(Connection con = dbCon.connectToDatabase();
-//            PreparedStatement prepStmt = con.prepareStatement(query);
-//            ResultSet rs = prepStmt.executeQuery()){
-//            
-//            while(rs.next()){
-//                String eventID = rs.getString("evID");
-//                String sentDate = rs.getString("eqSentDateTime");
-//                String returnDate = rs.getString("eqReturnDateTime");
-//                
-//                if(checkOneDayEvent(sentDate, returnDate)){
-//                    draftEmail();
-//                    sendEmail(); 
-//                } 
-//            }
-//            
-//            rs.close();
-//            prepStmt.close();
-//            con.close();
-//            
-//       }catch(SQLException e){
-//           e.printStackTrace();
-//       }
-//    }
+
     
     public void checkEmailSent() throws SQLException, MessagingException {
-        String query = "SELECT evID, eqSentDateTime, eqReturnDateTime FROM Event " +
+        String query = "SELECT evID, eqSentDateTime, eqReturnDateTime FROM Booking " +
                         "WHERE DATE(eqReturnDateTime) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) " +
                         "AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 " +
                         "AND email_sent = false";
