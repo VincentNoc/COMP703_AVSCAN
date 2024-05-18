@@ -5,10 +5,12 @@
 package com.mycompany.avscan;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.mycompany.Mail.JobRunrSetUp;
 import com.mycompany.Mail.Mail;
 import com.mycompany.avscan.Login_Signup_pages.LoginPage;
 import java.sql.SQLException;
 import javax.mail.MessagingException;
+import org.jobrunr.server.BackgroundJobServer;
 
 /**^
  *
@@ -16,13 +18,22 @@ import javax.mail.MessagingException;
  */
 public class AVSCAN {
     public static void main(String args[]) throws SQLException{
+        
         FlatLightLaf.setup();
         LoginPage lp = new LoginPage();
         Mail mail = new Mail();
+        
         try{
             lp.setVisible(true);
-            mail.checkEmailSent();
-        }catch(MessagingException e){
+            //initializing JobRunr
+            JobRunrSetUp.initializeJobRunr();
+            
+            BackgroundJobServer bgJS = JobRunrSetUp.getBackgroundJobServer();
+            bgJS.start();
+            
+            
+//            mail.checkEmailSent();
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
