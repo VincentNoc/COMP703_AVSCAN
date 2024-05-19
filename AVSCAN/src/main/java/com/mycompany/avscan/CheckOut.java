@@ -334,7 +334,7 @@ public class CheckOut extends javax.swing.JFrame {
             DatabaseUtils dbUtils = new DatabaseUtils();
 
                     //this will be changed latter on. 
-                    dbUtils.insertDataEventTable(evID, evName, equipmentID,  "123", dateTimeSent, dateTimeReturn);
+                    dbUtils.insertDataEventTable(evID, evName, equipmentID,  "01", dateTimeSent, dateTimeReturn);
                     dbUtils.updateEquipmentStatus(equipmentID);
 //            System.out.println(selectedValue);
                 

@@ -65,8 +65,8 @@ public class Mail {
         String emailSubject = "AV Equipment Due for Return";
         StringBuilder emailBody = new StringBuilder();
         DatabaseConnector dbCon = new DatabaseConnector();
-        String query = "SELECT evID, evName, eqID, eqSentDateTime, eqReturnDateTime FROM Booking" + 
-                "WHERE DATE(eqReturnDateTime) = DATE_ADD(CURDATE(), INTERVAL 1 DAY)" + 
+        String query = "SELECT evID, evName, eqID, eqSentDateTime, eqReturnDateTime FROM Booking " + 
+                "WHERE DATE(eqReturnDateTime) = DATE_ADD(CURDATE(), INTERVAL 1 DAY) " + 
                 "AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false;";
 
 

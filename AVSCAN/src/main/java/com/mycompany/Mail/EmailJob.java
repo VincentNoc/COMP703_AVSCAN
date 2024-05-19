@@ -22,9 +22,9 @@ public class EmailJob implements Job {
     @Override
     public void execute (JobExecutionContext context) throws JobExecutionException {
        try{
-//           Mail mail = new Mail();
-//           mail.checkEmailSent();
-        System.out.println("Hi this is working now");
+           Mail mail = new Mail();
+           mail.checkEmailSent();
+//        System.out.println("Hi this is working now");
        }catch(Exception e){
            e.printStackTrace();
        }
