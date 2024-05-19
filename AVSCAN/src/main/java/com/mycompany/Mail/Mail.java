@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import org.jobrunr.scheduling.JobScheduler;
+
 
 
 /**
@@ -166,8 +166,6 @@ public class Mail {
          }
     }
     
-    public void scheduleEmailCheck(JobScheduler jobScheduler) {
-        jobScheduler.<Mail>scheduleRecurrently("*/15 * * * *", x -> x.checkEmailSent());
-    }
+    
 }
 
