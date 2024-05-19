@@ -21,6 +21,7 @@ public class EmailScheduler {
             //starts scheduler
             scheduler.start();
             
+            //defines what job or action that is going to be used
             JobDetail job = JobBuilder.newJob(EmailJob.class)
                     .withIdentity("emailJob", "group1")
                     .build();
@@ -31,7 +32,7 @@ public class EmailScheduler {
                     .startNow()
                     .withSchedule(SimpleScheduleBuilder.simpleSchedule()
 //                            .withIntervalInHours(24) // Execute every 24 hours
-                            .withIntervalInMinutes(2)
+                            .withIntervalInHours(24)
                             .repeatForever()
                             .withMisfireHandlingInstructionFireNow()) // Handle misfires
                     .build();
