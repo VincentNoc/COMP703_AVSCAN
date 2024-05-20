@@ -5,6 +5,9 @@
 package com.mycompany.avscan;
 
 import Database.DatabaseUtils;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -289,8 +292,12 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         if (model.getRowCount() > 0) {
-            new DatabaseUtils(model);
-            //new DatabaseUtils(model).fetchDataFromDatabase();
+            try {
+                new DatabaseUtils(model);
+                //new DatabaseUtils(model).fetchDataFromDatabase();
+            } catch (SQLException ex) {
+                Logger.getLogger(NewEq.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             new SmallErrorMessage("Use button \"Add\" to add new equipment before format!",this).setVisible(true);
         }

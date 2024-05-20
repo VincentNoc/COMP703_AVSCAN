@@ -29,8 +29,8 @@ import javax.swing.table.DefaultTableModel;
 public class DatabaseUtils {
 
     Connection con;
-    private final String URL="jdbc:mysql://localhost:3306/avscan";
-   // private final String URL="jdbc:mysql://localhost:3306/mysql";
+//    private final String URL="jdbc:mysql://localhost:3306/avscan";
+    private final String URL="jdbc:mysql://localhost:3306/mysql";
     private final String USER= "root";
     private final String PASSWORD = "AUT4events_";
 
@@ -50,18 +50,18 @@ public class DatabaseUtils {
       loginCredentials(username, password);
     }
 
-    public DatabaseUtils(DefaultTableModel table) {
+    public DatabaseUtils(DefaultTableModel table) throws SQLException {
         insertDataEquipmentLog(table);
     }
     
 
-    public final void updateEquipmentLogStatusCheckedIn(String equipmentID) {
+    public final void updateEquipmentLogStatusCheckedIn(String equipmentID) throws SQLException {
         String query = "UPDATE EquipmentLog " +
                         "SET eqStatus = \'Checked In\' " +
                         "WHERE eqID = ?";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+        DatabaseConnector dbCon = new DatabaseConnector();
+        try(Connection con = dbCon.connectToDatabase()) {
+ 
             System.out.println("Connected to Database");
 
             // Use PreparedStatement to prevent SQL injection
@@ -82,11 +82,10 @@ public class DatabaseUtils {
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
   
-    public final void insertDataEquipmentLog(DefaultTableModel table) {
+    public final void insertDataEquipmentLog(DefaultTableModel table) throws SQLException {
         String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID, eqStatus) VALUES (?, ?, ?, ?, ?)";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+        DatabaseConnector dbCon = new DatabaseConnector();
+        try(Connection con = dbCon.connectToDatabase()) {
             System.out.println("Connected to Database");
 
             for (int i = 0; i<table.getRowCount();i++ ) {

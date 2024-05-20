@@ -7,9 +7,12 @@ package com.mycompany.avscan;
 import Database.DatabaseUtils;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -17,11 +20,13 @@ import javax.swing.JOptionPane;
  */
 public class CheckIn extends javax.swing.JFrame {
     private Set<String> enteredIDs;
+    private Map<String, Integer> enteredIDsToRowMap;
 
     public CheckIn() {
         initComponents();
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
+        enteredIDsToRowMap = new HashMap<>();
     }
 
     /**
@@ -31,34 +36,48 @@ public class CheckIn extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jEquipmentID = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jDeleteEntry = new javax.swing.JButton();
         jAddButtonToEquipmentLog = new javax.swing.JButton();
         JHomeButton = new javax.swing.JToggleButton();
         jAddToTable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jEquipmentID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jEquipmentIDActionPerformed(evt);
+            }
+        });
+        jEquipmentID.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeEqID(jEquipmentID.getText().trim());
+                jEquipmentID.setText("");
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 0, 16)); // NOI18N
         jLabel1.setText("ID:");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "Equipment ID"
-                }));
+            },
+            new String [] {
+                "Equipment ID"
+            }
+        ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("-");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jDeleteEntry.setText("-");
+        jDeleteEntry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteActionPerformed(evt);
             }
@@ -88,69 +107,57 @@ public class CheckIn extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0,
-                                                Short.MAX_VALUE)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(JHomeButton,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 112,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(136, 136, 136)
-                                                                .addComponent(jAddButtonToEquipmentLog,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 112,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel1)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jEquipmentID,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 100,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jAddToTable,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(jButton1,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 38,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap()));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(136, 136, 136)
+                                .addComponent(jAddButtonToEquipmentLog, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jAddToTable, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jDeleteEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jAddToTable)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jAddButtonToEquipmentLog, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(13, Short.MAX_VALUE)));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jAddToTable)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jDeleteEntry))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jAddButtonToEquipmentLog, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    
+    private void jEquipmentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEquipmentIDActionPerformed
+        // TODO add your handling code here:
+        doubleScanRemove(jEquipmentID.getText().trim());
+        jEquipmentID.setText("");
+    }//GEN-LAST:event_jEquipmentIDActionPerformed
 
-    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_deleteActionPerformed
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int[] selectedRow = jTable1.getSelectedRows();
@@ -163,20 +170,44 @@ public class CheckIn extends javax.swing.JFrame {
             model.removeRow(rowIndex);
 
             enteredIDs.remove(equipmentID);
-
         }
-
-    }// GEN-LAST:event_deleteActionPerformed
-
-    // To remove selected row
+    }
+    
+    private void doubleScanRemove(String eqID){
+        if(enteredIDs.contains(eqID)){
+            removeEqID(eqID);
+        }
+    }
+    
+    public void addBarcodeEqID(String eqID){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        enteredIDs.add(eqID);
+        int row = model.getRowCount();
+        model.addRow(new Object[] {eqID});
+        enteredIDsToRowMap.put(eqID, row);
+    }
+    
+    private void removeEqID(String eqID) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//        int[] selectedRow = jTable1.getSelectedRows();
+        int row = enteredIDsToRowMap.remove(eqID);
+        enteredIDs.remove(eqID);
+        model.removeRow(row);
+        System.out.println("Barcode " + eqID + " scanned twice. Removed from the table.");
+        // Update the row indices in the map
+        for (Map.Entry<String, Integer> entry : enteredIDsToRowMap.entrySet()) {
+            if (entry.getValue() > row) {
+                entry.setValue(entry.getValue() - 1);
+            }
+        }
+    }
+    
     private void addActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         for (int i = 0; i < model.getRowCount(); i++) {
             String equipmentID = model.getValueAt(i, 0).toString();
-            // String equipmentName = model.getValueAt(i, 1).toString();
-            // String equipmentType = model.getValueAt(i, 2).toString();
 
             try {
                 DatabaseUtils dbUtil = new DatabaseUtils();
@@ -211,40 +242,18 @@ public class CheckIn extends javax.swing.JFrame {
             jEquipmentID.setText("");
 
         } else {
-            JOptionPane.showMessageDialog(null,
-                    "Duplicate ID found in the Table, please ensure there are now duplicates.");
+            JOptionPane.showMessageDialog(null,"Duplicate ID found in the Table, please ensure there are now duplicates.");
         }
     }// GEN-LAST:event_jAddToTableActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CheckIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CheckIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CheckIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CheckIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+    
+        
+
         // </editor-fold>
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -257,7 +266,7 @@ public class CheckIn extends javax.swing.JFrame {
     private javax.swing.JToggleButton JHomeButton;
     private javax.swing.JButton jAddButtonToEquipmentLog;
     private javax.swing.JButton jAddToTable;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jDeleteEntry;
     private javax.swing.JTextField jEquipmentID;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
