@@ -48,8 +48,8 @@ public class Help extends javax.swing.JFrame {
         hTxtAddNewEquipment = "Help - Add New Equipment Page";
         //Write Help txt for Add New Equipment Page here...
         
-        // Txt for Data List Page
-        hTxtDataList = "Help - Data List Page";
+        // Txt for History Page
+        hTxtDataList = "Help - History Page";
         //Write Help txt for Data List Page here...
         
     }
@@ -128,7 +128,7 @@ public class Help extends javax.swing.JFrame {
         });
 
         jBtnDataList.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
-        jBtnDataList.setText("Data List");
+        jBtnDataList.setText("History");
         jBtnDataList.setMaximumSize(new java.awt.Dimension(380, 60));
         jBtnDataList.setMinimumSize(new java.awt.Dimension(380, 60));
         jBtnDataList.setPreferredSize(new java.awt.Dimension(380, 60));

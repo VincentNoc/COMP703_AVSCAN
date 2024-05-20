@@ -190,7 +190,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Yu Gothic UI" size="24" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Data List"/>
+            <Property name="text" type="java.lang.String" value="History"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[380, 60]"/>
             </Property>
