@@ -27,6 +27,7 @@ public class Help extends javax.swing.JFrame {
     public Help() {
         initComponents();
         
+        // Txt for Home Page
         hTxtHome = "Help - Home Page\n"
                 + "In this page you can select and move into one of the\n"
                 + "pages shown in this page.\n"
@@ -35,19 +36,19 @@ public class Help extends javax.swing.JFrame {
                 + "\n";
         //Write Help txt for Home Page here...
         
-
+        // Txt for Check In Page
         hTxtCheckIn = "Help - Check In Page";
         //Write Help txt for Check In Page here...
         
-        
+        // Txt for Check Out Page
         hTxtCheckOut = "Help - Check Out Page";
         //Write Help txt for Check Out Page here...
         
-        
+        // Txt for Add New Equipment Page
         hTxtAddNewEquipment = "Help - Add New Equipment Page";
         //Write Help txt for Add New Equipment Page here...
         
-        
+        // Txt for Data List Page
         hTxtDataList = "Help - Data List Page";
         //Write Help txt for Data List Page here...
         
