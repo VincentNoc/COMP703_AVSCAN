@@ -19,7 +19,10 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import java.text.ParseException;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
@@ -31,6 +34,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
 public class CheckOut extends javax.swing.JFrame {
 
     private Set<String> enteredIDs;
+    private Hashtable<String,Data> equipments;
 
     /**
      * Creates new form CheckOut
@@ -40,8 +44,18 @@ public class CheckOut extends javax.swing.JFrame {
 //        outPutDataToTable();
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
+        getAllEquipmentData();
 //        BackgroundColour();
     }
+    private void getAllEquipmentData(){
+        try {
+            DatabaseUtils db = new DatabaseUtils();
+            this.equipments=db.selestAllEquipment();
+        } catch (SQLException ex) {
+            Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,6 +136,7 @@ public class CheckOut extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable2);
 
         jAddToTable.setText("+");
+        jAddToTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jAddToTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jAddToTableActionPerformed(evt);
@@ -352,7 +367,15 @@ public class CheckOut extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         String equipmentID = jEquipmentID.getText();
 
+        if(!this.equipments.containsKey(equipmentID)){
+            JOptionPane.showMessageDialog(null, "The Equipment ID( "+equipmentID+") does not exists.");
+            return;            
+        }else if(!this.equipments.get(equipmentID).getStatus().equals("Checked In")){
+            JOptionPane.showMessageDialog(null, "The Equipment ID( "+this.equipments.get(equipmentID).getEquipmentID()+") is "+this.equipments.get(equipmentID).getStatus()+".");
+            return; 
+        }
         if (!enteredIDs.contains(equipmentID)) {
+            
             model.addRow(new Object[]{equipmentID});
             enteredIDs.add(equipmentID);
             // Optionally, clear the text fields after adding

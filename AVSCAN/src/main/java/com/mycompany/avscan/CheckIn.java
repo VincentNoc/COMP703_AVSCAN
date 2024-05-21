@@ -4,25 +4,40 @@
  */
 package com.mycompany.avscan;
 
-
+import Database.Data;
 import Database.DatabaseUtils;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-        /**
+/**
  *
  * @author vince-kong
  */
 public class CheckIn extends javax.swing.JFrame {
+
     private Set<String> enteredIDs;
+    private Hashtable<String, Data> equipments;
 
     public CheckIn() {
         initComponents();
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
+        getAllEquipmentData();
+    }
+
+    private void getAllEquipmentData() {
+        try {
+            DatabaseUtils db = new DatabaseUtils();
+            this.equipments = db.selestAllEquipment();
+        } catch (SQLException ex) {
+            Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -131,33 +146,32 @@ public class CheckIn extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int[] selectedRow = jTable1.getSelectedRows();
-        
-       
+
         //iterates through the selected amount of rows, to delete at once. 
-         for(int i = selectedRow.length - 1; i >= 0; i--){
+        for (int i = selectedRow.length - 1; i >= 0; i--) {
             int rowIndex = selectedRow[i];
             String equipmentID = (String) model.getValueAt(rowIndex, NORMAL);
 
             model.removeRow(rowIndex);
-            
-                enteredIDs.remove(equipmentID);
-            
-         }
-         
-           
+
+            enteredIDs.remove(equipmentID);
+
+        }
+
+
     }//GEN-LAST:event_deleteActionPerformed
 
     // To remove selected row
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-            // TODO add your handling code here:
+        // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-     
+
         for (int i = 0; i < model.getRowCount(); i++) {
             String equipmentID = model.getValueAt(i, 0).toString();
             //String equipmentName = model.getValueAt(i, 1).toString();
@@ -166,35 +180,42 @@ public class CheckIn extends javax.swing.JFrame {
             try {
                 DatabaseUtils dbUtil = new DatabaseUtils();
                 dbUtil.updateEquipmentLogStatusCheckedIn(equipmentID);
-                
+
             } catch (SQLException ex) {
                 // Handle the exception (e.g., display error message)
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error adding data to database: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-        model.setRowCount(0); 
+        model.setRowCount(0);
     }//GEN-LAST:event_addActionPerformed
 
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JHomeButtonActionPerformed
-            // TODO add your handling code here:
-            this.dispose();
-            MainMenu mainmenu = new MainMenu();
-            mainmenu.setVisible(true);
+        // TODO add your handling code here:
+        this.dispose();
+        MainMenu mainmenu = new MainMenu();
+        mainmenu.setVisible(true);
     }//GEN-LAST:event_JHomeButtonActionPerformed
 
     private void jAddToTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAddToTableActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         String equipmentID = jEquipmentID.getText();
-        
-        if(!enteredIDs.contains(equipmentID) ){
+        if(!this.equipments.containsKey(equipmentID)){
+            JOptionPane.showMessageDialog(null, "The Equipment ID("+equipmentID+") does not exists in database.");
+            return;
+        }if(!this.equipments.get(equipmentID).getStatus().equals("Checked Out")){
+            JOptionPane.showMessageDialog(null, "The Equipment ID("+equipmentID.trim()+") is currently "+this.equipments.get(equipmentID).getStatus()+".");
+            return;
+        }
+
+        if (!enteredIDs.contains(equipmentID)) {
             model.addRow(new Object[]{equipmentID});
             enteredIDs.add(equipmentID);
             // Optionally, clear the text fields after adding
             jEquipmentID.setText("");
 
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Duplicate ID found in the Table, please ensure there are now duplicates.");
         }
     }//GEN-LAST:event_jAddToTableActionPerformed

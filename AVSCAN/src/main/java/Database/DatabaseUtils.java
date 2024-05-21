@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -25,40 +27,38 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author vince-kong
  */
-
 public class DatabaseUtils {
 
     Connection con;
-    private final String URL="jdbc:mysql://localhost:3306/avscan";
-   // private final String URL="jdbc:mysql://localhost:3306/mysql";
-    private final String USER= "root";
+    private final String URL = "jdbc:mysql://localhost:3306/avscan";
+    // private final String URL="jdbc:mysql://localhost:3306/mysql";
+    private final String USER = "root";
     private final String PASSWORD = "AUT4events_";
 
-    public DatabaseUtils() throws SQLException{
-      this.con = DatabaseConnector.connectToDatabase();
+    public DatabaseUtils() throws SQLException {
+        this.con = DatabaseConnector.connectToDatabase();
     }
 
     public DatabaseUtils(String equipmentID) throws SQLException {
-      updateEquipmentLogStatusCheckedIn(equipmentID);
+        updateEquipmentLogStatusCheckedIn(equipmentID);
     }
 
-     public DatabaseUtils(String evID, String evName, String evEquipmentID, String stID,  String eqSentDateTime, String eqReturnDateTime) throws SQLException{
-      insertDataBookingTable( evID,  evName, evEquipmentID, stID, eqSentDateTime,  eqReturnDateTime);
+    public DatabaseUtils(String evID, String evName, String evEquipmentID, String stID, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
+        insertDataBookingTable(evID, evName, evEquipmentID, stID, eqSentDateTime, eqReturnDateTime);
     }
 
-    public DatabaseUtils(String username, String password) throws SQLException{
-      loginCredentials(username, password);
+    public DatabaseUtils(String username, String password) throws SQLException {
+        loginCredentials(username, password);
     }
 
     public DatabaseUtils(DefaultTableModel table) {
         insertDataEquipmentLog(table);
     }
-    
 
     public final void updateEquipmentLogStatusCheckedIn(String equipmentID) {
-        String query = "UPDATE EquipmentLog " +
-                        "SET eqStatus = \'Checked In\' " +
-                        "WHERE eqID = ?";
+        String query = "UPDATE EquipmentLog "
+                + "SET eqStatus = \'Checked In\' "
+                + "WHERE eqID = ?";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -78,23 +78,27 @@ public class DatabaseUtils {
             System.out.println("CAN'T CONNECT TO DATABASE!! Can't add new Item");
         }
     }
-  
+
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
-  
-    public final void insertDataEquipmentLog(DefaultTableModel table) {
+    public final String insertDataEquipmentLog(DefaultTableModel table) {
         String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID, eqStatus) VALUES (?, ?, ?, ?, ?)";
+        //int ifDublicate = 0;
+        String ifDublicate ="";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
+            
+            //for (int i = 0; i < table.getRowCount(); i++) {
+            while(table.getRowCount()>0){
+                //ifDublicate = i;
+                ifDublicate = (String) table.getValueAt(0, 0);
+                String equipmentID = (String) table.getValueAt(0, 0);
+                String equipmentName = (String) table.getValueAt(0, 1);
+                String equipmentType = (String) table.getValueAt(0, 2);
+                String eqyipmentParent = (String) table.getValueAt(0, 3);
 
-            for (int i = 0; i<table.getRowCount();i++ ) {
-                String equipmentID = (String) table.getValueAt(i, 0);
-                String equipmentName = (String) table.getValueAt(i, 1);
-                String equipmentType = (String) table.getValueAt(i, 2);
-                String eqyipmentParent = (String) table.getValueAt(i, 3);
-                
                 PreparedStatement prepStmt = con.prepareStatement(query);
                 prepStmt.setString(1, equipmentID);
                 prepStmt.setString(2, equipmentName);
@@ -102,138 +106,154 @@ public class DatabaseUtils {
                 prepStmt.setString(4, eqyipmentParent);
                 prepStmt.setString(5, "Checked In");
                 prepStmt.execute();
+                table.removeRow(0);
             }
 
             System.out.println("Information added");
             con.close();
+            return null;
 
-        } catch (Exception e) {
+        }catch (Exception e) {
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                System.out.println("Dublicate catched");
+                //return (String) table.getValueAt(ifDublicate, 0);
+                return ifDublicate;
+            }
             e.printStackTrace();
-            System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
+            System.out.println("CAN\'T CONNECT TO DATABASE!!");
             e.printStackTrace();
+            return "CAN\'T CONNECT TO DATABASE!!";
         }
     } //End of added by Dmitry
-  
 
-  public final void insertDataBookingTable(String evID, String evName, String eqID, String stID, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
-    
-    String bookingQuery = "INSERT INTO Booking (evID, evName, eqID, stID ,eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?)";
-    
-    DatabaseConnector dbCon = new DatabaseConnector();
-    Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
-    Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
-    try (Connection con = dbCon.connectToDatabase();
-         PreparedStatement bookingStmt = con.prepareStatement(bookingQuery)) {
+    public final void insertDataBookingTable(String evID, String evName, String eqID, String stID, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
 
-        // Insert into Event table
-        
+        String bookingQuery = "INSERT INTO Booking (evID, evName, eqID, stID ,eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?)";
 
-        // Insert into Booking table
-        bookingStmt.setString(1, evID);
-        bookingStmt.setString(2, evName);
-        bookingStmt.setString(3, eqID);
-        bookingStmt.setString(4, stID);
-        bookingStmt.setTimestamp(5, timeStampSent);
-        bookingStmt.setTimestamp(6, timeStampReturn);
-        bookingStmt.executeUpdate();
+        DatabaseConnector dbCon = new DatabaseConnector();
+        Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
+        Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement bookingStmt = con.prepareStatement(bookingQuery)) {
 
-        System.out.println("Data inserted into Booking tables successfully");
-    } catch (SQLException e) {
-        e.printStackTrace();
-        System.out.println("Failed to insert data into Booking tables");
+            // Insert into Event table
+            // Insert into Booking table
+            bookingStmt.setString(1, evID);
+            bookingStmt.setString(2, evName);
+            bookingStmt.setString(3, eqID);
+            bookingStmt.setString(4, stID);
+            bookingStmt.setTimestamp(5, timeStampSent);
+            bookingStmt.setTimestamp(6, timeStampReturn);
+            bookingStmt.executeUpdate();
+
+            System.out.println("Data inserted into Booking tables successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to insert data into Booking tables");
+        }
     }
-}
-  
-public final void insertDataEventTable(String evID, String evName) throws SQLException {
-    String eventQuery = "INSERT INTO Event (evID, evName) VALUES (?, ?)";
-    DatabaseConnector dbCon = new DatabaseConnector();
-    
-    try (Connection con = dbCon.connectToDatabase();
-            PreparedStatement eventStmt = con.prepareStatement(eventQuery);){
-        
-        eventStmt.setString(1, evID);
-        eventStmt.setString(2, evName);
-        eventStmt.executeUpdate();
-        System.out.println("Data inserted into Event tables successfully");
-    }catch (SQLException e) {
-        e.printStackTrace();
-        System.out.println("Failed to insert data into Event tables");
+
+    public final void insertDataEventTable(String evID, String evName) throws SQLException {
+        String eventQuery = "INSERT INTO Event (evID, evName) VALUES (?, ?)";
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement eventStmt = con.prepareStatement(eventQuery);) {
+
+            eventStmt.setString(1, evID);
+            eventStmt.setString(2, evName);
+            eventStmt.executeUpdate();
+            System.out.println("Data inserted into Event tables successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to insert data into Event tables");
+        }
     }
-}
-  
 
+    public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) throws SQLException {
+        String query = "UPDATE equipmentlog SET eqStatus = \'Checked Out\' WHERE eqID = ?";
+        DatabaseConnector dbCon = new DatabaseConnector();
 
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)) {
 
-
-public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) throws SQLException{
-    String query ="UPDATE equipmentlog SET eqStatus = \'Checked Out\' WHERE eqID = ?";
-    DatabaseConnector dbCon = new DatabaseConnector();
-    
-    try(Connection con = dbCon.connectToDatabase();
-            PreparedStatement prepStmt = con.prepareStatement(query)){
-       
             prepStmt.setString(1, selectedEquipmentIDs);
             prepStmt.executeUpdate();
-  
-    }catch(SQLException e){
-        e.printStackTrace();
-    }
-}
-  
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<Data> fetchDataFromEquipmentLog() throws SQLException {
-     List<Data> dataList = new ArrayList<>();
-     DatabaseConnector dbCon = new DatabaseConnector();
-     Connection con = null; 
-     String query = "SELECT * FROM equipmentlog";
+        List<Data> dataList = new ArrayList<>();
+        DatabaseConnector dbCon = new DatabaseConnector();
+        Connection con = null;
+        String query = "SELECT * FROM equipmentlog";
 
-     try {
-         con = dbCon.connectToDatabase();
-         Statement stmt = con.createStatement();
-         ResultSet rs = stmt.executeQuery(query);
+        try {
+            con = dbCon.connectToDatabase();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
 
-         while (rs.next()) {
-             Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
-             dataList.add(equipment);
-         }
-     } catch (SQLException e) {
-         e.printStackTrace();
-     } finally {
-         try {
-             if (con != null) {
-                 con.close();  // Close connection in finally block
-             }
-         } catch (SQLException e) {
-             e.printStackTrace();
-         }
-     }
+            while (rs.next()) {
+                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
+                dataList.add(equipment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();  // Close connection in finally block
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return dataList;
     }
-  
-   public final boolean loginCredentials(String username, String password) throws SQLException{
-       DatabaseConnector dbCon= new DatabaseConnector();
-      try(Connection con = dbCon.connectToDatabase();){
-        String query = "SELECT * FROM staff WHERE stName = ? AND password = ?";
-        try(PreparedStatement prepStm = con.prepareStatement(query)){
-            prepStm.setString(1, username);
-            prepStm.setString(2, password);
-            try(ResultSet rs = prepStm.executeQuery()){
-                return rs.next();
-            }
 
+    public Hashtable<String, Data> selestAllEquipment() {
+        Hashtable<String, Data> toReturn = new Hashtable<>();
+
+        String query = "SELECT * FROM EquipmentLog";
+
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            // Your code for executing queries and processing results
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(5), rs.getString(4));
+                toReturn.put(equipment.getEquipmentID(), equipment);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-      }catch(SQLException e){
-          e.printStackTrace();
-          return false;
-      }
-  }
-   
-   public final void insertStaff(String Username,String StaffID, String password){
+        return toReturn;
+    }
+
+    public final boolean loginCredentials(String username, String password) throws SQLException {
+        DatabaseConnector dbCon = new DatabaseConnector();
+        try (Connection con = dbCon.connectToDatabase();) {
+            String query = "SELECT * FROM staff WHERE stName = ? AND password = ?";
+            try (PreparedStatement prepStm = con.prepareStatement(query)) {
+                prepStm.setString(1, username);
+                prepStm.setString(2, password);
+                try (ResultSet rs = prepStm.executeQuery()) {
+                    return rs.next();
+                }
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public final void insertStaff(String Username, String StaffID, String password) {
         String query = "INSERT INTO staff (stName, stID, password) VALUES (?, ?, ?)";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            DatabaseConnector dbCon= new DatabaseConnector();
+            DatabaseConnector dbCon = new DatabaseConnector();
             Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
             PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, Username);
@@ -244,24 +264,24 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
             System.out.println("Information added");
             con.close();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
         }
-   }
-   
-   public void updateEmailSentStatus() throws SQLException{
-       String updateQuery = "UPDATE Event SET email_sent = true WHERE eqReturnDateTime >= DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false";
-       DatabaseConnector dbCon = new DatabaseConnector();
-       try(
-            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
-            PreparedStatement prepStmt = con.prepareStatement(updateQuery)){
+    }
+
+    public void updateEmailSentStatus() throws SQLException {
+        String updateQuery = "UPDATE Event SET email_sent = true WHERE eqReturnDateTime >= DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false";
+        DatabaseConnector dbCon = new DatabaseConnector();
+        try (
+                Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
+                 PreparedStatement prepStmt = con.prepareStatement(updateQuery)) {
             prepStmt.executeUpdate();
-       }catch(SQLException e){
-           e.printStackTrace();
-       }
-   }
-   
-   //Don't need any more??
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Don't need any more??
     /*public List<HistoryData> fetchHistoryFromDatabase() {
         List<HistoryData> dataList = new ArrayList<>();
 
@@ -286,7 +306,6 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
 
         return dataList;
     }*/
-
     public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) {
         String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
 
@@ -337,26 +356,25 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
 
         return dataList;
     }*/
-
     public List<MaintenanceData> fetchMaintenanceData() {
         List<MaintenanceData> dataList = new ArrayList<>();
 
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
-            
-            String oldQery="SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
+
+            String oldQery = "SELECT DISTINCT Maintenance.EquipmentID, child.EquipmentName, parent.EquipmentID AS ParentID, parent.EquipmentName AS ParentName, \n"
                     + "Maintenance.Description, Maintenance.Received, Maintenance.repairedReturned\n"
                     + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.EquipmentID = child.EquipmentID\n"
                     + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.EquipmentID\n"
                     + "ORDER BY Maintenance.Received DESC;";
-            
+
             String qery = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
                     + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
                     + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
                     + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
                     + "ORDER BY Maintenance.mntRecieved DESC;";
-            
+
             ResultSet rs = stmt.executeQuery(qery);
 
             while (rs.next()) {
@@ -429,22 +447,20 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
                 + "VALUES (?, ?, ?, ?);";
 //Checked In
 //Checked out
-        String updateEquipmentStatus = "UPDATE EquipmentLog " +
-                                        "SET eqStatus = 'In Maintenance' " +
-                                        "WHERE eqID = ?";
+        String updateEquipmentStatus = "UPDATE EquipmentLog "
+                + "SET eqStatus = 'In Maintenance' "
+                + "WHERE eqID = ?";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
-            
 
             Statement stmt = con.createStatement();
-            
+
             PreparedStatement findEqStatus = con.prepareStatement(updateEquipmentStatus);
             findEqStatus.setString(1, eqID);
             findEqStatus.execute();
-            
-            
+
             PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, eqID);
             prepStmt.setString(2, description);
@@ -486,21 +502,21 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
                 + "SET mntRepairedReturned = ? WHERE eqID = ? AND mntDescription = ? AND "
                 + "mntRecieved = ?";
 
-        String updateEquipmentStatus = "UPDATE EquipmentLog " +
-                                        "SET eqStatus = 'Checked In' " +
-                                        "WHERE eqID = ?";
-        
-        System.out.println("\nBEFORE ADD TO DATABASE RETURN_MAINT:  "+insert.toString());
+        String updateEquipmentStatus = "UPDATE EquipmentLog "
+                + "SET eqStatus = 'Checked In' "
+                + "WHERE eqID = ?";
+
+        System.out.println("\nBEFORE ADD TO DATABASE RETURN_MAINT:  " + insert.toString());
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
-            
+
             Statement stmt = con.createStatement();
             PreparedStatement findEqStatus = con.prepareStatement(updateEquipmentStatus);
             findEqStatus.setString(1, insert.getEqID());
             findEqStatus.execute();
-            
+
             PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, String.valueOf(insert.getReturned()));
             prepStmt.setString(2, insert.getEqID());
@@ -529,7 +545,7 @@ public final void updateEquipmentStatusCheckedOut(String selectedEquipmentIDs) t
                 + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
                 + "WHERE Maintenance.mntRepairedReturned IS null\n"
                 + "ORDER BY Maintenance.mntRecieved DESC;";
-        
+
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
