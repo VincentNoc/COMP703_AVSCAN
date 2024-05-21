@@ -81,7 +81,6 @@ public class DatabaseUtils {
   
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
-  
     public final void insertDataEquipmentLog(DefaultTableModel table) throws SQLException {
         String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID, eqStatus) VALUES (?, ?, ?, ?, ?)";
         DatabaseConnector dbCon = new DatabaseConnector();

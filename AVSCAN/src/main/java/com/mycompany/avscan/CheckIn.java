@@ -27,6 +27,7 @@ public class CheckIn extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
         enteredIDsToRowMap = new HashMap<>();
+        jEquipmentID.requestFocusInWindow();
     }
 
     /**
@@ -53,13 +54,6 @@ public class CheckIn extends javax.swing.JFrame {
         jEquipmentID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jEquipmentIDActionPerformed(evt);
-            }
-        });
-        jEquipmentID.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeEqID(jEquipmentID.getText().trim());
-                jEquipmentID.setText("");
             }
         });
 
@@ -153,8 +147,11 @@ public class CheckIn extends javax.swing.JFrame {
     
     private void jEquipmentIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jEquipmentIDActionPerformed
         // TODO add your handling code here:
-        doubleScanRemove(jEquipmentID.getText().trim());
-        jEquipmentID.setText("");
+        String eqID = jEquipmentID.getText().trim();
+        if (!eqID.isEmpty()) {
+            doubleScanRemove(eqID);
+            jEquipmentID.setText("");
+        }
     }//GEN-LAST:event_jEquipmentIDActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,16 +163,17 @@ public class CheckIn extends javax.swing.JFrame {
         for (int i = selectedRow.length - 1; i >= 0; i--) {
             int rowIndex = selectedRow[i];
             String equipmentID = (String) model.getValueAt(rowIndex, NORMAL);
-
             model.removeRow(rowIndex);
-
             enteredIDs.remove(equipmentID);
+            enteredIDsToRowMap.remove(equipmentID);
         }
     }
     
     private void doubleScanRemove(String eqID){
         if(enteredIDs.contains(eqID)){
             removeEqID(eqID);
+        }else{
+            addBarcodeEqID(eqID);
         }
     }
     
@@ -183,15 +181,15 @@ public class CheckIn extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         enteredIDs.add(eqID);
         int row = model.getRowCount();
-        model.addRow(new Object[] {eqID});
+        model.addRow(new Object[] { eqID });
         enteredIDsToRowMap.put(eqID, row);
     }
     
     private void removeEqID(String eqID) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-//        int[] selectedRow = jTable1.getSelectedRows();
-        int row = enteredIDsToRowMap.remove(eqID);
+        int row = enteredIDsToRowMap.get(eqID);
         enteredIDs.remove(eqID);
+        enteredIDsToRowMap.remove(eqID);
         model.removeRow(row);
         System.out.println("Barcode " + eqID + " scanned twice. Removed from the table.");
         // Update the row indices in the map
@@ -221,6 +219,8 @@ public class CheckIn extends javax.swing.JFrame {
             }
         }
         model.setRowCount(0);
+        enteredIDs.clear();
+        enteredIDsToRowMap.clear();
     }// GEN-LAST:event_addActionPerformed
 
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JHomeButtonActionPerformed
@@ -238,6 +238,11 @@ public class CheckIn extends javax.swing.JFrame {
         if (!enteredIDs.contains(equipmentID)) {
             model.addRow(new Object[] { equipmentID });
             enteredIDs.add(equipmentID);
+            int row = model.getRowCount();
+            enteredIDsToRowMap.put(equipmentID,row);
+            System.out.println(enteredIDs);
+            System.out.println(enteredIDsToRowMap);
+
             // Optionally, clear the text fields after adding
             jEquipmentID.setText("");
 
@@ -251,9 +256,6 @@ public class CheckIn extends javax.swing.JFrame {
      */
     
     public static void main(String args[]) {
-    
-        
-
         // </editor-fold>
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

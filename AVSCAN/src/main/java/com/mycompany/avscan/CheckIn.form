@@ -78,9 +78,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jEquipmentIDActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="jEquipmentID.addActionListener(new java.awt.event.ActionListener() {&#xa;    @Override&#xa;    public void actionPerformed(java.awt.event.ActionEvent evt) {&#xa;        removeEqID(jEquipmentID.getText().trim());&#xa;        jEquipmentID.setText(&quot;&quot;);&#xa;    }&#xa;});"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
