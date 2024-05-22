@@ -62,7 +62,9 @@ public class CheckIn extends javax.swing.JFrame {
             public void changedUpdate(DocumentEvent e) {
                 // Do nothing
             }
-        });   
+        }); 
+        
+      
         
     }
 
@@ -264,13 +266,12 @@ public class CheckIn extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         String equipmentID = jEquipmentID.getText();
 
-        if (!enteredIDs.contains(equipmentID)) {
+        if (!enteredIDsToRowMap.containsKey(equipmentID)) {
             model.addRow(new Object[] { equipmentID });
             enteredIDs.add(equipmentID);
             int row = model.getRowCount();
             enteredIDsToRowMap.put(equipmentID, row);
-            System.out.println(enteredIDs);
-            System.out.println(enteredIDsToRowMap);
+           
 
             // Optionally, clear the text fields after adding
             jEquipmentID.setText("");
