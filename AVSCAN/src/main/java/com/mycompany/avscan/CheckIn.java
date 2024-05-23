@@ -128,7 +128,7 @@ public class CheckIn extends javax.swing.JFrame {
             }
         });
 
-        jAddButtonToEquipmentLog.setText("Add");
+        jAddButtonToEquipmentLog.setText("Return");
         jAddButtonToEquipmentLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addActionPerformed(evt);

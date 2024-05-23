@@ -404,9 +404,23 @@ public class CheckOut extends javax.swing.JFrame {
 
         try {
             DatabaseUtils dbUtils = new DatabaseUtils();
-            dbUtils.insertDataEventTable(evID, evName);
+            if(!dbUtils.doesEventExist(evID)){
+                dbUtils.insertDataEventTable(evID, evName);
+            }
+            
             for (int i = 0; i < model.getRowCount(); i++) {
                 String equipmentID = model.getValueAt(i, 0).toString();
+                
+                if(!dbUtils.doesEquipmentExists(equipmentID)){
+                    JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " does not exist. Please add it to the database first.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; 
+                }
+                
+                if (dbUtils.isEquipmentCheckedOut(equipmentID)) {
+                    JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " is already checked out.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+                
                 dbUtils.insertDataBookingTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
                 dbUtils.updateEquipmentStatusCheckedOut(equipmentID);
             }
