@@ -15,8 +15,8 @@ import java.sql.SQLException;
 public class DatabaseConnector {
     //these three could potentially change depending on how you've set up your DB. 
 
-//    private static final String URL = "jdbc:mysql://localhost:3306/avscan?zeroDateTimeBehavior=CONVERT_TO_NULL";
-    private static final String URL = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
+    private static final String URL = "jdbc:mysql://localhost:3306/avscan?zeroDateTimeBehavior=CONVERT_TO_NULL";
+//    private static final String URL = "jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=CONVERT_TO_NULL";
     private static final String USER = "root";
     private static final String PASSWORD = "AUT4events_";
 
