@@ -1,22 +1,26 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.avscan;
 
+import Database.Data;
 import Database.DatabaseUtils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import javax.swing.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -34,6 +38,7 @@ public class CheckIn extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         enteredIDs = new HashSet<>();
         enteredIDsToRowMap = new HashMap<>();
+        getAllEquipmentData();
         jEquipmentID.requestFocusInWindow();
         
 //how long the delay is for automatic entry of keystrokes    
@@ -61,6 +66,15 @@ public class CheckIn extends javax.swing.JFrame {
             }
         }); 
         
+    }
+  
+    private void getAllEquipmentData() {
+        try {
+            DatabaseUtils db = new DatabaseUtils();
+            this.equipments = db.selestAllEquipment();
+        } catch (SQLException ex) {
+            Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void processBarcode() {
@@ -309,3 +323,4 @@ public class CheckIn extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
+

@@ -13,8 +13,17 @@ public class Data {
     private String equipmentName= "";
     private String equipmentType= "";
     private String equipmentParent = "";
+    private String status = "";
     
     public Data(){}
+    
+    public Data(String equipmentID, String equipmentName, String equipmentType, String equipmentParent, String status){
+        this.equipmentID=equipmentID;
+        this.equipmentName=equipmentName;
+        this.equipmentType = equipmentType;
+        this.equipmentParent = equipmentParent;
+        this.status=status;
+    }
     
     public Data(String equipmentID, String equipmentName, String equipmentType, String equipmentParent){
         this.equipmentID=equipmentID;
@@ -62,6 +71,9 @@ public class Data {
     public String getEquipmentType() {
         return equipmentType;
     }
-    
+
+    public String getStatus() {
+        return status;
+    }
     
 }

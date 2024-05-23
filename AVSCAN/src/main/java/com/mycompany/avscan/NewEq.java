@@ -25,13 +25,15 @@ import multi.use.frames.SmallErrorMessage;
  *
  * @author vince-kong
  */
-public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.ConnectCallback{
+public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.ConnectCallback {
 
     private ConnectItemToParent childs;
     private int rememberSelectedRow;
+
     private Set<String> enteredIDs;
     private Map<String, Integer> enteredIDsToRowMap;
     private Timer barcodeTimer;
+
 
     /**
      * Creates new form CheckIn
@@ -236,7 +238,6 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         // Assuming jScrollPane1 is a JScrollPane declared elsewhere
         // jScrollPane1.setViewportView(jTable1);
     }
-
     
     private void processBarcode() {
         String scannedBarcode = jEquipmentID.getText().trim();
@@ -290,6 +291,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     }
 
 
+
     //To remove Selected rows
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         int selectedRow[] = jTable1.getSelectedRows();
@@ -320,7 +322,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             for (int i = 0; i < model.getRowCount(); i++) {
                 String toCheck = (String) model.getValueAt(i, 0);
                 if (toCheck.equalsIgnoreCase(text1)) {
-                    new SmallErrorMessage("The Equipment already added to the table.",this).setVisible(true);
+                    new SmallErrorMessage("The Equipment already added to the table.", this).setVisible(true);
                     return;
                 }
             }
@@ -331,7 +333,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             jEqName.setText("");
             jEqType.setText("");
         } else {
-            new SmallErrorMessage("Please fill all input areas.",this).setVisible(true);
+            new SmallErrorMessage("Please fill all input areas.", this).setVisible(true);
         }
     }//GEN-LAST:event_newEqButtonActionPerformed
 
@@ -339,10 +341,10 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
     //Will send the selected row to the next windo to add child equipments to the parent equipment.
     private void connectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectToParent
         if (jTable1.getSelectedRows().length != 1) {//Cancel the method if user selected multiple rows
-            new SmallErrorMessage("Please select one Row only",this).setVisible(true);
+            new SmallErrorMessage("Please select one Row only", this).setVisible(true);
             return;
         }
-        this.rememberSelectedRow =  jTable1.getSelectedRow();
+        this.rememberSelectedRow = jTable1.getSelectedRow();
 
         // Assuming model is the DefaultTableModel associated with your JTable
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -353,6 +355,7 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         String equipmentType = (String) model.getValueAt(rememberSelectedRow, 2);
 
         childs = new ConnectItemToParent(model, equipmentID, equipmentName, equipmentType, this);   
+
     }//GEN-LAST:event_connectToParent
 
     //Updating child-parent relation information after adding childs
@@ -362,18 +365,18 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         //var temp = model.getValueAt(rememberSelectedRow, 0);
         DefaultTableModel toConnect = childs.getChildsInfo();
-        
+
         for (int i = 0; i < model.getRowCount(); i++) {
             for (int b = 0; b < toConnect.getRowCount(); b++) {
                 if (model.getValueAt(i, 0).equals(toConnect.getValueAt(b, 0))) {
-                    
+
                     model.setValueAt(model.getValueAt(rememberSelectedRow, 0), i, 3);
                     toConnect.removeRow(b);
                 }
             }
         }
-        while(toConnect.getRowCount()>0){
-            
+        while (toConnect.getRowCount() > 0) {
+
             String ID = (String) toConnect.getValueAt(0, 0);
             String Name = (String) toConnect.getValueAt(0, 1);
             String Type = (String) toConnect.getValueAt(0, 2);
@@ -382,11 +385,12 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
         }
         //this.jTable1 = new JTable(model);
     }
-    
+
     //Sending data to database.
     private void addButtonaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonaddActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
         if (model.getRowCount() > 0) {
             try {
                 new DatabaseUtils(model);
@@ -398,7 +402,28 @@ public class NewEq extends javax.swing.JFrame  implements ConnectItemToParent.Co
             new SmallErrorMessage("Use button \"Add\" to add new equipment before format!",this).setVisible(true);
         }
 
+        insertingNewEq(model);
+        //new DatabaseUtils(model).fetchDataFromDatabase();
+
     }//GEN-LAST:event_addButtonaddActionPerformed
+
+    private void insertingNewEq(DefaultTableModel model) {
+        try {
+            DatabaseUtils db = new DatabaseUtils();
+            if (model.getRowCount() > 0) {
+                String message = db.insertDataEquipmentLog(model);
+                if (message != null) {
+                    new SmallErrorMessage("The Equipment ID(" + message + ") is alredy in database! Rest of equipment will be inserted.", this).setVisible(true);
+                    model.removeRow(0);
+                    insertingNewEq(model);
+                }
+            } else {
+                new SmallErrorMessage("Use button \"Add\" to add new equipment before format!", this).setVisible(true);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NewEq.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void homeButtonconnectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonconnectToParent
         // TODO add your handling code here:
