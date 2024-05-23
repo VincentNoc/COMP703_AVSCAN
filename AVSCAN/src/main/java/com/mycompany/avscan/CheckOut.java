@@ -391,7 +391,7 @@ public class CheckOut extends javax.swing.JFrame {
     private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jCheckOutButtonActionPerformed
         // TODO add your handling code here:
 
-        DefaultTableModel tableModel = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
 
         String evID = jEventID.getText();
         String evName = JEventName.getText();
@@ -405,20 +405,14 @@ public class CheckOut extends javax.swing.JFrame {
         try {
             DatabaseUtils dbUtils = new DatabaseUtils();
             dbUtils.insertDataEventTable(evID, evName);
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
-                String equipmentID = tableModel.getValueAt(i, 0).toString();
-
-                // for (int i = 0; i < tableModel.getRowCount(); i++) {
-                // String equipmentID = tableModel.getValueAt(i, 0).toString();
-                // Check if a row is selected
-                // this will be changed latter on.
-                // dbUtils.insertDataEventTable(evID, selectedEqID, evName, "evDateTime",
-                // evCheckOutStaff, dateTimeSent, dateTimeReturn);
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String equipmentID = model.getValueAt(i, 0).toString();
                 dbUtils.insertDataBookingTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
                 dbUtils.updateEquipmentStatusCheckedOut(equipmentID);
-                // System.out.println(selectedValue);
-
             }
+            model.setRowCount(0);
+            enteredIDs.clear();
+            enteredIDsToRowMap.clear();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error has Occurred, check your connection to the database", "Error",
                     JOptionPane.ERROR_MESSAGE);
