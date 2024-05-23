@@ -5,9 +5,6 @@
 package com.mycompany.avscan;
 
 import Database.DatabaseUtils;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.table.DefaultTableModel;
@@ -39,7 +36,7 @@ public class CheckIn extends javax.swing.JFrame {
         enteredIDsToRowMap = new HashMap<>();
         jEquipmentID.requestFocusInWindow();
         
-    //how long the delay is for automatic entry of keystrokes    
+//how long the delay is for automatic entry of keystrokes    
     barcodeTimer = new Timer(300, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,8 +60,6 @@ public class CheckIn extends javax.swing.JFrame {
                 // Do nothing
             }
         }); 
-        
-      
         
     }
 
@@ -208,28 +203,36 @@ public class CheckIn extends javax.swing.JFrame {
     }
 
     private void removeEqID(String eqID) {
+        // Get the table model to manipulate the table data
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        int row = enteredIDsToRowMap.get(eqID);
-        enteredIDs.remove(eqID);
-        enteredIDsToRowMap.remove(eqID);
 
-        // Temporarily store adjustments
-        Map<Integer, String> tempAdjustments = new HashMap<>();
-        for (Map.Entry<String, Integer> entry : enteredIDsToRowMap.entrySet()) {
-            if (entry.getValue() <= row) {
-                tempAdjustments.put(entry.getValue(), entry.getKey());
-            }
-        }
+        // Find the row index corresponding to the eqID
+        int row = enteredIDsToRowMap.get(eqID);
+
+        // Remove the eqID from the set of entered IDs
+        enteredIDs.remove(eqID);
+
+        // Remove the eqID from the map that tracks row indices
+        enteredIDsToRowMap.remove(eqID);
 
         // Remove the row from the model
         model.removeRow(row);
         System.out.println("Barcode " + eqID + " scanned twice. Removed from the table.");
 
-        // Apply adjustments
-        for (Map.Entry<Integer, String> adjustment : tempAdjustments.entrySet()) {
-            enteredIDsToRowMap.put(adjustment.getValue(), adjustment.getKey());
-        }
+        // Adjust the row indices in enteredIDsToRowMap
+        Map<String, Integer> updatedMap = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : enteredIDsToRowMap.entrySet()) {
+            int currentIndex = entry.getValue(); // Get the current row index for this entry
+            if (currentIndex > row) { // Only adjust entries with indices greater than the removed row
+                updatedMap.put(entry.getKey(), currentIndex - 1); // Decrement the index
+            } else {
+                updatedMap.put(entry.getKey(), currentIndex); // Keep the same index
+            }
     }
+
+    // Replace the original map with the updated map
+    enteredIDsToRowMap = updatedMap;
+}
 
     private void addActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
