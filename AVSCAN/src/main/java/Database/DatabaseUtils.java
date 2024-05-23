@@ -30,8 +30,8 @@ import javax.swing.table.DefaultTableModel;
 public class DatabaseUtils {
 
     Connection con;
-    private final String URL = "jdbc:mysql://localhost:3306/avscan";
-    // private final String URL="jdbc:mysql://localhost:3306/mysql";
+//    private final String URL = "jdbc:mysql://localhost:3306/avscan";
+     private final String URL="jdbc:mysql://localhost:3306/mysql";
     private final String USER = "root";
     private final String PASSWORD = "AUT4events_";
 

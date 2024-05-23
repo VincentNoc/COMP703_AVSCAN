@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -31,6 +32,7 @@ public class CheckIn extends javax.swing.JFrame {
     private DefaultTableModel model;
     private Set<String> enteredIDs;
     private Map<String, Integer> enteredIDsToRowMap;
+    private Hashtable<String, Data> equipments;
     private Timer barcodeTimer;
 
     public CheckIn() {

@@ -27,13 +27,11 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="505" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                       <Component id="homeButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="deleteButton" min="-2" pref="112" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
                       <Component id="connToParent" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="addButton" min="-2" pref="112" max="-2" attributes="0"/>
@@ -43,21 +41,24 @@
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <Component id="jEquipmentID" min="-2" pref="114" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <Component id="jEqName" min="-2" pref="115" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="jEqType" min="-2" pref="115" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="newEqButton" min="-2" pref="41" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="jEqType" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="newEqButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -79,17 +80,17 @@
                   <Component id="jEqName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jEqType" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="newEqButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="190" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="addButton" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
-                  <Component id="deleteButton" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="connToParent" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="homeButton" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="49" max="32767" attributes="0"/>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -152,7 +153,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="deleteButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Delete"/>
+        <Property name="text" type="java.lang.String" value="-"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteActionPerformed"/>

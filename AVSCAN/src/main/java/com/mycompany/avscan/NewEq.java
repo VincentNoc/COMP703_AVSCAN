@@ -29,7 +29,6 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
 
     private ConnectItemToParent childs;
     private int rememberSelectedRow;
-
     private Set<String> enteredIDs;
     private Map<String, Integer> enteredIDsToRowMap;
     private Timer barcodeTimer;
@@ -114,7 +113,7 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        deleteButton.setText("Delete");
+        deleteButton.setText("-");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteActionPerformed(evt);
@@ -162,13 +161,11 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
                         .addComponent(homeButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(142, 142, 142)
                         .addComponent(connToParent)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -176,18 +173,21 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jEqName, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(31, 31, 31)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jEqType, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(newEqButton, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jEqType, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(newEqButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addGap(58, 58, 58)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -203,16 +203,16 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
                     .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jEqName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jEqType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(newEqButton))
+                    .addComponent(newEqButton)
+                    .addComponent(deleteButton))
                 .addGap(6, 6, 6)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(connToParent, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -392,19 +392,14 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         if (model.getRowCount() > 0) {
-            try {
-                new DatabaseUtils(model);
-                //new DatabaseUtils(model).fetchDataFromDatabase();
-            } catch (SQLException ex) {
-                Logger.getLogger(NewEq.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            new DatabaseUtils(model);
+            //new DatabaseUtils(model).fetchDataFromDatabase();
         } else {
             new SmallErrorMessage("Use button \"Add\" to add new equipment before format!",this).setVisible(true);
         }
 
         insertingNewEq(model);
         //new DatabaseUtils(model).fetchDataFromDatabase();
-
     }//GEN-LAST:event_addButtonaddActionPerformed
 
     private void insertingNewEq(DefaultTableModel model) {
