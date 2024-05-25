@@ -48,7 +48,7 @@ public class DatabaseUtils {
     }
 
     public DatabaseUtils(String username, String password) throws SQLException {
-        loginCredentials(username, password);
+        getLoginCredentials(username, password);
     }
 
     public DatabaseUtils(DefaultTableModel table) {
@@ -231,7 +231,7 @@ public class DatabaseUtils {
         return toReturn;
     }
      
-    public final boolean loginCredentials(String stID, String password) throws SQLException {
+    public final boolean getLoginCredentials(String stID, String password) throws SQLException {
         DatabaseConnector dbCon = new DatabaseConnector();
         try (Connection con = dbCon.connectToDatabase();) {
             String query = "SELECT * FROM staff WHERE stID = ? AND password = ?";

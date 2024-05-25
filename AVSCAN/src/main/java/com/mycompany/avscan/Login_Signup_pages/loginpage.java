@@ -15,9 +15,9 @@ import javax.swing.JOptionPane;
  * @author vince-kong
  */
 public class LoginPage extends javax.swing.JFrame {
-
+    private String loggedInStaffID;
     /**
-     * Creates new form loginpage
+     * Creates new form LoginPage
      */
     public LoginPage() {
         initComponents();
@@ -170,13 +170,15 @@ public class LoginPage extends javax.swing.JFrame {
             DatabaseUtils dbUtils = new DatabaseUtils();
             String stID = jStaffID.getText();
             String password = jPasswordTxt.getText();
+
             
-            if(dbUtils.loginCredentials(stID, password)){
+            if(dbUtils.getLoginCredentials(stID, password)){
+                loggedInStaffID = stID;
                 this.dispose();
-                MainMenu mm = new MainMenu();
+                MainMenu mm = new MainMenu(loggedInStaffID);
                 mm.setVisible(true);
             }else{
-                JOptionPane.showMessageDialog(this,"Incorrect username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,"Incorrect staff ID or password", "Error", JOptionPane.ERROR_MESSAGE);
                 System.out.println("username or password is wrong");
             }
         }catch(SQLException e){

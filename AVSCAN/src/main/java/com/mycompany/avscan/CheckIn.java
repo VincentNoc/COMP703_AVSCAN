@@ -34,6 +34,7 @@ public class CheckIn extends javax.swing.JFrame {
     private Map<String, Integer> enteredIDsToRowMap;
     private Hashtable<String, Data> equipments;
     private Timer barcodeTimer;
+    private String loggedInStaffID;
 
     public CheckIn() {
         initComponents();
@@ -42,6 +43,8 @@ public class CheckIn extends javax.swing.JFrame {
         enteredIDsToRowMap = new HashMap<>();
         getAllEquipmentData();
         jEquipmentID.requestFocusInWindow();
+      
+        
         
 //how long the delay is for automatic entry of keystrokes    
     barcodeTimer = new Timer(300, new ActionListener() {
@@ -276,7 +279,7 @@ public class CheckIn extends javax.swing.JFrame {
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        MainMenu mainmenu = new MainMenu();
+        MainMenu mainmenu = new MainMenu(loggedInStaffID);
         mainmenu.setVisible(true);
     }// GEN-LAST:event_JHomeButtonActionPerformed
 

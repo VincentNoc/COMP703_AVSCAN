@@ -8,6 +8,7 @@ package com.mycompany.avscan;
 import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
+//import com.mycompany.avscan.Login_Signup_pages.recordLoginUser;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,16 +40,19 @@ public class CheckOut extends javax.swing.JFrame {
     private Set<String> enteredIDs;
     private Map<String, Integer> enteredIDsToRowMap;
     private Timer barcodeTimer;
+    private static String loggedInStaffID;
+
     /**
      * Creates new form CheckOut
      */
-    public CheckOut() {
+    public CheckOut(String LoggedInStaffID) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.loggedInStaffID = LoggedInStaffID;
         enteredIDs = new HashSet<>();
         enteredIDsToRowMap = new HashMap<>();
         jEquipmentID.requestFocusInWindow();
-        
+   
         barcodeTimer = new Timer(300, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -384,7 +388,7 @@ public class CheckOut extends javax.swing.JFrame {
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        MainMenu mainmenu = new MainMenu();
+        MainMenu mainmenu = new MainMenu(loggedInStaffID);
         mainmenu.setVisible(true);
     }// GEN-LAST:event_JHomeButtonActionPerformed
 
@@ -392,7 +396,11 @@ public class CheckOut extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-
+        
+//        StaffInfo loggedInStaff = recordLoginUser.getStaffInfo(recordUserID);
+//        String staffID = loggedInStaff.getStaffID();
+        
+        
         String evID = jEventID.getText();
         String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
@@ -420,8 +428,7 @@ public class CheckOut extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " is already checked out.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-                
-                dbUtils.insertDataBookingTable(evID, evName, equipmentID, "01", dateTimeSent, dateTimeReturn);
+                dbUtils.insertDataBookingTable(evID, evName, equipmentID, loggedInStaffID, dateTimeSent, dateTimeReturn);
                 dbUtils.updateEquipmentStatusCheckedOut(equipmentID);
             }
             model.setRowCount(0);
@@ -486,7 +493,8 @@ public class CheckOut extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CheckOut().setVisible(true);
+                CheckOut checkout = new CheckOut(loggedInStaffID);
+                checkout.setVisible(true);
             }
         });
     }
