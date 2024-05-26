@@ -31,7 +31,6 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
     private List<MaintenanceData> dataList;
     private Hashtable<String, MaintenanceData> hashUnreturned;
     private ReturnMaintenance returnMaint;
-    private String loggedInStaffID;
 
     /**
      * Creates new form Maintenance
@@ -302,7 +301,7 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
-        MainMenu mm = new MainMenu(loggedInStaffID);
+        MainMenu mm = new MainMenu();
         mm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_homeButtonActionPerformed

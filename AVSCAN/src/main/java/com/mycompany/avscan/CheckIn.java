@@ -34,7 +34,7 @@ public class CheckIn extends javax.swing.JFrame {
     private Map<String, Integer> enteredIDsToRowMap;
     private Hashtable<String, Data> equipments;
     private Timer barcodeTimer;
-    private String loggedInStaffID;
+    
 
     public CheckIn() {
         initComponents();
@@ -43,7 +43,6 @@ public class CheckIn extends javax.swing.JFrame {
         enteredIDsToRowMap = new HashMap<>();
         getAllEquipmentData();
         jEquipmentID.requestFocusInWindow();
-        this.loggedInStaffID = loggedInStaffID;
       
         
         
@@ -280,7 +279,7 @@ public class CheckIn extends javax.swing.JFrame {
     private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JHomeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        MainMenu mainmenu = new MainMenu(loggedInStaffID);
+        MainMenu mainmenu = new MainMenu();
         mainmenu.setVisible(true);
     }// GEN-LAST:event_JHomeButtonActionPerformed
 
