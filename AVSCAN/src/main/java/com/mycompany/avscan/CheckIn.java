@@ -43,6 +43,7 @@ public class CheckIn extends javax.swing.JFrame {
         enteredIDsToRowMap = new HashMap<>();
         getAllEquipmentData();
         jEquipmentID.requestFocusInWindow();
+        this.loggedInStaffID = loggedInStaffID;
       
         
         

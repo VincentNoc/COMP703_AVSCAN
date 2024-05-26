@@ -39,6 +39,7 @@ public class History extends javax.swing.JFrame {
         initComponents();
         outPutDataToTable();
         this.setLocationRelativeTo(null);
+        this.loggedInStaffID = loggedInStaffID;
     }
 
     /**

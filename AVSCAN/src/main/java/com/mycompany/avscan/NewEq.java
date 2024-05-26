@@ -32,6 +32,7 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
     private Set<String> enteredIDs;
     private Map<String, Integer> enteredIDsToRowMap;
     private Timer barcodeTimer;
+    private String loggedInStaffID;
 
 
     /**
@@ -422,8 +423,9 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
 
     private void homeButtonconnectToParent(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonconnectToParent
         // TODO add your handling code here:
-//        new MainMenu().setVisible(true);
-//        this.dispose();
+        MainMenu mm = new MainMenu(loggedInStaffID);
+        mm.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_homeButtonconnectToParent
 
     /**
