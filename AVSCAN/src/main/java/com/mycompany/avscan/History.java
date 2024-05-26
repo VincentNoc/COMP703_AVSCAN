@@ -31,7 +31,7 @@ import multi.use.frames.SmallErrorMessage;
  * @author vince-kong, Misako Morihana
  */
 public class History extends javax.swing.JFrame {
-
+    private String loggedInStaffID;
     /**
      * Creates new form History
      */
@@ -387,7 +387,7 @@ public class History extends javax.swing.JFrame {
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        MainMenu mainMenu = new MainMenu();
+        MainMenu mainMenu = new MainMenu(loggedInStaffID);
         mainMenu.setVisible(true);
     }//GEN-LAST:event_homeButtonActionPerformed
 

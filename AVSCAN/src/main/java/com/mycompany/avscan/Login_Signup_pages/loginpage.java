@@ -15,9 +15,9 @@ import javax.swing.JOptionPane;
  * @author vince-kong
  */
 public class LoginPage extends javax.swing.JFrame {
-
+    private String loggedInStaffID;
     /**
-     * Creates new form loginpage
+     * Creates new form LoginPage
      */
     public LoginPage() {
         initComponents();
@@ -38,7 +38,7 @@ public class LoginPage extends javax.swing.JFrame {
         gbc.weightx = 1;
         gbc.weighty = 1;
         jPanel1 = new javax.swing.JPanel();
-        jUsername = new javax.swing.JTextField();
+        jStaffID = new javax.swing.JTextField();
         jUsernameLabel = new javax.swing.JLabel();
         jPasswordLabel = new javax.swing.JLabel();
         jPasswordTxt = new javax.swing.JPasswordField();
@@ -53,7 +53,7 @@ public class LoginPage extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setToolTipText("");
 
-        jUsernameLabel.setText("Username");
+        jUsernameLabel.setText("Staff ID");
 
         jPasswordLabel.setText("Password");
 
@@ -72,7 +72,7 @@ public class LoginPage extends javax.swing.JFrame {
                 .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jUsernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jStaffID, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPasswordLabel)
                     .addComponent(jPasswordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
@@ -87,7 +87,7 @@ public class LoginPage extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addComponent(jUsernameLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jStaffID, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPasswordLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -168,15 +168,17 @@ public class LoginPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
-            String Name = jUsername.getText();
+            String stID = jStaffID.getText();
             String password = jPasswordTxt.getText();
+
             
-            if(dbUtils.loginCredentials(Name, password)){
+            if(dbUtils.getLoginCredentials(stID, password)){
+                loggedInStaffID = stID;
                 this.dispose();
-                MainMenu mm = new MainMenu();
+                MainMenu mm = new MainMenu(loggedInStaffID);
                 mm.setVisible(true);
             }else{
-                JOptionPane.showMessageDialog(this,"Incorrect username or password", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,"Incorrect staff ID or password", "Error", JOptionPane.ERROR_MESSAGE);
                 System.out.println("username or password is wrong");
             }
         }catch(SQLException e){
@@ -231,7 +233,7 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JLabel jPasswordLabel;
     private javax.swing.JPasswordField jPasswordTxt;
     private javax.swing.JLabel jSignUplabel;
-    private javax.swing.JTextField jUsername;
+    private javax.swing.JTextField jStaffID;
     private javax.swing.JLabel jUsernameLabel;
     // End of variables declaration//GEN-END:variables
 }

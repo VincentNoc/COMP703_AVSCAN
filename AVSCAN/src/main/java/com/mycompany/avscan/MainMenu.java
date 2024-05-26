@@ -17,13 +17,16 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class MainMenu extends javax.swing.JFrame {
-
+    private static String loggedInStaffID; 
     /**
      * Creates new form MainMenu
+     * @param recordUserID
      */
-    public MainMenu() {
+    public MainMenu(String stID) {
+        this.loggedInStaffID = stID;
         initComponents();
         this.setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -255,7 +258,7 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void jButtonCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCheckOutActionPerformed
         this.dispose();
-        CheckOut checkOutPage = new CheckOut();
+        CheckOut checkOutPage = new CheckOut(loggedInStaffID);
         checkOutPage.setVisible(true);
     }//GEN-LAST:event_jButtonCheckOutActionPerformed
 
@@ -332,7 +335,8 @@ public class MainMenu extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainMenu().setVisible(true);
+                MainMenu mainMenu = new MainMenu(loggedInStaffID);
+                mainMenu.setVisible(true);
             }
         });
     }

@@ -48,7 +48,7 @@ public class DatabaseUtils {
     }
 
     public DatabaseUtils(String username, String password) throws SQLException {
-        loginCredentials(username, password);
+        getLoginCredentials(username, password);
     }
 
     public DatabaseUtils(DefaultTableModel table) {
@@ -231,12 +231,12 @@ public class DatabaseUtils {
         return toReturn;
     }
      
-    public final boolean loginCredentials(String username, String password) throws SQLException {
+    public final boolean getLoginCredentials(String stID, String password) throws SQLException {
         DatabaseConnector dbCon = new DatabaseConnector();
         try (Connection con = dbCon.connectToDatabase();) {
-            String query = "SELECT * FROM staff WHERE stName = ? AND password = ?";
+            String query = "SELECT * FROM staff WHERE stID = ? AND password = ?";
             try (PreparedStatement prepStm = con.prepareStatement(query)) {
-                prepStm.setString(1, username);
+                prepStm.setString(1, stID);
                 prepStm.setString(2, password);
                 try (ResultSet rs = prepStm.executeQuery()) {
                     return rs.next();
@@ -306,15 +306,13 @@ public class DatabaseUtils {
 
         return dataList;
     }*/
-    public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) {
+    public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
         String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
-
-        try {
+        DatabaseConnector dbCon = new DatabaseConnector();
+        try(Connection con = dbCon.connectToDatabase()) {
             Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
             Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
 
             Statement stmt = con.createStatement();
