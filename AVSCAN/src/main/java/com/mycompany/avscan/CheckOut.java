@@ -8,6 +8,7 @@ package com.mycompany.avscan;
 import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
+import com.mycompany.avscan.Login_Signup_pages.StaffIDTracker;
 //import com.mycompany.avscan.Login_Signup_pages.recordLoginUser;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -40,15 +41,13 @@ public class CheckOut extends javax.swing.JFrame {
     private Set<String> enteredIDs;
     private Map<String, Integer> enteredIDsToRowMap;
     private Timer barcodeTimer;
-    private static String loggedInStaffID;
 
     /**
      * Creates new form CheckOut
      */
-    public CheckOut(String LoggedInStaffID) {
+    public CheckOut() {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.loggedInStaffID = LoggedInStaffID;
         enteredIDs = new HashSet<>();
         enteredIDsToRowMap = new HashMap<>();
         jEquipmentID.requestFocusInWindow();
@@ -384,23 +383,12 @@ public class CheckOut extends javax.swing.JFrame {
             return null; // or throw an exception or return a default value
         }
     }
-
-    private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JHomeButtonActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-        MainMenu mainmenu = new MainMenu(loggedInStaffID);
-        mainmenu.setVisible(true);
-    }// GEN-LAST:event_JHomeButtonActionPerformed
-
-    private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jCheckOutButtonActionPerformed
+    
+    private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
 
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        
-//        StaffInfo loggedInStaff = recordLoginUser.getStaffInfo(recordUserID);
-//        String staffID = loggedInStaff.getStaffID();
-        
-        
+
         String evID = jEventID.getText();
         String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
@@ -412,34 +400,55 @@ public class CheckOut extends javax.swing.JFrame {
 
         try {
             DatabaseUtils dbUtils = new DatabaseUtils();
-            if(!dbUtils.doesEventExist(evID)){
-                dbUtils.insertDataEventTable(evID, evName);
-            }
-            
-            for (int i = 0; i < model.getRowCount(); i++) {
-                String equipmentID = model.getValueAt(i, 0).toString();
-                
-                if(!dbUtils.doesEquipmentExists(equipmentID)){
-                    JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " does not exist. Please add it to the database first.", "Error", JOptionPane.ERROR_MESSAGE);
-                    return; 
-                }
-                
-                if (dbUtils.isEquipmentCheckedOut(equipmentID)) {
-                    JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " is already checked out.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            // Retrieve the logged-in staff ID from AppContext
+            String loggedInStaffID = StaffIDTracker.getLoggedInStaffID();
+
+            // Check if staff ID is null or empty, handle the case if needed
+            if (loggedInStaffID == null || loggedInStaffID.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Error: No staff ID found. Please login again.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            if (!dbUtils.doesEventExist(evID)) {
+                dbUtils.insertDataEventTable(evID, evName);
+            }
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String equipmentID = model.getValueAt(i, 0).toString();
+
+                if (!dbUtils.doesEquipmentExists(equipmentID)) {
+                    JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " does not exist. Please add it to the database first.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                if (dbUtils.isEquipmentCheckedOut(equipmentID)) {
+                    JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " is already checked out.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 dbUtils.insertDataBookingTable(evID, evName, equipmentID, loggedInStaffID, dateTimeSent, dateTimeReturn);
                 dbUtils.updateEquipmentStatusCheckedOut(equipmentID);
             }
+
+            JOptionPane.showMessageDialog(this, "Equipment has been successfully checked out.", "Success", JOptionPane.INFORMATION_MESSAGE);
             model.setRowCount(0);
             enteredIDs.clear();
             enteredIDsToRowMap.clear();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error has Occurred, check your connection to the database", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error has occurred, check your connection to the database", "Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-    }// GEN-LAST:event_jCheckOutButtonActionPerformed
+    }
+    
+    private void JHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JHomeButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        MainMenu mainmenu = new MainMenu();
+        mainmenu.setVisible(true);
+    }// GEN-LAST:event_JHomeButtonActionPerformed
+
+// GEN-LAST:event_jCheckOutButtonActionPerformed
 
     private void jAddToTableActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jAddToTableActionPerformed
         // TODO add your handling code here:
@@ -493,7 +502,7 @@ public class CheckOut extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                CheckOut checkout = new CheckOut(loggedInStaffID);
+                CheckOut checkout = new CheckOut();
                 checkout.setVisible(true);
             }
         });

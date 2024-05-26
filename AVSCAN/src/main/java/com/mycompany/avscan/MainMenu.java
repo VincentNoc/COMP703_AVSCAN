@@ -12,6 +12,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.mycompany.avscan.Login_Signup_pages.LoginPage;
+import com.mycompany.avscan.Login_Signup_pages.StaffIDTracker;
 import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -22,11 +23,13 @@ public class MainMenu extends javax.swing.JFrame {
      * Creates new form MainMenu
      * @param recordUserID
      */
-    public MainMenu(String stID) {
-        this.loggedInStaffID = stID;
+    public MainMenu() {
+       
         initComponents();
         this.setLocationRelativeTo(null);
-        
+        StaffIDTracker staffIDTracker = new StaffIDTracker();
+        String loggedInStaffID = staffIDTracker.getLoggedInStaffID();
+        System.out.println(loggedInStaffID);
     }
 
     /**
@@ -258,7 +261,7 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void jButtonCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCheckOutActionPerformed
         this.dispose();
-        CheckOut checkOutPage = new CheckOut(loggedInStaffID);
+        CheckOut checkOutPage = new CheckOut();
         checkOutPage.setVisible(true);
     }//GEN-LAST:event_jButtonCheckOutActionPerformed
 
@@ -335,8 +338,9 @@ public class MainMenu extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MainMenu mainMenu = new MainMenu(loggedInStaffID);
+                MainMenu mainMenu = new MainMenu();
                 mainMenu.setVisible(true);
+                
             }
         });
     }
