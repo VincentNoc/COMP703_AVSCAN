@@ -466,7 +466,12 @@ public class CheckOut extends javax.swing.JFrame {
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 String equipmentID = model.getValueAt(i, 0).toString();
-
+                 
+                if(dbUtils.isEquipmentReparing(equipmentID)){
+                    JOptionPane.showMessageDialog(this, equipmentID + " cannot be checked out, it is in repair.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }   
+                
                 if (!dbUtils.doesEquipmentExists(equipmentID)) {
                     JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " does not exist. Please add it to the database first.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;

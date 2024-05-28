@@ -306,6 +306,7 @@ public class DatabaseUtils {
 
         return dataList;
     }*/
+    
     public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
         String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
         DatabaseConnector dbCon = new DatabaseConnector();
@@ -599,6 +600,17 @@ public class DatabaseUtils {
             }
         }
         return false;
+    }
+    
+    public boolean isEquipmentReparing(String eqID) throws SQLException{
+        String query = "SELECT * FROM equipmentlog WHERE eqStatus = 'In Maintenance' AND eqID = ?";
+        DatabaseConnector dbCon = new DatabaseConnector();
+        
+        try(Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)){
+            prepStmt.setString(1, eqID);
+            ResultSet rs = prepStmt.executeQuery();
+            return rs.next();
+        }
     }
     
 }
