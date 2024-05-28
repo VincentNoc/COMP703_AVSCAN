@@ -51,6 +51,8 @@ public class CheckOut extends javax.swing.JFrame {
         enteredIDsToRowMap = new HashMap<>();
         jEquipmentID.requestFocusInWindow();
    
+        
+        //timer is set up to trigger the processBarcode method after 300 milliseconds 
         barcodeTimer = new Timer(300, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,7 +78,10 @@ public class CheckOut extends javax.swing.JFrame {
         });
     }
 
-    
+    /***checks if the text field has been changed and if it's not empty methods are called.
+     * this method allows for double scan barcode to remove and automatically add into the table
+     ***/
+
     private void processBarcode() {
         String scannedBarcode = jEquipmentID.getText().trim();
         if (!scannedBarcode.isEmpty()) {
@@ -89,7 +94,7 @@ public class CheckOut extends javax.swing.JFrame {
         }
     }
    
-       
+    
     public void addBarcodeEqID(String eqID) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         enteredIDs.add(eqID);
@@ -398,10 +403,9 @@ public class CheckOut extends javax.swing.JFrame {
     // String formatDateTime to get time from spinner and date from calendar
     // component in the format that works with TimeStamp
     private String formatDateTime(String time, String date) {
-        /*
-         * originalDateFormat is created so that we can parse String Date as a Date
-         * object, which can later be formatted to yyyy-MM-dd format
-         */
+        //originalDateFormat is created so that we can parse String Date as a Date
+        // object, which can later be formatted to yyyy-MM-dd format
+         
         SimpleDateFormat originalDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -419,6 +423,7 @@ public class CheckOut extends javax.swing.JFrame {
         }
     }
     
+    //this method is to check out equipment that is being sent out to events
     private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
 
@@ -428,14 +433,13 @@ public class CheckOut extends javax.swing.JFrame {
         String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
         String dateReturn = jTxtReturnDate.getText();
-        String eqID = jEquipmentID.getText();
 
         // formatting date and time.
         String dateTimeSent = formatDateTime((String) timePicker1.getSelectedItem(), dateIssue);
         String dateTimeReturn = formatDateTime((String) timePicker2.getSelectedItem(), dateReturn);
         
-        if(eqID.trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "ID input is blank, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
+        if(model.getRowCount() <= 0){
+            JOptionPane.showMessageDialog(this, "There is nothing to input, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -496,6 +500,7 @@ public class CheckOut extends javax.swing.JFrame {
 
 // GEN-LAST:event_jCheckOutButtonActionPerformed
 
+    //button allows for users to enter an equipmentID into the table. 
     private void jAddToTableActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jAddToTableActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
