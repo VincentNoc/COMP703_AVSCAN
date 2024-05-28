@@ -49,8 +49,21 @@ public class Help extends javax.swing.JFrame {
         //Write Help txt for Add New Equipment Page here...
         
         // Txt for History Page
-        hTxtDataList = "Help - History Page";
+        hTxtDataList = "//======== Help - DataList Page ========//\n"
         //Write Help txt for Data List Page here...
+                + "Data List page is a page that shows the list of all \n"
+                + "equipment in the system database.\n\n"
+                + "- - - - - - - - - Search Feature - - - - - - - - -\n"
+                + "You can search through the list by clicking and typing \n"
+                + "into the text boxes. You don’t have to fill all text boxes \n"
+                + "and only need to type into what you want to search \n"
+                + "into. \n\n"
+                + "Please click on the \"Search\" button or press the \n"
+                + "\"Enter\" button in the text box to get the results of the \n"
+                + "search.\n\n"
+                + "You can go back to the original table by clearing out \n"
+                + "all text boxes and clicking the \"Search\" button or \n"
+                + "pressing the \"Enter\" button in the text box.";
         
     }
 
