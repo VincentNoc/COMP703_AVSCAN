@@ -257,8 +257,8 @@ public class CheckIn extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         String eqID = jEquipmentID.getText();
-        if(eqID.trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "ID input is blank, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
+        if(model.getRowCount() <=0){
+            JOptionPane.showMessageDialog(this, "input is blank, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
@@ -268,6 +268,8 @@ public class CheckIn extends javax.swing.JFrame {
             try {
                 DatabaseUtils dbUtil = new DatabaseUtils();
                 dbUtil.updateEquipmentLogStatusCheckedIn(equipmentID);
+                JOptionPane.showMessageDialog(this, "Equipment has been successfully checked in.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
 
             } catch (SQLException ex) {
                 // Handle the exception (e.g., display error message)
