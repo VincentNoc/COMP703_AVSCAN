@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
  * @author vince-kong
  */
 public class LoginPage extends javax.swing.JFrame {
-    private String loggedInStaffID;
 
     /**
      * Creates new form LoginPage

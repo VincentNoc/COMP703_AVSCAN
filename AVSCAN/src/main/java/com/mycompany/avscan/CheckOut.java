@@ -9,7 +9,6 @@ import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
 import com.mycompany.avscan.Login_Signup_pages.StaffIDTracker;
-//import com.mycompany.avscan.Login_Signup_pages.recordLoginUser;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,7 +76,8 @@ public class CheckOut extends javax.swing.JFrame {
         });
     }
 
-        private void processBarcode() {
+    
+    private void processBarcode() {
         String scannedBarcode = jEquipmentID.getText().trim();
         if (!scannedBarcode.isEmpty()) {
             if (enteredIDs.contains(scannedBarcode)) {
@@ -89,17 +89,23 @@ public class CheckOut extends javax.swing.JFrame {
         }
     }
    
-        
+       
     public void addBarcodeEqID(String eqID) {
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         enteredIDs.add(eqID);
         int row = model.getRowCount();
         model.addRow(new Object[] { eqID });
         enteredIDsToRowMap.put(eqID, row);
     }
-
+    
+    /***
+     * this method was made to allow for barcode scanner to be able to scan twice and remove the scanned ID from the table
+     * and the reason why eqID from enteredID hashset and enteredIDsToRowMap to hashmap is in this removal is so when the 
+     * double scan removal happens the eqID is removed from the hashset and hashmap so that if a user wanted to add 
+     * eqID that was added before an error will not happen. 
+     ***/ 
     private void removeEqID(String eqID) {
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int row = enteredIDsToRowMap.get(eqID);
         enteredIDs.remove(eqID);
         enteredIDsToRowMap.remove(eqID);
@@ -147,10 +153,11 @@ public class CheckOut extends javax.swing.JFrame {
         jEquipmentID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
         jAddToTable = new javax.swing.JButton();
         timePicker1 = new javax.swing.JComboBox<>();
         timePicker2 = new javax.swing.JComboBox<>();
+        jDeleteEntry = new javax.swing.JButton();
 
         dateChooser2.setTextRefernce(jTxtReturnDate);
 
@@ -191,7 +198,7 @@ public class CheckOut extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel2.setText("Equipment ID");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -199,9 +206,10 @@ public class CheckOut extends javax.swing.JFrame {
                 "Equipment ID"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(jTable1);
 
         jAddToTable.setText("+");
+        jAddToTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jAddToTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jAddToTableActionPerformed(evt);
@@ -220,6 +228,13 @@ public class CheckOut extends javax.swing.JFrame {
         timePicker2.setEditor(new CustomComboBoxEditor());
         timePicker2.setModel(new javax.swing.DefaultComboBoxModel<>(generateTimes()));
 
+        jDeleteEntry.setText("-");
+        jDeleteEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jDeleteEntryActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -227,11 +242,6 @@ public class CheckOut extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jAddToTable))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -261,7 +271,15 @@ public class CheckOut extends javax.swing.JFrame {
                                             .addComponent(timePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(19, 19, 19)))))
+                                .addGap(19, 19, 19))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jAddToTable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDeleteEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -272,7 +290,8 @@ public class CheckOut extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jAddToTable))
+                    .addComponent(jAddToTable)
+                    .addComponent(jDeleteEntry))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -303,6 +322,22 @@ public class CheckOut extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jDeleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jDeleteEntryActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int[] selectedRow = jTable1.getSelectedRows();
+
+        // iterates through the selected amount of rows, to delete at once.
+        for (int i = selectedRow.length - 1; i >= 0; i--) {
+            int rowIndex = selectedRow[i];
+            String equipmentID = (String) model.getValueAt(rowIndex, NORMAL);
+            model.removeRow(rowIndex);
+            enteredIDs.remove(equipmentID);
+            enteredIDsToRowMap.remove(equipmentID);
+        }
+    }//GEN-LAST:event_jDeleteEntryActionPerformed
 
     private String[] generateTimes() {
         String[] times = new String[24 * 4]; // 24 hours * 4 quarters per hour
@@ -353,7 +388,7 @@ public class CheckOut extends javax.swing.JFrame {
             }
 
             // Set the table model
-            jTable2.setModel(model);
+            jTable1.setModel(model);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -387,17 +422,28 @@ public class CheckOut extends javax.swing.JFrame {
     private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
 
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         String evID = jEventID.getText();
         String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
         String dateReturn = jTxtReturnDate.getText();
+        String eqID = jEquipmentID.getText();
 
         // formatting date and time.
         String dateTimeSent = formatDateTime((String) timePicker1.getSelectedItem(), dateIssue);
         String dateTimeReturn = formatDateTime((String) timePicker2.getSelectedItem(), dateReturn);
-
+        
+        if(eqID.trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "ID input is blank, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if(evID.trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "please enter a Event ID.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         try {
             DatabaseUtils dbUtils = new DatabaseUtils();
 
@@ -426,7 +472,7 @@ public class CheckOut extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " is already checked out.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
+                
                 dbUtils.insertDataBookingTable(evID, evName, equipmentID, loggedInStaffID, dateTimeSent, dateTimeReturn);
                 dbUtils.updateEquipmentStatusCheckedOut(equipmentID);
             }
@@ -452,7 +498,7 @@ public class CheckOut extends javax.swing.JFrame {
 
     private void jAddToTableActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jAddToTableActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         String equipmentID = jEquipmentID.getText();
 
         if (!enteredIDs.contains(equipmentID)) {
@@ -471,15 +517,6 @@ public class CheckOut extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-        // (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-         * look and feel.
-         * For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -515,6 +552,7 @@ public class CheckOut extends javax.swing.JFrame {
     private com.raven.datechooser.DateChooser dateChooser2;
     private javax.swing.JButton jAddToTable;
     private javax.swing.JButton jCheckOutButton;
+    private javax.swing.JButton jDeleteEntry;
     private javax.swing.JTextField jEquipmentID;
     private javax.swing.JTextField jEventID;
     private javax.swing.JLabel jLabel2;
@@ -523,7 +561,7 @@ public class CheckOut extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTxtDate;
     private javax.swing.JTextField jTxtReturnDate;
     private javax.swing.JComboBox<String> timePicker1;
