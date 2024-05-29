@@ -8,6 +8,7 @@ package com.mycompany.avscan;
  *
  * @author 2xkaz
  */
+import Database.DatabaseUtils;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -17,6 +18,7 @@ import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 public class MainMenu extends javax.swing.JFrame {
     private static String loggedInStaffID; 
     /**
@@ -24,11 +26,11 @@ public class MainMenu extends javax.swing.JFrame {
      * @param recordUserID
      */
     public MainMenu() {
-       
         initComponents();
         this.setLocationRelativeTo(null);
         StaffIDTracker staffIDTracker = new StaffIDTracker();
         String loggedInStaffID = staffIDTracker.getLoggedInStaffID();
+        loadEquipmentLog();
         System.out.println(loggedInStaffID);
     }
 
@@ -69,15 +71,10 @@ public class MainMenu extends javax.swing.JFrame {
         jTable1.setFont(new java.awt.Font("Yu Gothic UI", 0, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Equipment Name", "Equipment ID", "Return Due Date", "Status"
+                "Equipment ID", "Equipment Name", "Return Due Date", "Status"
             }
         ));
         jTable1.setPreferredSize(new java.awt.Dimension(960, 180));
@@ -249,6 +246,16 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadEquipmentLog(){
+        try{
+            DatabaseUtils dbUtils = new DatabaseUtils();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            dbUtils.getEquipmentStatusReturnDate(model);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }  
+    }
+    
     private void jButtonDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataListActionPerformed
         this.dispose();
         History historyPage = new History();

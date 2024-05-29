@@ -49,7 +49,6 @@ public class History extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dateChooser1 = new com.raven.datechooser.DateChooser();
         jPanel1 = new javax.swing.JPanel();
         equipmentIDInput = new javax.swing.JTextField();
         parentIDInput = new javax.swing.JTextField();
@@ -66,9 +65,6 @@ public class History extends javax.swing.JFrame {
         ExportToCsvButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-
-        dateChooser1.setAutoscrolls(true);
-        dateChooser1.setTextRefernce(jTxtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,8 +114,6 @@ public class History extends javax.swing.JFrame {
 
         eventIDLabel.setText("Event ID");
 
-        jTxtDate.setEditable(true);
-        jTxtDate.setText("");
         jTxtDate.setToolTipText("");
 
         jLabel1.setText("Date");
@@ -513,7 +507,6 @@ public class History extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ExportToCsvButton;
-    private com.raven.datechooser.DateChooser dateChooser1;
     private javax.swing.JTextField equipmentIDInput;
     private javax.swing.JLabel equipmentIDLabel;
     private javax.swing.JTextField equipmentNameInput;
