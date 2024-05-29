@@ -8,6 +8,7 @@ package com.mycompany.avscan;
  *
  * @author 2xkaz
  */
+import Database.DatabaseUtils;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -17,6 +18,7 @@ import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 public class MainMenu extends javax.swing.JFrame {
     private static String loggedInStaffID; 
     /**
@@ -24,11 +26,11 @@ public class MainMenu extends javax.swing.JFrame {
      * @param recordUserID
      */
     public MainMenu() {
-       
         initComponents();
         this.setLocationRelativeTo(null);
         StaffIDTracker staffIDTracker = new StaffIDTracker();
         String loggedInStaffID = staffIDTracker.getLoggedInStaffID();
+        loadEquipmentLog();
         System.out.println(loggedInStaffID);
     }
 
@@ -249,6 +251,16 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadEquipmentLog(){
+        try{
+            DatabaseUtils dbUtils = new DatabaseUtils();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            dbUtils.getEquipmentStatusReturnDate(model);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }  
+    }
+    
     private void jButtonDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataListActionPerformed
         this.dispose();
         History historyPage = new History();
