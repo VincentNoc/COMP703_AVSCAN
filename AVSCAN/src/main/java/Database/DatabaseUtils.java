@@ -4,6 +4,7 @@
  */
 package Database;
 
+import com.mycompany.avscan.Login_Signup_pages.StaffRole;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -51,7 +52,7 @@ public class DatabaseUtils {
         getLoginCredentials(username, password);
     }
 
-    public DatabaseUtils(DefaultTableModel table) {
+    public DatabaseUtils(DefaultTableModel table) throws SQLException {
         insertDataEquipmentLog(table);
     }
 
@@ -81,13 +82,12 @@ public class DatabaseUtils {
 
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
-    public final String insertDataEquipmentLog(DefaultTableModel table) {
+    public final String insertDataEquipmentLog(DefaultTableModel table) throws SQLException {
         String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID, eqStatus) VALUES (?, ?, ?, ?, ?)";
         //int ifDublicate = 0;
         String ifDublicate ="";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+        DatabaseConnector dbCon = new DatabaseConnector();
+        try(Connection con = dbCon.connectToDatabase()) {
             System.out.println("Connected to Database");
             
             //for (int i = 0; i < table.getRowCount(); i++) {
@@ -233,15 +233,23 @@ public class DatabaseUtils {
      
     public final boolean getLoginCredentials(String stID, String password) throws SQLException {
         DatabaseConnector dbCon = new DatabaseConnector();
-        try (Connection con = dbCon.connectToDatabase();) {
-            String query = "SELECT * FROM staff WHERE stID = ? AND password = ?";
+        StaffRole sr = new StaffRole();
+        try (Connection con = dbCon.connectToDatabase()) {
+            String query = "SELECT stRole FROM staff WHERE stID = ? AND password = ?";
             try (PreparedStatement prepStm = con.prepareStatement(query)) {
                 prepStm.setString(1, stID);
                 prepStm.setString(2, password);
                 try (ResultSet rs = prepStm.executeQuery()) {
-                    return rs.next();
+                    if (rs.next()) {
+                        // Retrieve the user role from the result set
+                        String role = rs.getString("stRole");
+                        // Store the role in UserSession
+                        sr.setUserRole(role);
+                        return true;
+                    } else {
+                        return false; // Invalid credentials
+                    }
                 }
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -249,16 +257,16 @@ public class DatabaseUtils {
         }
     }
 
-    public final void insertStaff(String Username, String StaffID, String password) {
-        String query = "INSERT INTO staff (stName, stID, password) VALUES (?, ?, ?)";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            DatabaseConnector dbCon = new DatabaseConnector();
-            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
-            PreparedStatement prepStmt = con.prepareStatement(query);
+    public final void insertStaff(String Username, String StaffID, String password) throws SQLException {
+        String query = "INSERT INTO staff (stName, stID, stRole,password) VALUES (?, ?, ?, ?)";
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try(Connection con = dbCon.connectToDatabase();
+            PreparedStatement prepStmt = con.prepareStatement(query);){
             prepStmt.setString(1, Username);
             prepStmt.setString(2, StaffID);
-            prepStmt.setString(3, password);
+            prepStmt.setString(3, "Normal");
+            prepStmt.setString(4, password);
             prepStmt.execute();
 
             System.out.println("Information added");
@@ -307,54 +315,44 @@ public class DatabaseUtils {
         return dataList;
     }*/
     
-    public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
-        String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
+
+    public void getEquipmentStatusReturnDate(DefaultTableModel tableModel) throws SQLException {
+        String query = "SELECT eq.eqID, eq.eqName, b.eqReturnDateTime, eq.eqStatus " +
+               "FROM equipmentlog eq " +
+               "JOIN booking b ON eq.eqID = b.eqID " +
+               "WHERE eq.eqStatus = 'Checked Out'";
         DatabaseConnector dbCon = new DatabaseConnector();
-        try(Connection con = dbCon.connectToDatabase()) {
-            Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
-            Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
+         
+        try(Connection con = dbCon.connectToDatabase()){
+            Statement stmt = con.createStatement(); 
+            ResultSet rs = stmt.executeQuery(query);
 
-            System.out.println("Connected to Database");
+            // loops until it reads all rows from database
+            while (rs.next()) {
+                // use rs.getInt and rs.getString to get data from each row
+                // use String.valueOf() to convert int to a String
 
-            Statement stmt = con.createStatement();
-            PreparedStatement prepStmt = con.prepareStatement(query);
-            prepStmt.setString(1, evID);
-            prepStmt.setString(2, evEquipmentID);
-            prepStmt.setString(3, evName);
-            prepStmt.setString(4, evDateTime);
-            prepStmt.setString(5, evCheckOutStaff);
-            prepStmt.setTimestamp(6, timeStampSent);
-            prepStmt.setTimestamp(7, timeStampReturn);
+                // getting data for each column
+                String eqID = rs.getString("eqID");
+                String eqName = rs.getString("eqName");
+                String eqReturnDT = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
+                String eqStatus = rs.getString("eqStatus");
 
-            prepStmt.execute();
+                // An array to store data into jTable
+                String tableData[] = { eqID, eqName, eqReturnDT, eqStatus};
 
-            System.out.println("Information added");
+                // Add the String arary into the jTable
+                tableModel.addRow(tableData);
+            }
+            // Clear out ResultSet
+            rs.close();
+
             con.close();
-
-        } catch (Exception e) {
-//      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
-            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
-
-    /*public List<Data> fetchDataFromEquipmentLog() {
-        List<Data> dataList = new ArrayList<>();
-
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
-
-            while (rs.next()) {
-                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
-                dataList.add(equipment);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }*/
+    
     public List<MaintenanceData> fetchMaintenanceData() {
         List<MaintenanceData> dataList = new ArrayList<>();
 
