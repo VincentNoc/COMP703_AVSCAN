@@ -29,36 +29,36 @@ public class Help extends javax.swing.JFrame {
         
         // Txt for Home Page
         hTxtHome = "Help - Home Page\n"
-                + "In this page you can select and move into one of the\n"
+                + "\nIn this page you can select and move into one of the\n"
                 + "pages shown in this page.\n"
                 + "\n"
-                + "It also shows equipment that has not been returned yet and serves as a reminder.\n"
-                + "It has Dark mode toggle in the top left under options.\n";
+                + "It also shows equipment that has not been returned \nyet and serves as a reminder.\n"
+                + "\nIt has Dark mode toggle in the top left under options.\n";
         //Write Help txt for Home Page here...
         
         // Txt for Check In Page
         hTxtCheckIn = "Help - Check In Page\n"
-               + "After scanning the barcode, the barcode scanner will automatically\n"
-               +"enter the equipment ID into the table.\n"
-               +"Double scan removes barcode from table e.g. wrong equipment is in the table\n"
-               +"after you input into the table, scan the same equipment id and it will be removed from the table.\n";
+               + "After scanning the barcode, the barcode scanner will \nautomatically\n"
+               +"\nenter the equipment ID into the table.\n"
+               +"\nDouble scan removes barcode from table e.g. wrong \nequipment is in the table\n"
+               +"\nafter you input into the table, scan the same \nequipment id and it will be removed from the table.\n";
         //Write Help txt for Check In Page here...
         
         // Txt for Check Out Page
         hTxtCheckOut = "Help - Check Out Page\n"
-               +"Double scan removes barcode from table e.g. wrong equipment is in the table after\n"
-               +"you input into the table, scan the same equipment id and it will be removed from the table.\n"
-               +"After scanning the barcode, the barcode scanner will automatically be entered into the table.\n"
-               +"You can pick what time equipment is being sent out on, but you can also type in your own time.\n"
+               +"Double scan removes barcode from table e.g. \nwrong equipment is in the table after"
+               +" you input into the \ntable, scan the same equipment id \nand it will be removed from the table.\n"
+               +"After scanning the barcode, the barcode scanner will \nautomatically be entered into the table.\n"
+               +"You can pick what time equipment is being sent out on,\n but you can also type in your own time.\n"
                +"Just make sure it has the “:” is included in the typed time.\n";
         //Write Help txt for Check Out Page here...
         
         // Txt for Add New Equipment Page
         hTxtAddNewEquipment = "Help - Add New Equipment Page\n"
-               +"To add new equipment to the table list, Left click on ID input field, scan equipment ID.\n"
-               +"Input equipment Name and Type. Click the button with plus sign. Repeat until all new equipment added.\n"
-               +" To create child-parent connection, Select an equipment in table by mouse left click. Click “Add child” button.\n"
-               +"A new window will be opened with parent information on the top of the window. Scan Child (Sub) equipment ID, enter name\n"
+               +"To add new equipment to the table list, Left click on ID \ninput field, scan equipment ID.\n"
+               +"Input equipment Name and Type. Click the button with \nplus sign. Repeat until all new equipment added.\n"
+               +"To create child-parent connection, Select an \nequipment in table by mouse left click. Click \n“Add child” button. "
+               +"A new window will be opened with \nparent information on the top of the window. \nScan Child (Sub) equipment ID, enter name "
                +"and type. Then press add button. Repeat until all equipment is added. User able to delete a row from the table if\n"
                +"select a row by mouse left click and click delete button. After all equipment has been added press connect to\n"
                +"parent button and program will return to the previous page with updated table.\n"
@@ -68,9 +68,9 @@ public class Help extends javax.swing.JFrame {
         //Write Help txt for Add New Equipment Page here...
         
         // Txt for History Page
-        hTxtDataList = "//======== Help - DataList Page ========//\n"
+        hTxtDataList = 
         //Write Help txt for Data List Page here...
-                + "Data List page is a page that shows the list of all \n"
+                 "Data List page is a page that shows the list of all \n"
                 + "equipment in the system database.\n\n"
                 + "- - - - - - - - - Search Feature - - - - - - - - -\n"
                 + "You can search through the list by clicking and typing \n"
@@ -105,9 +105,9 @@ public class Help extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 700));
 
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 36)); // NOI18N
         jLabel1.setText("Help");
@@ -184,21 +184,21 @@ public class Help extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jBtnHome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jBtnCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jBtnCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jBtnAddNewEquip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jBtnDataList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 66, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(jBtnDataList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(620, 390));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setPreferredSize(new java.awt.Dimension(620, 390));
 
         jTextArea1.setEditable(false);
@@ -222,6 +222,13 @@ public class Help extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jToggleButton1.setText("Main Menu");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -233,9 +240,12 @@ public class Help extends javax.swing.JFrame {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(120, 120, 120)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jToggleButton1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(100, 100, 100))
         );
         layout.setVerticalGroup(
@@ -244,10 +254,12 @@ public class Help extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(206, 206, 206))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -272,6 +284,14 @@ public class Help extends javax.swing.JFrame {
     private void jBtnDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDataListActionPerformed
         jTextArea1.setText(hTxtDataList);
     }//GEN-LAST:event_jBtnDataListActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        // TODO add your handling code here:
+        MainMenu mm = new MainMenu();
+        mm.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -321,5 +341,6 @@ public class Help extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }
