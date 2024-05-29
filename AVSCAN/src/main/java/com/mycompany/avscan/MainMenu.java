@@ -252,6 +252,7 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadEquipmentLog(){
+
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
