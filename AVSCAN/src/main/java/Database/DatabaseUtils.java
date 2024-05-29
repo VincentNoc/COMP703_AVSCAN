@@ -317,7 +317,44 @@ public class DatabaseUtils {
             e.printStackTrace();
         }
     }
+    
+    public void getEquipmentStatusReturnDate(DefaultTableModel tableModel) throws SQLException {
+        String query = "SELECT eq.eqID, eq.eqName, b.eqReturnDateTime, eq.eqStatus " +
+               "FROM equipmentlog eq " +
+               "JOIN booking b ON eq.eqID = b.eqID " +
+               "WHERE eq.eqStatus = 'Checked Out'";
+        DatabaseConnector dbCon = new DatabaseConnector();
+         
+        try(Connection con = dbCon.connectToDatabase()){
+            Statement stmt = con.createStatement(); 
+            ResultSet rs = stmt.executeQuery(query);
 
+            // loops until it reads all rows from database
+            while (rs.next()) {
+                // use rs.getInt and rs.getString to get data from each row
+                // use String.valueOf() to convert int to a String
+
+                // getting data for each column
+                String eqID = rs.getString("eqID");
+                String eqName = rs.getString("eqName");
+                String eqReturnDT = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
+                String eqStatus = rs.getString("eqStatus");
+
+                // An array to store data into jTable
+                String tableData[] = { eqID, eqName, eqReturnDT, eqStatus};
+
+                // Add the String arary into the jTable
+                tableModel.addRow(tableData);
+            }
+            // Clear out ResultSet
+            rs.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
     public List<MaintenanceData> fetchMaintenanceData() throws SQLException {
         List<MaintenanceData> dataList = new ArrayList<>();
 
