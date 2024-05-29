@@ -31,7 +31,6 @@ import multi.use.frames.SmallErrorMessage;
  * @author vince-kong, Misako Morihana
  */
 public class History extends javax.swing.JFrame {
-
     /**
      * Creates new form History
      */

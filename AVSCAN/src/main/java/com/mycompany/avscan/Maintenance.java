@@ -301,7 +301,8 @@ public class Maintenance extends javax.swing.JFrame implements MaintenanceAddCom
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
         // TODO add your handling code here:
-        new MainMenu().setVisible(true);
+        MainMenu mm = new MainMenu();
+        mm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_homeButtonActionPerformed
 

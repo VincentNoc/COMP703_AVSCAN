@@ -34,6 +34,7 @@ public class CheckIn extends javax.swing.JFrame {
     private Map<String, Integer> enteredIDsToRowMap;
     private Hashtable<String, Data> equipments;
     private Timer barcodeTimer;
+    
 
     public CheckIn() {
         initComponents();
@@ -42,6 +43,8 @@ public class CheckIn extends javax.swing.JFrame {
         enteredIDsToRowMap = new HashMap<>();
         getAllEquipmentData();
         jEquipmentID.requestFocusInWindow();
+      
+        
         
 //how long the delay is for automatic entry of keystrokes    
     barcodeTimer = new Timer(300, new ActionListener() {
@@ -168,9 +171,9 @@ public class CheckIn extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jEquipmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jAddToTable, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jAddToTable)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jDeleteEntry, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jDeleteEntry)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -253,13 +256,20 @@ public class CheckIn extends javax.swing.JFrame {
     private void addActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
+        String eqID = jEquipmentID.getText();
+        if(model.getRowCount() <=0){
+            JOptionPane.showMessageDialog(this, "input is blank, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         for (int i = 0; i < model.getRowCount(); i++) {
             String equipmentID = model.getValueAt(i, 0).toString();
 
             try {
                 DatabaseUtils dbUtil = new DatabaseUtils();
                 dbUtil.updateEquipmentLogStatusCheckedIn(equipmentID);
+                JOptionPane.showMessageDialog(this, "Equipment has been successfully checked in.", "Success", JOptionPane.INFORMATION_MESSAGE);
+
 
             } catch (SQLException ex) {
                 // Handle the exception (e.g., display error message)
