@@ -32,20 +32,39 @@ public class Help extends javax.swing.JFrame {
                 + "In this page you can select and move into one of the\n"
                 + "pages shown in this page.\n"
                 + "\n"
-                + "\n"
-                + "\n";
+                + "It also shows equipment that has not been returned yet and serves as a reminder.\n"
+                + "It has Dark mode toggle in the top left under options.\n";
         //Write Help txt for Home Page here...
         
         // Txt for Check In Page
-        hTxtCheckIn = "Help - Check In Page";
+        hTxtCheckIn = "Help - Check In Page\n"
+               + "After scanning the barcode, the barcode scanner will automatically\n"
+               +"enter the equipment ID into the table.\n"
+               +"Double scan removes barcode from table e.g. wrong equipment is in the table\n"
+               +"after you input into the table, scan the same equipment id and it will be removed from the table.\n";
         //Write Help txt for Check In Page here...
         
         // Txt for Check Out Page
-        hTxtCheckOut = "Help - Check Out Page";
+        hTxtCheckOut = "Help - Check Out Page\n"
+               +"Double scan removes barcode from table e.g. wrong equipment is in the table after\n"
+               +"you input into the table, scan the same equipment id and it will be removed from the table.\n"
+               +"After scanning the barcode, the barcode scanner will automatically be entered into the table.\n"
+               +"You can pick what time equipment is being sent out on, but you can also type in your own time.\n"
+               +"Just make sure it has the “:” is included in the typed time.\n";
         //Write Help txt for Check Out Page here...
         
         // Txt for Add New Equipment Page
-        hTxtAddNewEquipment = "Help - Add New Equipment Page";
+        hTxtAddNewEquipment = "Help - Add New Equipment Page\n"
+               +"To add new equipment to the table list, Left click on ID input field, scan equipment ID.\n"
+               +"Input equipment Name and Type. Click the button with plus sign. Repeat until all new equipment added.\n"
+               +" To create child-parent connection, Select an equipment in table by mouse left click. Click “Add child” button.\n"
+               +"A new window will be opened with parent information on the top of the window. Scan Child (Sub) equipment ID, enter name\n"
+               +"and type. Then press add button. Repeat until all equipment is added. User able to delete a row from the table if\n"
+               +"select a row by mouse left click and click delete button. After all equipment has been added press connect to\n"
+               +"parent button and program will return to the previous page with updated table.\n"
+               +"To add new scanned equipment to database, After all equipment has been added to the table and child-parent\n"
+               +"connection created add button can be pressed to add all new equipment to database.\n"
+               +"To remove equipment from the list, select equipment inside table by left mouse click and press delete button after.\n";
         //Write Help txt for Add New Equipment Page here...
         
         // Txt for History Page
