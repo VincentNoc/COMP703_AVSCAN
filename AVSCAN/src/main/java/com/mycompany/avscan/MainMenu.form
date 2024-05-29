@@ -236,7 +236,7 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="jButtonDataList">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Data List"/>
+                <Property name="text" type="java.lang.String" value="Booking History"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[260, 53]"/>
