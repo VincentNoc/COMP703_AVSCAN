@@ -19,11 +19,11 @@ public class AVSCAN {
     public static void main(String args[]) throws SQLException{
         FlatLightLaf.setup();
         LoginPage lp = new LoginPage();
+        EmailScheduler emailSched = new EmailScheduler();
         
         try{
             lp.setVisible(true);
-            EmailScheduler.main(args);
-            
+            emailSched.main(args);
         }catch(Exception e){
             e.printStackTrace();
         }
