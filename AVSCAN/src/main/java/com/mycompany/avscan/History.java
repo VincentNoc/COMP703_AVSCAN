@@ -68,7 +68,6 @@ public class History extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        dateChooser1.setDateFormat("yyyy-MM-dd");
         dateChooser1.setTextRefernce(jTxtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -268,8 +267,7 @@ public class History extends javax.swing.JFrame {
                     + "AND eq.eqID = p.eqID "
                     + "AND b.stID = s.stID "
                     + "AND b.evID = ev.evID ";
-                   
-            
+
             ResultSet rs = statement.executeQuery(sqlQuery);
             
             // loops until it reads all rows from database
@@ -313,7 +311,6 @@ public class History extends javax.swing.JFrame {
             // Opening connection
             // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
            
-            
             // Clearing the jTable before adding the filtered data
             DefaultTableModel clearTable = (DefaultTableModel)jTable1.getModel();
             clearTable.setRowCount(0);
