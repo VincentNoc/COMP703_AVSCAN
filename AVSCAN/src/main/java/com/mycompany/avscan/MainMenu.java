@@ -71,15 +71,10 @@ public class MainMenu extends javax.swing.JFrame {
         jTable1.setFont(new java.awt.Font("Yu Gothic UI", 0, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Equipment Name", "Equipment ID", "Return Due Date", "Status"
+                "Equipment ID", "Equipment Name", "Return Due Date", "Status"
             }
         ));
         jTable1.setPreferredSize(new java.awt.Dimension(960, 180));
@@ -252,7 +247,6 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadEquipmentLog(){
-
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();

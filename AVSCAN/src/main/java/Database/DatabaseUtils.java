@@ -319,10 +319,10 @@ public class DatabaseUtils {
     }
     
     public void getEquipmentStatusReturnDate(DefaultTableModel tableModel) throws SQLException {
-        String query = "SELECT eq.eqID, eq.eqName, b.eqReturnDateTime, eq.eqStatus "
-                + "FROM equipmentlog eq "
-                + "JOIN booking b ON eq.eqID = b.eqID "
-                + "WHERE eq.eqStatus = 'Checked Out'";
+        String query = "SELECT eq.eqID, eq.eqName, b.eqReturnDateTime, eq.eqStatus " +
+                 "FROM equipmentlog eq " +
+                "JOIN booking b ON eq.eqID = b.eqID " + 
+                "WHERE eq.eqStatus = 'Checked Out'";
         DatabaseConnector dbCon = new DatabaseConnector();
 
         try ( Connection con = dbCon.connectToDatabase()) {
