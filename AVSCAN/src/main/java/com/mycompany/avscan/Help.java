@@ -59,18 +59,18 @@ public class Help extends javax.swing.JFrame {
                +"Input equipment Name and Type. Click the button with \nplus sign. Repeat until all new equipment added.\n"
                +"To create child-parent connection, Select an \nequipment in table by mouse left click. Click \n“Add child” button. "
                +"A new window will be opened with \nparent information on the top of the window. \nScan Child (Sub) equipment ID, enter name "
-               +"and type. Then press add button. Repeat until all equipment is added. User able to delete a row from the table if\n"
-               +"select a row by mouse left click and click delete button. After all equipment has been added press connect to\n"
-               +"parent button and program will return to the previous page with updated table.\n"
-               +"To add new scanned equipment to database, After all equipment has been added to the table and child-parent\n"
-               +"connection created add button can be pressed to add all new equipment to database.\n"
-               +"To remove equipment from the list, select equipment inside table by left mouse click and press delete button after.\n";
+               +"and type. \nThen press add button. Repeat until all equipment is \nadded. User able to delete a row from the table if\n"
+               +"select a row by mouse left click and click delete button. \nAfter all equipment has been added press connect to\n"
+               +"parent button and program will return to the previous \npage with updated table.\n"
+               +"To add new scanned equipment to database, After all \nequipment has been added to the table and \nchild-parent\n"
+               +"connection created add button can be pressed to add \nall new equipment to database."
+               +"To remove equipment \nfrom the list, select equipment inside table \nby left mouse click and press delete button after.\n";
         //Write Help txt for Add New Equipment Page here...
         
         // Txt for History Page
         hTxtDataList = 
         //Write Help txt for Data List Page here...
-                 "Data List page is a page that shows the list of all \n"
+                 "Booking History is a page that shows the list of all \n"
                 + "equipment in the system database.\n\n"
                 + "- - - - - - - - - Search Feature - - - - - - - - -\n"
                 + "You can search through the list by clicking and typing \n"
