@@ -8,6 +8,7 @@ package com.mycompany.avscan;
 import Database.Validations.NonEditableTableModel;
 import Database.Data;
 import Database.DatabaseUtils;
+import Database.DatabaseValidationMethods;
 import com.mycompany.avscan.Login_Signup_pages.StaffIDTracker;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -428,7 +429,7 @@ public class CheckOut extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
+        
         String evID = jEventID.getText();
         String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
@@ -450,7 +451,7 @@ public class CheckOut extends javax.swing.JFrame {
         
         try {
             DatabaseUtils dbUtils = new DatabaseUtils();
-
+            DatabaseValidationMethods dvm = new DatabaseValidationMethods();
             // Retrieve the logged-in staff ID from AppContext
             String loggedInStaffID = StaffIDTracker.getLoggedInStaffID();
 
@@ -460,24 +461,24 @@ public class CheckOut extends javax.swing.JFrame {
                 return;
             }
 
-            if (!dbUtils.doesEventExist(evID)) {
+            if (!dvm.doesEventExist(evID)) {
                 dbUtils.insertDataEventTable(evID, evName);
             }
 
             for (int i = 0; i < model.getRowCount(); i++) {
                 String equipmentID = model.getValueAt(i, 0).toString();
                  
-                if(dbUtils.isEquipmentReparing(equipmentID)){
+                if(dvm.isEquipmentReparing(equipmentID)){
                     JOptionPane.showMessageDialog(this, equipmentID + " cannot be checked out, it is in repair.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }   
                 
-                if (!dbUtils.doesEquipmentExists(equipmentID)) {
+                if (!dvm.doesEquipmentExists(equipmentID)) {
                     JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " does not exist. Please add it to the database first.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                if (dbUtils.isEquipmentCheckedOut(equipmentID)) {
+                if (dvm.isEquipmentCheckedOut(equipmentID)) {
                     JOptionPane.showMessageDialog(this, "Equipment with ID " + equipmentID + " is already checked out.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
