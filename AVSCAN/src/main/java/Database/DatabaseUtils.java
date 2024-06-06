@@ -288,32 +288,6 @@ public class DatabaseUtils {
             e.printStackTrace();
         }
     }
-
-    //Don't need any more??
-    /*public List<HistoryData> fetchHistoryFromDatabase() {
-        List<HistoryData> dataList = new ArrayList<>();
-
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT Event.evID, Event.evEquipmentID, Child.EquipmentName AS EquipmentName, Child.ParentID, Parent.EquipmentName AS ParentEquipmentName,\n" +
-                " Event.eqReturnDateTime, Event.evCheckOutStaff, \n" +
-                " FROM Event LEFT JOIN EquipmentLog AS Child ON Event.evEquipmentID = Child.EquipmentID\n" +
-                " LEFT JOIN EquipmentLog AS Parent ON Child.ParentID = Parent.EquipmentID\n" +
-                " ORDER BY Event.evID;");
-
-            while (rs.next()) {
-                HistoryData event = new HistoryData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                 rs.getString(5), rs.getTimestamp(6), rs.getString(7));
-                dataList.add(event);
-                //System.out.println(event.toString());//to show data
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }*/
     
 
     public void getEquipmentStatusReturnDate(DefaultTableModel tableModel) throws SQLException {
@@ -557,58 +531,70 @@ public class DatabaseUtils {
         }
         return toReturn;
     }
-    
-    public boolean doesEquipmentExists(String equipmentID) throws SQLException {
-        String query = "SELECT COUNT(*) FROM equipmentlog WHERE eqID = ?";
-        DatabaseConnector dbCon = new DatabaseConnector();
 
-        try (Connection conn = dbCon.connectToDatabase(); PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, equipmentID);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        }
-        return false;
-    }
-
-    public boolean isEquipmentCheckedOut(String equipmentID) throws SQLException {
-        String query = "SELECT eqStatus FROM equipmentlog WHERE eqID = ?";
+    public void displayStaffTable(DefaultTableModel tableModel) throws SQLException{
         DatabaseConnector dbCon = new DatabaseConnector();
+        String query = "SELECT * FROM staff";
+        try(Connection con = dbCon.connectToDatabase()){
+            Statement stmt = con.createStatement(); 
+            ResultSet rs = stmt.executeQuery(query);
 
-        try (Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)) {
-            prepStmt.setString(1, equipmentID);
-            ResultSet rs = prepStmt.executeQuery();
-            if (rs.next()) {
-                return "Checked Out".equals(rs.getString("eqStatus"));
+            // loops until it reads all rows from database
+            while (rs.next()) {
+                // use rs.getInt and rs.getString to get data from each row
+                // use String.valueOf() to convert int to a String
+
+                // getting data for each column
+                String stID = rs.getString("stID");
+                String stName = rs.getString("stName");
+                String stRole = rs.getString("stRole");
+                String password = rs.getString("password");
+
+                // An array to store data into jTable
+                String tableData[] = { stID, stName, stRole, password};
+
+                // Add the String arary into the jTable
+                tableModel.addRow(tableData);
             }
+            // Clear out ResultSet
+            rs.close();
+
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return false;
-    }
-    
-    public boolean doesEventExist(String evID) throws SQLException{
-        String query = "SELECT * FROM event WHERE evID = ?";
-        DatabaseConnector dbCon = new DatabaseConnector();
-        
-        try(Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)) {
-            prepStmt.setString(1, evID);
-            ResultSet rs = prepStmt.executeQuery();
-            if(rs.next()){
-                return evID.equals(rs.getString("evID"));
-            }
-        }
-        return false;
     }
     
-    public boolean isEquipmentReparing(String eqID) throws SQLException{
-        String query = "SELECT * FROM equipmentlog WHERE eqStatus = 'In Maintenance' AND eqID = ?";
+    public void updateStaffTable(DefaultTableModel tableModel) throws SQLException {
         DatabaseConnector dbCon = new DatabaseConnector();
-        
-        try(Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)){
-            prepStmt.setString(1, eqID);
-            ResultSet rs = prepStmt.executeQuery();
-            return rs.next();
+
+        try ( Connection con = dbCon.connectToDatabase()) {
+            String query = "UPDATE staff SET stID = ?, stName = ?, stRole = ?, password = ? WHERE stID = ?";
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    String stID = (String) tableModel.getValueAt(i, 0);
+                    String stName = (String) tableModel.getValueAt(i, 1);
+                    String stRole = (String) tableModel.getValueAt(i, 2);
+                    String password = (String) tableModel.getValueAt(i, 3);
+                    
+                    
+
+                    pstmt.setString(1, stName);
+                    pstmt.setString(2, stRole);
+                    pstmt.setString(3, password);
+                    pstmt.setString(4, stID);
+
+                    // Log the update statement for debugging
+                    System.out.println("Updating: ID=" + stID + ", Name=" + stName + ", Role=" + stRole + ", Password=" + password);
+
+                    pstmt.addBatch(); // Add the update statement to the batch
+                }
+                int[] updateCounts = pstmt.executeBatch(); // Execute all updates in the batch
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+    
     
 }
