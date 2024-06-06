@@ -16,8 +16,10 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -35,9 +37,11 @@ public class DatabaseUtils {
 //     private final String URL="jdbc:mysql://localhost:3306/mysql";
     private final String USER = "root";
     private final String PASSWORD = "AUT4events_";
+    private DatabaseConnector dbCon;
 
     public DatabaseUtils() throws SQLException {
-        this.con = DatabaseConnector.connectToDatabase();
+        dbCon = new DatabaseConnector();
+        
     }
 
     public DatabaseUtils(String equipmentID) throws SQLException {
@@ -532,43 +536,40 @@ public class DatabaseUtils {
         return toReturn;
     }
 
-    public void displayStaffTable(DefaultTableModel tableModel) throws SQLException{
-        DatabaseConnector dbCon = new DatabaseConnector();
+    public void displayStaffTable(DefaultTableModel tableModel, Map<Integer, Map<String, String>> originalIDs) throws SQLException {
         String query = "SELECT * FROM staff";
-        try(Connection con = dbCon.connectToDatabase()){
-            Statement stmt = con.createStatement(); 
-            ResultSet rs = stmt.executeQuery(query);
+        try ( Connection con = dbCon.connectToDatabase();  Statement stmt = con.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
 
-            // loops until it reads all rows from database
+            // Loop through all rows from the database
             while (rs.next()) {
-                // use rs.getInt and rs.getString to get data from each row
-                // use String.valueOf() to convert int to a String
-
-                // getting data for each column
+                // Get data for each column
                 String stID = rs.getString("stID");
                 String stName = rs.getString("stName");
                 String stRole = rs.getString("stRole");
                 String password = rs.getString("password");
 
                 // An array to store data into jTable
-                String tableData[] = { stID, stName, stRole, password};
+                String[] tableData = {stID, stName, stRole, password};
 
-                // Add the String arary into the jTable
+                // Add the String array into the jTable
                 tableModel.addRow(tableData);
-            }
-            // Clear out ResultSet
-            rs.close();
 
-            con.close();
+                // Store the original data in the map
+                Map<String, String> rowData = new HashMap<>();
+                rowData.put("stID", stID);
+                rowData.put("stName", stName);
+                rowData.put("stRole", stRole);
+                rowData.put("password", password);
+                originalIDs.put(tableModel.getRowCount() - 1, rowData); // Use row index as the key
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
     
-    public void updateStaffTable(DefaultTableModel tableModel) throws SQLException {
-        DatabaseConnector dbCon = new DatabaseConnector();
+    public void updateStaffTable(DefaultTableModel tableModel, Map<Integer, Map<String, String>> originalIDs) throws SQLException {
 
-        try ( Connection con = dbCon.connectToDatabase()) {
+        try (Connection con = dbCon.connectToDatabase()) {
             String query = "UPDATE staff SET stID = ?, stName = ?, stRole = ?, password = ? WHERE stID = ?";
             try ( PreparedStatement pstmt = con.prepareStatement(query)) {
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -576,13 +577,13 @@ public class DatabaseUtils {
                     String stName = (String) tableModel.getValueAt(i, 1);
                     String stRole = (String) tableModel.getValueAt(i, 2);
                     String password = (String) tableModel.getValueAt(i, 3);
+                    String ogIDs = originalIDs.get(i).get("stID");
                     
-                    
-
-                    pstmt.setString(1, stName);
-                    pstmt.setString(2, stRole);
-                    pstmt.setString(3, password);
-                    pstmt.setString(4, stID);
+                    pstmt.setString(1, stID);
+                    pstmt.setString(2, stName);
+                    pstmt.setString(3, stRole);
+                    pstmt.setString(4, password);
+                    pstmt.setString(5, ogIDs);
 
                     // Log the update statement for debugging
                     System.out.println("Updating: ID=" + stID + ", Name=" + stName + ", Role=" + stRole + ", Password=" + password);
@@ -595,6 +596,20 @@ public class DatabaseUtils {
             e.printStackTrace();
         }
     }
+    
+    public void deleteStaffFromTable(DefaultTableModel tableModel, String rowDelete) throws SQLException {
+        String query = "DELETE FROM staff WHERE stID = ?";
+        try (Connection connection = dbCon.connectToDatabase();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Set the value for the parameter placeholder
+            preparedStatement.setString(1, rowDelete);
+
+            // Execute the DELETE query
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
+        }
+    }
+    
     
     
 }

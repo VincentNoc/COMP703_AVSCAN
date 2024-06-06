@@ -5,7 +5,12 @@
 package com.mycompany.avscan;
 
 import Database.DatabaseUtils;
+import Database.Validations.NonNullCellEditor;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,22 +19,23 @@ import javax.swing.table.DefaultTableModel;
  * @author jazzy-wazzy
  */
 public class StaffView extends javax.swing.JFrame {
-
+    private Map<Integer, Map<String, String>> originalIDs;
     /**
      * Creates new form StaffView
      */
     public StaffView() {
         initComponents();
         this.setLocationRelativeTo(null);
+        originalIDs = new HashMap<>();
         outputStaffInfo();
     }
     
     
     private void outputStaffInfo(){
         try{
-           DatabaseUtils dbUtils = new DatabaseUtils();
+            DatabaseUtils dbUtils = new DatabaseUtils();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            dbUtils.displayStaffTable(model); 
+            dbUtils.displayStaffTable(model, originalIDs); 
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -46,7 +52,7 @@ public class StaffView extends javax.swing.JFrame {
         HomeButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        deleteStaff = new javax.swing.JButton();
         UpdateTable = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,9 +72,15 @@ public class StaffView extends javax.swing.JFrame {
                 "Staff ID", "Staff Name", "Role", "Password"
             }
         ));
+        jTable1.setDefaultEditor(Object.class, new NonNullCellEditor());
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Delete");
+        deleteStaff.setText("Delete");
+        deleteStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteStaffActionPerformed(evt);
+            }
+        });
 
         UpdateTable.setText("Update");
         UpdateTable.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +98,7 @@ public class StaffView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(deleteStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                         .addComponent(UpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(56, 56, 56)
@@ -98,10 +110,11 @@ public class StaffView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(HomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(UpdateTable, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(HomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(deleteStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -120,17 +133,59 @@ public class StaffView extends javax.swing.JFrame {
         try{
             DatabaseUtils dbUtils = new DatabaseUtils();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            dbUtils.updateStaffTable(model);
-            JOptionPane.showMessageDialog(this, "Database updated successfully!", "Success", JOptionPane.PLAIN_MESSAGE);
+            dbUtils.updateStaffTable(model, originalIDs);    
 
+            JOptionPane.showMessageDialog(this, "Database updated successfully!", "Success", JOptionPane.PLAIN_MESSAGE);
         }catch(SQLException e){
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error updating database!", "Error", JOptionPane.ERROR_MESSAGE);
-
         }
     }//GEN-LAST:event_UpdateTableActionPerformed
+
+    private void deleteStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteStaffActionPerformed
+        try {
+            // TODO add your handling code here:
+            int selectedRow = jTable1.getSelectedRow();
+            DatabaseUtils dbUtils = new DatabaseUtils();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            
+            if (selectedRow != -1) {
+                String idToDelete = (String) jTable1.getValueAt(selectedRow, 0);
+                try {
+                    dbUtils.deleteStaffFromTable(model, idToDelete); // Call deleteStaffFromTable method
+                    model.removeRow(selectedRow); // Remove the selected row from the JTable
+                    JOptionPane.showMessageDialog(StaffView.this, "Entry deleted successfully!", "Success", JOptionPane.PLAIN_MESSAGE);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(StaffView.this, "Error deleting entry!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(StaffView.this, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_deleteStaffActionPerformed
+    
+        public static Map<Integer, Map<String, Object>> tableToMap(DefaultTableModel model) {
+        Map<Integer, Map<String, Object>> tableDataMap = new HashMap<>();
+
+        for (int row = 0; row < model.getRowCount(); row++) {
+            Map<String, Object> rowMap = new HashMap<>();
+            for (int col = 0; col < model.getColumnCount(); col++) {
+                String columnName = model.getColumnName(col);
+                Object cellValue = model.getValueAt(row, col);
+                rowMap.put(columnName, cellValue);
+            }
+            tableDataMap.put(row, rowMap);
+        }
+
+        return tableDataMap;
+    }
+    
     
     /**
+     * 
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -168,7 +223,7 @@ public class StaffView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton HomeButton;
     private javax.swing.JButton UpdateTable;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton deleteStaff;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
