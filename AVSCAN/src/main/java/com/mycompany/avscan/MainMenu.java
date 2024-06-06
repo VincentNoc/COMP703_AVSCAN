@@ -95,7 +95,7 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel4.setPreferredSize(new java.awt.Dimension(960, 265));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButtonDataList.setText("Data List");
+        jButtonDataList.setText("Booking History");
         jButtonDataList.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonDataList.setPreferredSize(new java.awt.Dimension(260, 53));
         jButtonDataList.addActionListener(new java.awt.event.ActionListener() {
@@ -238,8 +238,7 @@ public class MainMenu extends javax.swing.JFrame {
         }  
     }
     
-    
-    
+
     private void jButtonDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataListActionPerformed
         this.dispose();
         History historyPage = new History();
@@ -259,14 +258,9 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCheckInActionPerformed
 
     private void jButtonHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHelpActionPerformed
-        /*
-        Comment from Misako
-        Need to create help page (help class)
-        
-        this.dispose();
         Help helpPage = new Help();
         helpPage.setVisible(true);
-        */
+        this.dispose();
     }//GEN-LAST:event_jButtonHelpActionPerformed
 
     private void jButtonLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogOutActionPerformed
