@@ -424,20 +424,27 @@ public class CheckOut extends javax.swing.JFrame {
         }
     }
     
+    
     //this method is to check out equipment that is being sent out to events
     private void jCheckOutButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        
+        // formatting date and time.
         String evID = jEventID.getText();
         String evName = JEventName.getText();
         String dateIssue = jTxtDate.getText();
         String dateReturn = jTxtReturnDate.getText();
 
-        // formatting date and time.
         String dateTimeSent = formatDateTime((String) timePicker1.getSelectedItem(), dateIssue);
         String dateTimeReturn = formatDateTime((String) timePicker2.getSelectedItem(), dateReturn);
+        
+        String selectedTime1 = (String) timePicker1.getSelectedItem();
+        String selectedTime2 = (String) timePicker2.getSelectedItem();
+
+        if (!isValidTimeFormat(selectedTime1) || !isValidTimeFormat(selectedTime2)) {
+            JOptionPane.showMessageDialog(this, "Please enter time in HH:mm format.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
         if(model.getRowCount() <= 0){
             JOptionPane.showMessageDialog(this, "There is nothing to input, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -504,6 +511,11 @@ public class CheckOut extends javax.swing.JFrame {
         mainmenu.setVisible(true);
     }// GEN-LAST:event_JHomeButtonActionPerformed
 
+    
+    private boolean isValidTimeFormat(String time) {
+        return time != null && time.matches("\\d{2}:\\d{2}");
+    }
+    
 // GEN-LAST:event_jCheckOutButtonActionPerformed
 
     //button allows for users to enter an equipmentID into the table. 

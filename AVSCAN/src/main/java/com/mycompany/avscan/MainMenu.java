@@ -240,9 +240,13 @@ public class MainMenu extends javax.swing.JFrame {
     
 
     private void jButtonDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataListActionPerformed
-        this.dispose();
-        History historyPage = new History();
-        historyPage.setVisible(true);
+        try {
+            this.dispose();
+            History historyPage = new History();
+            historyPage.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonDataListActionPerformed
 
     private void jButtonCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCheckOutActionPerformed

@@ -378,36 +378,6 @@ public class DatabaseUtils {
         }
     }
     
-    
-    public List<MaintenanceData> fetchMaintenanceData() throws SQLException {
-        List<MaintenanceData> dataList = new ArrayList<>();
-
-            String query = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
-                    + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
-                    + "From Maintenance LEFT JOIN EquipmentLog AS child ON Maintenance.eqID = child.eqID\n"
-                    + "LEFT JOIN EquipmentLog AS parent ON child.ParentID = parent.eqID\n"
-                    + "ORDER BY Maintenance.mntRecieved DESC;";
-            
-        DatabaseConnector dbCon = new DatabaseConnector();
-
-        try (Connection con = dbCon.connectToDatabase()) {
-            // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-
-            
-
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                MaintenanceData equipment = new MaintenanceData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getTimestamp(6), rs.getTimestamp(7));
-                dataList.add(equipment);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }
 
     //Dmitry modified
     public List<MaintenanceData> fetchHashtableMaintenanceSearchData(String ID, String Name, String received, String returned) throws SQLException {
