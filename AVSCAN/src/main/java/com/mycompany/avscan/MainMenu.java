@@ -14,6 +14,7 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.mycompany.avscan.Login_Signup_pages.LoginPage;
 import com.mycompany.avscan.Login_Signup_pages.StaffIDTracker;
+import com.mycompany.avscan.Login_Signup_pages.StaffRole;
 import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -33,6 +34,14 @@ public class MainMenu extends javax.swing.JFrame {
         String loggedInStaffID = staffIDTracker.getLoggedInStaffID();
         loadEquipmentLog();
         System.out.println(loggedInStaffID);
+        
+        if("admin".equalsIgnoreCase(StaffRole.getUserRole())){
+            viewStaff.setVisible(true);
+        }else{
+            viewStaff.setVisible(false);
+        }
+        
+        
     }
 
     /**
@@ -57,6 +66,7 @@ public class MainMenu extends javax.swing.JFrame {
         jButtonLogOut = new javax.swing.JButton();
         newEqButton = new javax.swing.JButton();
         maintenanceButton = new javax.swing.JButton();
+        viewStaff = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         DarkModeButton = new javax.swing.JCheckBoxMenuItem();
@@ -141,14 +151,18 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        viewStaff.setText("Staff");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(345, 345, 345)
+                .addContainerGap()
+                .addComponent(viewStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(186, 186, 186)
                 .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 355, Short.MAX_VALUE))
+                .addGap(0, 358, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +198,9 @@ public class MainMenu extends javax.swing.JFrame {
                         .addComponent(jButtonCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButtonCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(viewStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -257,6 +273,8 @@ public class MainMenu extends javax.swing.JFrame {
             e.printStackTrace();
         }  
     }
+    
+    
     
     private void jButtonDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataListActionPerformed
         this.dispose();
@@ -366,6 +384,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton maintenanceButton;
     private javax.swing.JButton newEqButton;
     private javax.swing.JLabel recentlyIssuedEquipment;
+    private javax.swing.JButton viewStaff;
     private javax.swing.JLabel welcometxt;
     // End of variables declaration//GEN-END:variables
 }
