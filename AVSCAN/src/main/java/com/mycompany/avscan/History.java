@@ -5,7 +5,7 @@
 package com.mycompany.avscan;
 
 
-import Database.Data;
+
 import Database.DatabaseConnector;
 import Database.DatabaseUtils;
 import Database.HistoryData;
@@ -14,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,8 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import multi.use.frames.SmallErrorMessage;
 
 /**
@@ -32,6 +29,7 @@ import multi.use.frames.SmallErrorMessage;
  * @author vince-kong, Misako Morihana
  */
 public class History extends javax.swing.JFrame {
+    private DatabaseConnector dbCon;
     /**
      * Creates new form History
      */
@@ -250,15 +248,8 @@ public class History extends javax.swing.JFrame {
 
     public void outPutDataToTable() throws SQLException {
         // Database connection
-        DatabaseConnector dbCon = new DatabaseConnector();
         try(Connection con = dbCon.connectToDatabase()) {
-            // Opening connection
-            // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver C
-            // for getConnection, use (Database name, "root", SQL password)
-            //Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/avscans", "root", "AUT4events_");
-
-            
+       
             // Getting Data from SQL Database
             Statement statement = con.createStatement();
             
@@ -309,13 +300,7 @@ public class History extends javax.swing.JFrame {
     public void outPutDataToTable(String[] searchWords) throws SQLException{
         
         // Database connection
-        DatabaseConnector dbCon = new DatabaseConnector();
         try(Connection con = dbCon.connectToDatabase()){
-            // Opening connection
-            // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
-            // for getConnection, use (Database name, "root", SQL password)
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/avscans", "root", "AUT4events_");
-            //Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
             
             // Clearing the jTable before adding the filtered data
             DefaultTableModel clearTable = (DefaultTableModel)jTable1.getModel();
