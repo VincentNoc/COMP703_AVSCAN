@@ -50,12 +50,6 @@ public class SignUp extends javax.swing.JFrame {
         usernameLabel.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         usernameLabel.setText("Username:");
 
-        jUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jUsernameActionPerformed(evt);
-            }
-        });
-
         jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel2.setText("Password:");
 
@@ -133,10 +127,6 @@ public class SignUp extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jUsernameActionPerformed
 
     private void jHomeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jHomeButtonActionPerformed
         // TODO add your handling code here:
