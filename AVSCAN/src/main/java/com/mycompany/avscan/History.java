@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import multi.use.frames.SmallErrorMessage;
 
 /**
@@ -61,6 +62,7 @@ public class History extends javax.swing.JFrame {
         eventIDLabel = new javax.swing.JLabel();
         jTxtDate = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        moveToBinButton = new javax.swing.JToggleButton();
         homeButton = new javax.swing.JButton();
         ExportToCsvButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -71,18 +73,21 @@ public class History extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         equipmentIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 equipmentIDInputKeyPressed(evt);
             }
         });
+        jPanel1.add(equipmentIDInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 24, 123, -1));
 
         parentIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 parentIDInputKeyPressed(evt);
             }
         });
+        jPanel1.add(parentIDInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 24, 123, -1));
 
         searchButton.setText("Search");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -90,12 +95,16 @@ public class History extends javax.swing.JFrame {
                 searchButtonActionPerformed(evt);
             }
         });
+        jPanel1.add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 80, -1, -1));
 
         equipmentNameLabel.setText("Equipment Name");
+        jPanel1.add(equipmentNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(244, 1, -1, -1));
 
         equipmentIDLabel.setText("Equipment ID");
+        jPanel1.add(equipmentIDLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 1, -1, -1));
 
         parentIDLabel.setText("Parent ID");
+        jPanel1.add(parentIDLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 1, -1, -1));
 
         equipmentNameInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,88 +116,36 @@ public class History extends javax.swing.JFrame {
                 equipmentNameInputKeyPressed(evt);
             }
         });
+        jPanel1.add(equipmentNameInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(244, 24, 123, -1));
 
         eventIDInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 eventIDInputKeyPressed(evt);
             }
         });
+        jPanel1.add(eventIDInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(465, 24, 123, -1));
 
         eventIDLabel.setText("Event ID");
+        jPanel1.add(eventIDLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(465, 1, -1, -1));
 
-        jTxtDate.setEditable(true);
-        jTxtDate.setText("");
         jTxtDate.setToolTipText("");
         jTxtDate.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTxtDateKeyPressed(evt);
             }
         });
+        jPanel1.add(jTxtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 83, 123, -1));
 
         jLabel1.setText("Return Date");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 59, 79, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTxtDate, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                            .addComponent(equipmentIDLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(equipmentIDInput))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(equipmentNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(equipmentNameLabel))
-                                .addGap(98, 98, 98)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(eventIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(eventIDLabel))
-                                .addGap(112, 112, 112)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(parentIDLabel)
-                                    .addComponent(parentIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(searchButton, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(searchButton)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(eventIDLabel)
-                            .addComponent(parentIDLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(eventIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(parentIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(equipmentNameLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(equipmentIDLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(equipmentNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(equipmentIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
-        );
+        moveToBinButton.setText("Bin");
+        moveToBinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moveToBinButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(moveToBinButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, 120, -1));
 
         homeButton.setText("Home");
         homeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -386,7 +343,9 @@ public class History extends javax.swing.JFrame {
         // TODO add your handling code here:
         int selectedRow[] = jTable1.getSelectedRows();
         //System.out.println(selectedRow);
-        if (selectedRow != null) {
+        
+        
+        if (selectedRow.length > 0) {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             ExcelWriter ex = new ExcelWriter();
             for (int i = 0; i < selectedRow.length; i++) {
@@ -404,7 +363,8 @@ public class History extends javax.swing.JFrame {
             }
             ex.createAndWriteHistory();
         }else{
-            new SmallErrorMessage("Please select at least one row.",this).setVisible(true);
+            JOptionPane.showMessageDialog(this, "Error exporting to file, please select at least one row!");
+            return;
         }
     }//GEN-LAST:event_ExportToCsvButtonActionPerformed
 
@@ -453,6 +413,10 @@ public class History extends javax.swing.JFrame {
             searchButton.doClick();
         }
     }//GEN-LAST:event_jTxtDateKeyPressed
+
+    private void moveToBinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveToBinButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_moveToBinButtonActionPerformed
     
 
     //takes the date from the calendar and changes the format to the preffered format
@@ -534,6 +498,7 @@ public class History extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTxtDate;
+    private javax.swing.JToggleButton moveToBinButton;
     private javax.swing.JTextField parentIDInput;
     private javax.swing.JLabel parentIDLabel;
     private javax.swing.JButton searchButton;

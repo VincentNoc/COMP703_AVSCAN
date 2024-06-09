@@ -293,7 +293,7 @@ public class DatabaseUtils {
     }
 
     public void updateEmailSentStatus() throws SQLException {
-        String updateQuery = "UPDATE Event SET email_sent = true WHERE eqReturnDateTime >= DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false";
+        String updateQuery = "UPDATE Booking SET email_sent = true WHERE eqReturnDateTime >= DATE_ADD(CURDATE(), INTERVAL 1 DAY) AND TIMESTAMPDIFF(DAY, eqSentDateTime, eqReturnDateTime) > 1 AND email_sent = false";
         DatabaseConnector dbCon = new DatabaseConnector();
         try (
                 Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
@@ -637,6 +637,10 @@ public class DatabaseUtils {
             int rowsAffected = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + rowsAffected);
         }
+    }
+    
+    public void moveToBin(){
+        
     }
     
 

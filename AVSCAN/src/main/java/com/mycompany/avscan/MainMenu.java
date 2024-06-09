@@ -77,7 +77,7 @@ public class MainMenu extends javax.swing.JFrame {
         welcometxt.setText("Welcome to AVSCAN!");
 
         recentlyIssuedEquipment.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
-        recentlyIssuedEquipment.setText("Recently Issued Equiptment");
+        recentlyIssuedEquipment.setText("Recently Issued Equipment");
 
         jTable1.setFont(new java.awt.Font("Yu Gothic UI", 0, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
