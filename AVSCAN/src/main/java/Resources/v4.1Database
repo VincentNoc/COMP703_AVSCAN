@@ -42,3 +42,23 @@ CREATE TABLE Maintenance(
 
     FOREIGN KEY(eqID) REFERENCES EquipmentLog(eqID)
 );
+
+
+CREATE TABLE trash (
+    eqID VARCHAR(100),
+    eqName VARCHAR(225),
+    eqType VARCHAR(100),
+    eqStatus VARCHAR(100),
+    parentID VARCHAR(100),
+    evID VARCHAR(225),
+    evName VARCHAR(255),
+    stID VARCHAR(100),
+    stName VARCHAR(255),
+    stRole VARCHAR(255),
+    password VARCHAR(255),
+    eqSentDateTime TIMESTAMP,
+    eqReturnDateTime TIMESTAMP,
+    emailSent BIT DEFAULT 0,
+    mntReceived TIMESTAMP,
+    mntDateRepaired TIMESTAMP
+);

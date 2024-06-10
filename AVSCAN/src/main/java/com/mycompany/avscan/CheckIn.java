@@ -106,7 +106,7 @@ public class CheckIn extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jDeleteEntry = new javax.swing.JButton();
-        jAddButtonToEquipmentLog = new javax.swing.JButton();
+        jCheckEquipmentBackIn = new javax.swing.JButton();
         JHomeButton = new javax.swing.JToggleButton();
         jAddToTable = new javax.swing.JButton();
 
@@ -132,8 +132,8 @@ public class CheckIn extends javax.swing.JFrame {
             }
         });
 
-        jAddButtonToEquipmentLog.setText("Return");
-        jAddButtonToEquipmentLog.addActionListener(new java.awt.event.ActionListener() {
+        jCheckEquipmentBackIn.setText("Return");
+        jCheckEquipmentBackIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addActionPerformed(evt);
             }
@@ -166,7 +166,7 @@ public class CheckIn extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(136, 136, 136)
-                                .addComponent(jAddButtonToEquipmentLog, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jCheckEquipmentBackIn, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -191,7 +191,7 @@ public class CheckIn extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jAddButtonToEquipmentLog, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckEquipmentBackIn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JHomeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
@@ -266,33 +266,33 @@ public class CheckIn extends javax.swing.JFrame {
             return;
         }
         
-        try {
-            if(!dvm.doesEquipmentExists(eqID)){
-                JOptionPane.showMessageDialog(this, "Equipment Does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
-                model.setRowCount(0);
-                enteredIDs.clear();
-                enteredIDsToRowMap.clear();
-                return;
+        for(int i = 0; i < model.getRowCount(); i++){
+            String equipmentID = model.getValueAt(i, 0).toString();
+            try {
+                if(!dvm.doesEquipmentExists(equipmentID)){
+                    JOptionPane.showMessageDialog(this, "Equipment Does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                    model.setRowCount(0);
+                    enteredIDs.clear();
+                    enteredIDsToRowMap.clear();
+                    return;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CheckIn.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(CheckIn.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String equipmentID = model.getValueAt(i, 0).toString();
-
-            try {
+        try {
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String equipmentID = model.getValueAt(i, 0).toString();
                 DatabaseUtils dbUtil = new DatabaseUtils();
                 dbUtil.updateEquipmentLogStatusCheckedIn(equipmentID);
-                JOptionPane.showMessageDialog(this, "Equipment has been successfully checked in.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-
-            } catch (SQLException ex) {
-                // Handle the exception (e.g., display error message)
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error adding data to database: " + ex.getMessage(), "Error",
-                        JOptionPane.ERROR_MESSAGE);
             }
+            JOptionPane.showMessageDialog(this, "All equipment has been successfully checked in.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            // Handle the exception (e.g., display error message)
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error adding data to database: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
         model.setRowCount(0);
         enteredIDs.clear();
@@ -342,8 +342,8 @@ public class CheckIn extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton JHomeButton;
-    private javax.swing.JButton jAddButtonToEquipmentLog;
     private javax.swing.JButton jAddToTable;
+    private javax.swing.JButton jCheckEquipmentBackIn;
     private javax.swing.JButton jDeleteEntry;
     private javax.swing.JTextField jEquipmentID;
     private javax.swing.JLabel jLabel1;
