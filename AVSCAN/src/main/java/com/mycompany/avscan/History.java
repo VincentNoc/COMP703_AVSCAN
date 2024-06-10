@@ -118,6 +118,8 @@ public class History extends javax.swing.JFrame {
 
         eventIDLabel.setText("Event ID");
 
+        jTxtDate.setEditable(true);
+        jTxtDate.setText("");
         jTxtDate.setToolTipText("");
         jTxtDate.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
