@@ -209,6 +209,8 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTxtDate">
           <Properties>
+            <Property name="editable" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value=""/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
