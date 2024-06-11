@@ -459,11 +459,13 @@ public class CheckOut extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Error: No staff ID found. Please login again.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
+            
+            // Check if evID exists in database
             if (!dbUtils.doesEventExist(evID)) {
                 dbUtils.insertDataEventTable(evID, evName);
             }
-
+            
+            // Going through the scanned equipment list
             for (int i = 0; i < model.getRowCount(); i++) {
                 String equipmentID = model.getValueAt(i, 0).toString();
                  
