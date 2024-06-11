@@ -8,15 +8,19 @@ package com.mycompany.avscan;
  *
  * @author 2xkaz
  */
+import Database.DatabaseUtils;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.mycompany.avscan.Login_Signup_pages.LoginPage;
 import com.mycompany.avscan.Login_Signup_pages.StaffIDTracker;
+import com.mycompany.avscan.Login_Signup_pages.StaffRole;
 import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 public class MainMenu extends javax.swing.JFrame {
     private static String loggedInStaffID; 
     /**
@@ -24,12 +28,20 @@ public class MainMenu extends javax.swing.JFrame {
      * @param recordUserID
      */
     public MainMenu() {
-       
         initComponents();
         this.setLocationRelativeTo(null);
         StaffIDTracker staffIDTracker = new StaffIDTracker();
         String loggedInStaffID = staffIDTracker.getLoggedInStaffID();
+        loadEquipmentLog();
         System.out.println(loggedInStaffID);
+        
+        if("admin".equalsIgnoreCase(StaffRole.getUserRole())){
+            viewStaff.setVisible(true);
+        }else{
+            viewStaff.setVisible(false);
+        }
+        
+        
     }
 
     /**
@@ -54,6 +66,7 @@ public class MainMenu extends javax.swing.JFrame {
         jButtonLogOut = new javax.swing.JButton();
         newEqButton = new javax.swing.JButton();
         maintenanceButton = new javax.swing.JButton();
+        viewStaff = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         DarkModeButton = new javax.swing.JCheckBoxMenuItem();
@@ -69,15 +82,10 @@ public class MainMenu extends javax.swing.JFrame {
         jTable1.setFont(new java.awt.Font("Yu Gothic UI", 0, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Equipment Name", "Equipment ID", "Return Due Date", "Status"
+                "Equipment ID", "Equipment Name", "Return Due Date", "Status"
             }
         ));
         jTable1.setPreferredSize(new java.awt.Dimension(960, 180));
@@ -85,8 +93,9 @@ public class MainMenu extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable1);
 
         jPanel4.setPreferredSize(new java.awt.Dimension(960, 265));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButtonDataList.setText("Data List");
+        jButtonDataList.setText("Booking History");
         jButtonDataList.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonDataList.setPreferredSize(new java.awt.Dimension(260, 53));
         jButtonDataList.addActionListener(new java.awt.event.ActionListener() {
@@ -94,6 +103,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButtonDataListActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonDataList, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, -1, -1));
 
         jButtonHelp.setText("Help");
         jButtonHelp.setPreferredSize(new java.awt.Dimension(260, 53));
@@ -102,6 +112,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButtonHelpActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonHelp, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 112, -1, -1));
 
         jButtonCheckIn.setText("Check In");
         jButtonCheckIn.setPreferredSize(new java.awt.Dimension(260, 53));
@@ -110,6 +121,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButtonCheckInActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonCheckIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(577, 0, 125, -1));
 
         jButtonCheckOut.setText("Check Out");
         jButtonCheckOut.setPreferredSize(new java.awt.Dimension(260, 53));
@@ -118,6 +130,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButtonCheckOutActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonCheckOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(714, 0, 125, -1));
 
         jButtonLogOut.setText("Log Out");
         jButtonLogOut.setPreferredSize(new java.awt.Dimension(260, 53));
@@ -126,6 +139,7 @@ public class MainMenu extends javax.swing.JFrame {
                 jButtonLogOutActionPerformed(evt);
             }
         });
+        jPanel4.add(jButtonLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(356, 212, -1, -1));
 
         newEqButton.setText("Add New");
         newEqButton.setPreferredSize(new java.awt.Dimension(260, 53));
@@ -134,6 +148,7 @@ public class MainMenu extends javax.swing.JFrame {
                 newEqButtonActionPerformed(evt);
             }
         });
+        jPanel4.add(newEqButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(579, 109, 124, -1));
 
         maintenanceButton.setText("Maintenance");
         maintenanceButton.setPreferredSize(new java.awt.Dimension(260, 53));
@@ -142,52 +157,15 @@ public class MainMenu extends javax.swing.JFrame {
                 maintenanceButtonActionPerformed(evt);
             }
         });
+        jPanel4.add(maintenanceButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(715, 109, 124, -1));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(345, 345, 345)
-                .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 355, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButtonDataList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(newEqButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(11, 11, 11)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(maintenanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(121, 121, 121))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jButtonDataList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
-                        .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(109, 109, 109)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(newEqButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(maintenanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonCheckOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jButtonLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        viewStaff.setText("Staff");
+        viewStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewStaffActionPerformed(evt);
+            }
+        });
+        jPanel4.add(viewStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 121, 50));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -249,10 +227,26 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadEquipmentLog(){
+
+        try{
+            DatabaseUtils dbUtils = new DatabaseUtils();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            dbUtils.getEquipmentStatusReturnDate(model);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }  
+    }
+    
+
     private void jButtonDataListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDataListActionPerformed
-        this.dispose();
-        History historyPage = new History();
-        historyPage.setVisible(true);
+        try {
+            this.dispose();
+            History historyPage = new History();
+            historyPage.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonDataListActionPerformed
 
     private void jButtonCheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCheckOutActionPerformed
@@ -268,14 +262,9 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCheckInActionPerformed
 
     private void jButtonHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHelpActionPerformed
-        /*
-        Comment from Misako
-        Need to create help page (help class)
-        
-        this.dispose();
         Help helpPage = new Help();
         helpPage.setVisible(true);
-        */
+        this.dispose();
     }//GEN-LAST:event_jButtonHelpActionPerformed
 
     private void jButtonLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogOutActionPerformed
@@ -328,6 +317,13 @@ public class MainMenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_maintenanceButtonActionPerformed
 
+    private void viewStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewStaffActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        StaffView sv = new StaffView();
+        sv.setVisible(true);
+    }//GEN-LAST:event_viewStaffActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -357,6 +353,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton maintenanceButton;
     private javax.swing.JButton newEqButton;
     private javax.swing.JLabel recentlyIssuedEquipment;
+    private javax.swing.JButton viewStaff;
     private javax.swing.JLabel welcometxt;
     // End of variables declaration//GEN-END:variables
 }

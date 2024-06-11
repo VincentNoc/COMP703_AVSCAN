@@ -7,6 +7,7 @@ package com.mycompany.avscan;
 
 import Database.Data;
 import Database.DatabaseUtils;
+import Database.DatabaseValidationMethods;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -253,30 +254,45 @@ public class CheckIn extends javax.swing.JFrame {
     enteredIDsToRowMap = updatedMap;
 }
 
-    private void addActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addActionPerformed
+    private void addActionPerformed(java.awt.event.ActionEvent evt){// GEN-FIRST:event_addActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        DatabaseValidationMethods dvm = new DatabaseValidationMethods();
         String eqID = jEquipmentID.getText();
-        if(model.getRowCount() <=0){
+
+        
+        if(model.getRowCount() <=0){    
             JOptionPane.showMessageDialog(this, "input is blank, please make sure input is valid.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        for (int i = 0; i < model.getRowCount(); i++) {
+        for(int i = 0; i < model.getRowCount(); i++){
             String equipmentID = model.getValueAt(i, 0).toString();
-
             try {
+                if(!dvm.doesEquipmentExists(equipmentID)){
+                    JOptionPane.showMessageDialog(this, "Equipment Does not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                    model.setRowCount(0);
+                    enteredIDs.clear();
+                    enteredIDsToRowMap.clear();
+                    return;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CheckIn.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        try {
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String equipmentID = model.getValueAt(i, 0).toString();
                 DatabaseUtils dbUtil = new DatabaseUtils();
                 dbUtil.updateEquipmentLogStatusCheckedIn(equipmentID);
-                JOptionPane.showMessageDialog(this, "Equipment has been successfully checked in.", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-
-            } catch (SQLException ex) {
-                // Handle the exception (e.g., display error message)
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Error adding data to database: " + ex.getMessage(), "Error",
-                        JOptionPane.ERROR_MESSAGE);
             }
+            JOptionPane.showMessageDialog(this, "All equipment has been successfully checked in.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            // Handle the exception (e.g., display error message)
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error adding data to database: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
         model.setRowCount(0);
         enteredIDs.clear();

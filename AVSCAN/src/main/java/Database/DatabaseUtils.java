@@ -4,6 +4,7 @@
  */
 package Database;
 
+import com.mycompany.avscan.Login_Signup_pages.StaffRole;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,8 +16,10 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -30,13 +33,15 @@ import javax.swing.table.DefaultTableModel;
 public class DatabaseUtils {
 
     Connection con;
-//    private final String URL = "jdbc:mysql://localhost:3306/avscan";
-     private final String URL="jdbc:mysql://localhost:3306/mysql";
+    private final String URL = "jdbc:mysql://localhost:3306/avscans";
+
     private final String USER = "root";
     private final String PASSWORD = "AUT4events_";
+    private DatabaseConnector dbCon;
 
     public DatabaseUtils() throws SQLException {
-        this.con = DatabaseConnector.connectToDatabase();
+        dbCon = new DatabaseConnector();
+        
     }
 
     public DatabaseUtils(String equipmentID) throws SQLException {
@@ -51,21 +56,22 @@ public class DatabaseUtils {
         getLoginCredentials(username, password);
     }
 
-    public DatabaseUtils(DefaultTableModel table) {
+    public DatabaseUtils(DefaultTableModel table) throws SQLException {
         insertDataEquipmentLog(table);
     }
 
-    public final void updateEquipmentLogStatusCheckedIn(String equipmentID) {
+    public final void updateEquipmentLogStatusCheckedIn(String equipmentID) throws SQLException {
         String query = "UPDATE EquipmentLog "
                 + "SET eqStatus = \'Checked In\' "
                 + "WHERE eqID = ?";
-        try {
+        DatabaseConnector dbCon = new DatabaseConnector();
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)) {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            //Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
 
             // Use PreparedStatement to prevent SQL injection
-            PreparedStatement prepStmt = con.prepareStatement(query);
+            //PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, equipmentID);
 
             prepStmt.executeUpdate(); // Use executeUpdate for INSERT operations
@@ -81,17 +87,20 @@ public class DatabaseUtils {
 
     //Added by Dmitry
     //the same method as default one but using different value to store data and also using parrent ID
-    public final String insertDataEquipmentLog(DefaultTableModel table) {
+    public final String insertDataEquipmentLog(DefaultTableModel table) throws SQLException {
         String query = "INSERT INTO EquipmentLog (eqID, eqName, eqType, parentID, eqStatus) VALUES (?, ?, ?, ?, ?)";
         //int ifDublicate = 0;
-        String ifDublicate ="";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+
+
+        String ifDublicate = "";
+       
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)) {
+      
+            //Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
-            
+
             //for (int i = 0; i < table.getRowCount(); i++) {
-            while(table.getRowCount()>0){
+            while (table.getRowCount() > 0) {
                 //ifDublicate = i;
                 ifDublicate = (String) table.getValueAt(0, 0);
                 String equipmentID = (String) table.getValueAt(0, 0);
@@ -99,7 +108,7 @@ public class DatabaseUtils {
                 String equipmentType = (String) table.getValueAt(0, 2);
                 String eqyipmentParent = (String) table.getValueAt(0, 3);
 
-                PreparedStatement prepStmt = con.prepareStatement(query);
+                //PreparedStatement prepStmt = con.prepareStatement(query);
                 prepStmt.setString(1, equipmentID);
                 prepStmt.setString(2, equipmentName);
                 prepStmt.setString(3, equipmentType);
@@ -113,7 +122,7 @@ public class DatabaseUtils {
             con.close();
             return null;
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
                 System.out.println("Dublicate catched");
                 //return (String) table.getValueAt(ifDublicate, 0);
@@ -184,14 +193,15 @@ public class DatabaseUtils {
 
     public List<Data> fetchDataFromEquipmentLog() throws SQLException {
         List<Data> dataList = new ArrayList<>();
-        DatabaseConnector dbCon = new DatabaseConnector();
-        Connection con = null;
+        //DatabaseConnector dbCon = new DatabaseConnector();
+        // Connection con = null;
         String query = "SELECT * FROM equipmentlog";
+        DatabaseConnector dbCon = new DatabaseConnector();
 
-        try {
-            con = dbCon.connectToDatabase();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement eventStmt = con.prepareStatement(query);) {
+            //con = dbCon.connectToDatabase();
+            // Statement stmt = con.createStatement();
+            ResultSet rs = eventStmt.executeQuery(query);
 
             while (rs.next()) {
                 Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
@@ -211,15 +221,17 @@ public class DatabaseUtils {
         return dataList;
     }
 
-    public Hashtable<String, Data> selestAllEquipment() {
+    public Hashtable<String, Data> selestAllEquipment() throws SQLException {
         Hashtable<String, Data> toReturn = new Hashtable<>();
 
         String query = "SELECT * FROM EquipmentLog";
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement eventStmt = con.prepareStatement(query);) {
             // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            //Statement stmt = con.createStatement();
+            ResultSet rs = eventStmt.executeQuery(query);
 
             while (rs.next()) {
                 Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(5), rs.getString(4));
@@ -230,18 +242,26 @@ public class DatabaseUtils {
         }
         return toReturn;
     }
-     
+
     public final boolean getLoginCredentials(String stID, String password) throws SQLException {
         DatabaseConnector dbCon = new DatabaseConnector();
-        try (Connection con = dbCon.connectToDatabase();) {
-            String query = "SELECT * FROM staff WHERE stID = ? AND password = ?";
+        StaffRole sr = new StaffRole();
+        try (Connection con = dbCon.connectToDatabase()) {
+            String query = "SELECT stRole FROM staff WHERE stID = ? AND password = ?";
             try (PreparedStatement prepStm = con.prepareStatement(query)) {
                 prepStm.setString(1, stID);
                 prepStm.setString(2, password);
                 try (ResultSet rs = prepStm.executeQuery()) {
-                    return rs.next();
+                    if (rs.next()) {
+                        // Retrieve the user role from the result set
+                        String role = rs.getString("stRole");
+                        // Store the role in UserSession
+                        sr.setUserRole(role);
+                        return true;
+                    } else {
+                        return false; // Invalid credentials
+                    }
                 }
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -249,16 +269,19 @@ public class DatabaseUtils {
         }
     }
 
-    public final void insertStaff(String Username, String StaffID, String password) {
-        String query = "INSERT INTO staff (stName, stID, password) VALUES (?, ?, ?)";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            DatabaseConnector dbCon = new DatabaseConnector();
-            Connection con = dbCon.connectToDatabase();//connects to database without needing to write the drivermanager
-            PreparedStatement prepStmt = con.prepareStatement(query);
+    public final void insertStaff(String Username, String StaffID, String password) throws SQLException {
+
+        String query = "INSERT INTO staff (stName, stID, stRole,password) VALUES (?, ?, ?, ?)";
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try(Connection con = dbCon.connectToDatabase();
+            PreparedStatement prepStmt = con.prepareStatement(query);){
+            //DatabaseConnector dbCon = new DatabaseConnector();
+            //PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, Username);
             prepStmt.setString(2, StaffID);
-            prepStmt.setString(3, password);
+            prepStmt.setString(3, "Normal");
+            prepStmt.setString(4, password);
             prepStmt.execute();
 
             System.out.println("Information added");
@@ -280,81 +303,11 @@ public class DatabaseUtils {
             e.printStackTrace();
         }
     }
-
-    //Don't need any more??
-    /*public List<HistoryData> fetchHistoryFromDatabase() {
-        List<HistoryData> dataList = new ArrayList<>();
-
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT Event.evID, Event.evEquipmentID, Child.EquipmentName AS EquipmentName, Child.ParentID, Parent.EquipmentName AS ParentEquipmentName,\n" +
-                " Event.eqReturnDateTime, Event.evCheckOutStaff, \n" +
-                " FROM Event LEFT JOIN EquipmentLog AS Child ON Event.evEquipmentID = Child.EquipmentID\n" +
-                " LEFT JOIN EquipmentLog AS Parent ON Child.ParentID = Parent.EquipmentID\n" +
-                " ORDER BY Event.evID;");
-
-            while (rs.next()) {
-                HistoryData event = new HistoryData(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                 rs.getString(5), rs.getTimestamp(6), rs.getString(7));
-                dataList.add(event);
-                //System.out.println(event.toString());//to show data
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }*/
     
-    public final void insertDataEventTable(String evID, String evEquipmentID, String evName, String evDateTime, String evCheckOutStaff, String eqSentDateTime, String eqReturnDateTime) throws SQLException {
-        String query = "INSERT INTO Event (evID, evEquipmentID, evName, evDateTime, evCheckOutStaff, eqSentDateTime, eqReturnDateTime) VALUES (?, ?, ?, ?, ?, ?, ? )";
-        DatabaseConnector dbCon = new DatabaseConnector();
-        try(Connection con = dbCon.connectToDatabase()) {
-            Timestamp timeStampSent = Timestamp.valueOf(eqSentDateTime);
-            Timestamp timeStampReturn = Timestamp.valueOf(eqReturnDateTime);
 
-            System.out.println("Connected to Database");
 
-            Statement stmt = con.createStatement();
-            PreparedStatement prepStmt = con.prepareStatement(query);
-            prepStmt.setString(1, evID);
-            prepStmt.setString(2, evEquipmentID);
-            prepStmt.setString(3, evName);
-            prepStmt.setString(4, evDateTime);
-            prepStmt.setString(5, evCheckOutStaff);
-            prepStmt.setTimestamp(6, timeStampSent);
-            prepStmt.setTimestamp(7, timeStampReturn);
+    
 
-            prepStmt.execute();
-
-            System.out.println("Information added");
-            con.close();
-
-        } catch (Exception e) {
-//      System.out.println("CAN\'T CONNECT TO DATABASE!! Can't add new Item");
-            e.printStackTrace();
-        }
-    }
-
-    /*public List<Data> fetchDataFromEquipmentLog() {
-        List<Data> dataList = new ArrayList<>();
-
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            // Your code for executing queries and processing results
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * from EquipmentLog");
-
-            while (rs.next()) {
-                Data equipment = new Data(rs.getString(1), rs.getString(2), rs.getString(3));
-                dataList.add(equipment);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return dataList;
-    }*/
     public List<MaintenanceData> fetchMaintenanceData() {
         List<MaintenanceData> dataList = new ArrayList<>();
 
@@ -387,8 +340,47 @@ public class DatabaseUtils {
         return dataList;
     }
 
+    public void getEquipmentStatusReturnDate(DefaultTableModel tableModel) throws SQLException {
+        String query = "SELECT eq.eqID, eq.eqName, b.eqReturnDateTime, eq.eqStatus " +
+                 "FROM equipmentlog eq " +
+                "JOIN booking b ON eq.eqID = b.eqID " + 
+                "WHERE eq.eqStatus = 'Checked Out'";
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try ( Connection con = dbCon.connectToDatabase()) {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            // loops until it reads all rows from database
+            while (rs.next()) {
+                // use rs.getInt and rs.getString to get data from each row
+                // use String.valueOf() to convert int to a String
+
+                // getting data for each column
+                String eqID = rs.getString("eqID");
+                String eqName = rs.getString("eqName");
+                String eqReturnDT = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
+                String eqStatus = rs.getString("eqStatus");
+
+
+                // An array to store data into jTable
+                String tableData[] = {eqID, eqName, eqReturnDT, eqStatus};
+
+                // Add the String arary into the jTable
+                tableModel.addRow(tableData);
+            }
+            // Clear out ResultSet
+            rs.close();
+
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+
     //Dmitry modified
-    public List<MaintenanceData> fetchHashtableMaintenanceSearchData(String ID, String Name, String received, String returned) {
+    public List<MaintenanceData> fetchHashtableMaintenanceSearchData(String ID, String Name, String received, String returned) throws SQLException {
         List<MaintenanceData> dataList = new ArrayList<>();
         String query = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
                 + "Maintenance.mntDescription, Maintenance.mntRecieved, Maintenance.mntRepairedReturned\n"
@@ -425,7 +417,9 @@ public class DatabaseUtils {
         query += " ";
         query += "ORDER BY Maintenance.mntRecieved DESC";
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase()) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -441,7 +435,7 @@ public class DatabaseUtils {
         return dataList;
     }
 
-    public boolean newInsertIntoMaintenanceTable(String eqID, String description, String received) {
+    public boolean newInsertIntoMaintenanceTable(String eqID, String description, String received) throws SQLException {
         String query = "INSERT INTO Maintenance (eqID, mntDescription, mntRecieved, mntRepairedReturned)\n"
                 + "VALUES (?, ?, ?, ?);";
 //Checked In
@@ -449,9 +443,10 @@ public class DatabaseUtils {
         String updateEquipmentStatus = "UPDATE EquipmentLog "
                 + "SET eqStatus = 'In Maintenance' "
                 + "WHERE eqID = ?";
-        try {
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query);) {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
 
             Statement stmt = con.createStatement();
@@ -460,7 +455,7 @@ public class DatabaseUtils {
             findEqStatus.setString(1, eqID);
             findEqStatus.execute();
 
-            PreparedStatement prepStmt = con.prepareStatement(query);
+            //PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, eqID);
             prepStmt.setString(2, description);
             prepStmt.setString(3, received);
@@ -477,10 +472,12 @@ public class DatabaseUtils {
         }
     }
 
-    public Hashtable<String, Data> fetchHashtableMaintenanceData() {
+    public Hashtable<String, Data> fetchHashtableMaintenanceData() throws SQLException {
         Hashtable<String, Data> dataList = new Hashtable<>();
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase()) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("Select * From EquipmentLog ");
@@ -496,7 +493,7 @@ public class DatabaseUtils {
         return dataList;
     }
 
-    public boolean equipmentRetunMaintenance(MaintenanceData insert) {
+    public boolean equipmentRetunMaintenance(MaintenanceData insert) throws SQLException {
         String query = "UPDATE Maintenance "
                 + "SET mntRepairedReturned = ? WHERE eqID = ? AND mntDescription = ? AND "
                 + "mntRecieved = ?";
@@ -506,9 +503,11 @@ public class DatabaseUtils {
                 + "WHERE eqID = ?";
 
         System.out.println("\nBEFORE ADD TO DATABASE RETURN_MAINT:  " + insert.toString());
-        try {
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query);) {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+            //Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to Database");
 
             Statement stmt = con.createStatement();
@@ -516,7 +515,7 @@ public class DatabaseUtils {
             findEqStatus.setString(1, insert.getEqID());
             findEqStatus.execute();
 
-            PreparedStatement prepStmt = con.prepareStatement(query);
+            //PreparedStatement prepStmt = con.prepareStatement(query);
             prepStmt.setString(1, String.valueOf(insert.getReturned()));
             prepStmt.setString(2, insert.getEqID());
             prepStmt.setString(3, insert.getDescription());
@@ -535,7 +534,7 @@ public class DatabaseUtils {
         }
     }
 
-    public Hashtable<String, MaintenanceData> fetchMaintenanceUnreturned() {
+    public Hashtable<String, MaintenanceData> fetchMaintenanceUnreturned() throws SQLException {
         Hashtable<String, MaintenanceData> toReturn = new Hashtable<>();
 
         String query = "SELECT DISTINCT Maintenance.eqID, child.eqName, parent.eqID AS ParentID, parent.eqName AS ParentName, \n"
@@ -545,7 +544,9 @@ public class DatabaseUtils {
                 + "WHERE Maintenance.mntRepairedReturned IS null\n"
                 + "ORDER BY Maintenance.mntRecieved DESC;";
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try (Connection con = dbCon.connectToDatabase()) {
             // Your code for executing queries and processing results
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -559,58 +560,85 @@ public class DatabaseUtils {
         }
         return toReturn;
     }
-    
-    public boolean doesEquipmentExists(String equipmentID) throws SQLException {
-        String query = "SELECT COUNT(*) FROM equipmentlog WHERE eqID = ?";
-        DatabaseConnector dbCon = new DatabaseConnector();
 
-        try (Connection conn = dbCon.connectToDatabase(); PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, equipmentID);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
+
+    public void displayStaffTable(DefaultTableModel tableModel, Map<Integer, Map<String, String>> originalIDs) throws SQLException {
+        String query = "SELECT * FROM staff";
+        try ( Connection con = dbCon.connectToDatabase();  Statement stmt = con.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+
+            // Loop through all rows from the database
+            while (rs.next()) {
+                // Get data for each column
+                String stID = rs.getString("stID");
+                String stName = rs.getString("stName");
+                String stRole = rs.getString("stRole");
+                String password = rs.getString("password");
+
+                // An array to store data into jTable
+                String[] tableData = {stID, stName, stRole, password};
+
+                // Add the String array into the jTable
+                tableModel.addRow(tableData);
+
+                // Store the original data in the map
+                Map<String, String> rowData = new HashMap<>();
+                rowData.put("stID", stID);
+                rowData.put("stName", stName);
+                rowData.put("stRole", stRole);
+                rowData.put("password", password);
+                originalIDs.put(tableModel.getRowCount() - 1, rowData); // Use row index as the key
             }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return false;
     }
 
-    public boolean isEquipmentCheckedOut(String equipmentID) throws SQLException {
-        String query = "SELECT eqStatus FROM equipmentlog WHERE eqID = ?";
-        DatabaseConnector dbCon = new DatabaseConnector();
+    
+    public void updateStaffTable(DefaultTableModel tableModel, Map<Integer, Map<String, String>> originalIDs) throws SQLException {
 
-        try (Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)) {
-            prepStmt.setString(1, equipmentID);
-            ResultSet rs = prepStmt.executeQuery();
-            if (rs.next()) {
-                return "Checked Out".equals(rs.getString("eqStatus"));
+        try (Connection con = dbCon.connectToDatabase()) {
+            String query = "UPDATE staff SET stID = ?, stName = ?, stRole = ?, password = ? WHERE stID = ?";
+            try ( PreparedStatement pstmt = con.prepareStatement(query)) {
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    String stID = (String) tableModel.getValueAt(i, 0);
+                    String stName = (String) tableModel.getValueAt(i, 1);
+                    String stRole = (String) tableModel.getValueAt(i, 2);
+                    String password = (String) tableModel.getValueAt(i, 3);
+                    String ogIDs = originalIDs.get(i).get("stID");
+                    
+                    pstmt.setString(1, stID);
+                    pstmt.setString(2, stName);
+                    pstmt.setString(3, stRole);
+                    pstmt.setString(4, password);
+                    pstmt.setString(5, ogIDs);
+
+                    // Log the update statement for debugging
+                    System.out.println("Updating: ID=" + stID + ", Name=" + stName + ", Role=" + stRole + ", Password=" + password);
+
+                    pstmt.addBatch(); // Add the update statement to the batch
+                }
+                int[] updateCounts = pstmt.executeBatch(); // Execute all updates in the batch
+
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return false;
     }
+
     
-    public boolean doesEventExist(String evID) throws SQLException{
-        String query = "SELECT * FROM event WHERE evID = ?";
-        DatabaseConnector dbCon = new DatabaseConnector();
-        
-        try(Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)) {
-            prepStmt.setString(1, evID);
-            ResultSet rs = prepStmt.executeQuery();
-            if(rs.next()){
-                return evID.equals(rs.getString("evID"));
-            }
-        }
-        return false;
-    }
-    
-    public boolean isEquipmentReparing(String eqID) throws SQLException{
-        String query = "SELECT * FROM equipmentlog WHERE eqStatus = 'In Maintenance' AND eqID = ?";
-        DatabaseConnector dbCon = new DatabaseConnector();
-        
-        try(Connection con = dbCon.connectToDatabase(); PreparedStatement prepStmt = con.prepareStatement(query)){
-            prepStmt.setString(1, eqID);
-            ResultSet rs = prepStmt.executeQuery();
-            return rs.next();
+    public void deleteStaffFromTable(DefaultTableModel tableModel, String rowDelete) throws SQLException {
+        String query = "DELETE FROM staff WHERE stID = ?";
+        try (Connection connection = dbCon.connectToDatabase();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Set the value for the parameter placeholder
+            preparedStatement.setString(1, rowDelete);
+
+            // Execute the DELETE query
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);
         }
     }
     
+
+
 }

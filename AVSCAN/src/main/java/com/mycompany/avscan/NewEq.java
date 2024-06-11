@@ -392,8 +392,12 @@ public class NewEq extends javax.swing.JFrame implements ConnectItemToParent.Con
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         if (model.getRowCount() > 0) {
-            new DatabaseUtils(model);
-            //new DatabaseUtils(model).fetchDataFromDatabase();
+            try {
+                new DatabaseUtils(model);
+                //new DatabaseUtils(model).fetchDataFromDatabase();
+            } catch (SQLException ex) {
+                Logger.getLogger(NewEq.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             new SmallErrorMessage("Use button \"Add\" to add new equipment before format!",this).setVisible(true);
         }

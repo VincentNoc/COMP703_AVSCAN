@@ -5,7 +5,8 @@
 package com.mycompany.avscan;
 
 
-import Database.Data;
+
+import Database.DatabaseConnector;
 import Database.DatabaseUtils;
 import Database.HistoryData;
 import excel.ExcelWriter;
@@ -13,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,8 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import multi.use.frames.SmallErrorMessage;
 
 /**
@@ -31,10 +29,11 @@ import multi.use.frames.SmallErrorMessage;
  * @author vince-kong, Misako Morihana
  */
 public class History extends javax.swing.JFrame {
+    private DatabaseConnector dbCon;
     /**
      * Creates new form History
      */
-    public History() {
+    public History() throws SQLException {
         initComponents();
         outPutDataToTable();
         this.setLocationRelativeTo(null);
@@ -67,7 +66,6 @@ public class History extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        dateChooser1.setAutoscrolls(true);
         dateChooser1.setTextRefernce(jTxtDate);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -121,8 +119,13 @@ public class History extends javax.swing.JFrame {
         jTxtDate.setEditable(true);
         jTxtDate.setText("");
         jTxtDate.setToolTipText("");
+        jTxtDate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTxtDateKeyPressed(evt);
+            }
+        });
 
-        jLabel1.setText("Date");
+        jLabel1.setText("Return Date");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,7 +135,7 @@ public class History extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -182,8 +185,8 @@ public class History extends javax.swing.JFrame {
                             .addComponent(equipmentIDInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jTxtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
         );
 
@@ -243,18 +246,12 @@ public class History extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
- public void outPutDataToTable() {
+    public void outPutDataToTable() throws SQLException {
         // Database connection
-        try {
-            // Opening connection
-            // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            // for getConnection, use (Database name, "root", SQL password)
-            //Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/avscan", "root", "AUT4events_");
-            
+        try(Connection con = dbCon.connectToDatabase()) {
+       
             // Getting Data from SQL Database
-            Statement statement = connection.createStatement();
+            Statement statement = con.createStatement();
             
             // Writing out SQL query into String data
             String sqlQuery =
@@ -264,7 +261,7 @@ public class History extends javax.swing.JFrame {
                     + "AND eq.eqID = p.eqID "
                     + "AND b.stID = s.stID "
                     + "AND b.evID = ev.evID ";
-            
+
             ResultSet rs = statement.executeQuery(sqlQuery);
             
             // loops until it reads all rows from database
@@ -292,31 +289,25 @@ public class History extends javax.swing.JFrame {
             // Clear out ResultSet
             rs.close();
             
-            connection.close();
-        }catch(ClassNotFoundException | SQLException e) {
+            con.close();
+        }catch(SQLException e) {
             System.out.println(e.getMessage());
         }
     }
     
     // For searching data in table (search feature)
     // Takes in an array of any typed words in all four text fields
-    public void outPutDataToTable(String[] searchWords){
+    public void outPutDataToTable(String[] searchWords) throws SQLException{
         
         // Database connection
-        try {
-            // Opening connection
-            // for forName, goto Services>Databases>Drivers>right click MySQL>customize and copy what it says on the Driver Class.
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            // for getConnection, use (Database name, "root", SQL password)
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/avscan", "root", "AUT4events_");
-            //Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "AUT4events_");
+        try(Connection con = dbCon.connectToDatabase()){
             
             // Clearing the jTable before adding the filtered data
             DefaultTableModel clearTable = (DefaultTableModel)jTable1.getModel();
             clearTable.setRowCount(0);
             
             // Getting Data from SQL Database
-            Statement statement = connection.createStatement();
+            Statement statement = con.createStatement();
             
             //In default(no text writen in textfield)
             // Using SQL query
@@ -345,10 +336,11 @@ public class History extends javax.swing.JFrame {
             if (!searchWords[3].equals("")) {
                 sqlQuery += " AND ev.evID LIKE \'%" + searchWords[3] + "%\'";
             }
-            
+            //if date is not empty
             if (searchWords[4] != null && !searchWords[4].isEmpty()) {
-                sqlQuery += " AND b.eqReturnDateTime LIKE \'%" + searchWords[4] + "%\'";
+                sqlQuery += " AND b.eqReturnDateTime LIKE '" + searchWords[4] + "%'";
             }
+
             
             ResultSet rs = statement.executeQuery(sqlQuery);
             
@@ -377,8 +369,8 @@ public class History extends javax.swing.JFrame {
             // Clear out ResultSet
             rs.close();
             
-            connection.close();
-        }catch(ClassNotFoundException | SQLException e) {
+            con.close();
+        }catch(SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -424,7 +416,11 @@ public class History extends javax.swing.JFrame {
         // Create an array which will contain text from all four search text fields
         String dateReturn = formatDate(jTxtDate.getText());
         String[] searchWords = {equipmentNameInput.getText(), equipmentIDInput.getText(), parentIDInput.getText(), eventIDInput.getText(), dateReturn};
-        outPutDataToTable(searchWords);
+        try {
+            outPutDataToTable(searchWords);
+        } catch (SQLException ex) {
+            Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void equipmentNameInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_equipmentNameInputKeyPressed
@@ -450,7 +446,15 @@ public class History extends javax.swing.JFrame {
             searchButton.doClick();
         }
     }//GEN-LAST:event_eventIDInputKeyPressed
+
+    private void jTxtDateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxtDateKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            searchButton.doClick();
+        }
+    }//GEN-LAST:event_jTxtDateKeyPressed
     
+
     //takes the date from the calendar and changes the format to the preffered format
     private String formatDate(String date) {
         if(date.isEmpty()){
@@ -505,7 +509,11 @@ public class History extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new History().setVisible(true);
+                try {
+                    new History().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+                }
                
             }
         });
