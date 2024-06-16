@@ -653,7 +653,7 @@ public class DatabaseUtils {
     public void deleteFromBooking(DefaultTableModel model, int[] selectedRows) throws SQLException {
         try (Connection con = dbCon.connectToDatabase()) {
             for (int selectedRow : selectedRows) {
-                if (selectedRow > 0) { // Adjusted to ensure positive indexing starts from 1
+                if (selectedRow >= 0) { // Adjusted to ensure positive indexing starts from 1
                     String rowToMoveToBinEv = (String) model.getValueAt(selectedRow, 0);
                     String rowToMoveToBinEq = (String) model.getValueAt(selectedRow, 1);
 

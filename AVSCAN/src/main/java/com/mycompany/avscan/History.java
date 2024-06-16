@@ -477,18 +477,25 @@ public class History extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Error in moving to trash, please select at least one row!");
                 return;
             }
+            // Move rows to the bin
+            for (int selectedRow : selectedRows) {
+                if (selectedRow >= 0) { // Check if selectedRow is valid
+                    String rowToMoveToBin = (String) jTable1.getValueAt(selectedRow, 1); // Assuming eqID is at index 1
+                    dbUtils.moveToBin(model, rowToMoveToBin);
+                    
+                }
+            }
 
-            // Iterate through the selected rows and move them to the bin
+            // Delete rows from the Booking table
+            dbUtils.deleteFromBooking(model, selectedRows);
+
+            // Remove rows from the model in reverse order to avoid index issues
             for (int i = selectedRows.length - 1; i >= 0; i--) {
                 int selectedRow = selectedRows[i];
                 if (selectedRow >= 0) {
-                    String rowToMoveToBin = (String) jTable1.getValueAt(selectedRow, 1); // Assuming eqID is at index 1
-                    dbUtils.moveToBin(model, rowToMoveToBin);
                     model.removeRow(selectedRow);
                 }
             }
-            // After moving rows to the bin, delete them from the Booking table
-            dbUtils.deleteFromBooking(model, selectedRows);
 
         } catch (SQLException ex) {
             Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);

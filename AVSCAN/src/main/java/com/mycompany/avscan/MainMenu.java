@@ -19,6 +19,7 @@ import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 public class MainMenu extends javax.swing.JFrame {
@@ -67,17 +68,22 @@ public class MainMenu extends javax.swing.JFrame {
         newEqButton = new javax.swing.JButton();
         maintenanceButton = new javax.swing.JButton();
         viewStaff = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         DarkModeButton = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         welcometxt.setFont(new java.awt.Font("Yu Gothic UI", 0, 36)); // NOI18N
         welcometxt.setText("Welcome to AVSCAN!");
+        jPanel1.add(welcometxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, -1, -1));
 
         recentlyIssuedEquipment.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
         recentlyIssuedEquipment.setText("Recently Issued Equipment");
+        jPanel1.add(recentlyIssuedEquipment, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 89, -1, -1));
 
         jTable1.setFont(new java.awt.Font("Yu Gothic UI", 0, 16)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -91,6 +97,8 @@ public class MainMenu extends javax.swing.JFrame {
         jTable1.setPreferredSize(new java.awt.Dimension(960, 180));
         jTable1.setRowHeight(30);
         jScrollPane2.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 131, 960, 148));
 
         jPanel4.setPreferredSize(new java.awt.Dimension(960, 265));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -167,32 +175,9 @@ public class MainMenu extends javax.swing.JFrame {
         });
         jPanel4.add(viewStaff, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210, 121, 50));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(welcometxt)
-                    .addComponent(recentlyIssuedEquipment)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(80, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(welcometxt)
-                .addGap(6, 6, 6)
-                .addComponent(recentlyIssuedEquipment)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 301, -1, -1));
+
+        jLabel2.setText("jLabel2");
 
         jMenu3.setText("Option");
 
@@ -214,14 +199,20 @@ public class MainMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1120, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addContainerGap())
         );
 
         pack();
@@ -344,6 +335,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDataList;
     private javax.swing.JButton jButtonHelp;
     private javax.swing.JButton jButtonLogOut;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
