@@ -636,8 +636,8 @@ public class DatabaseUtils {
     
     public void moveToBin(DefaultTableModel model, String rowMoveToBin) throws SQLException {
         try (Connection con = dbCon.connectToDatabase();) {
-            String insertQuery = "INSERT INTO trash (evID, evName, eqID, stID, eqSentDateTime, eqReturnDateTime, emailSent) " +
-                                 "SELECT evID, evName, eqID, stID, eqSentDateTime, eqReturnDateTime, email_sent " +
+            String insertQuery = "INSERT INTO trash (evID, evName, eqID, eqSentDateTime, eqReturnDateTime) " +
+                                 "SELECT evID, evName, eqID, eqSentDateTime, eqReturnDateTime " +
                                  "FROM Booking WHERE eqID = ?";
             try (PreparedStatement insertStmt = con.prepareStatement(insertQuery);) {
                 insertStmt.setString(1, rowMoveToBin);
@@ -657,7 +657,7 @@ public class DatabaseUtils {
                     String rowToMoveToBinEv = (String) model.getValueAt(selectedRow, 0);
                     String rowToMoveToBinEq = (String) model.getValueAt(selectedRow, 1);
 
-                    // Assuming evID and eqID are both Strings; adjust types as necessary
+                   
                     try (PreparedStatement prepStmt = con.prepareStatement("DELETE FROM Booking WHERE evID =? AND eqID =?")) {
                         prepStmt.setString(1, rowToMoveToBinEv);
                         prepStmt.setString(2, rowToMoveToBinEq);
@@ -670,5 +670,68 @@ public class DatabaseUtils {
         }
     }
     
+    public void deleteTrash(DefaultTableModel model, int[] selectedRows) throws SQLException{
+        String query = "DELETE FROM trash WHERE eqID =? AND evID =?"; 
+        try (Connection con = dbCon.connectToDatabase()) {
+            for (int selectedRow : selectedRows) {
+                if (selectedRow >= 0) { // Adjusted to ensure positive indexing starts from 1
+                    String rowToMoveToBinEq = (String) model.getValueAt(selectedRow, 0);
+                    String rowToMoveToBinEv = (String) model.getValueAt(selectedRow, 5);
 
+                    
+                    try (PreparedStatement prepStmt = con.prepareStatement(query)) {
+                        prepStmt.setString(1, rowToMoveToBinEq);
+                        prepStmt.setString(2, rowToMoveToBinEv);
+                        prepStmt.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error deleting trash entries", ex);
+        }
+    }
+    
+    
+    public void loadTrashBin(DefaultTableModel model) throws SQLException{
+        String query = "SELECT * FROM trash";
+        DatabaseConnector dbCon = new DatabaseConnector();
+
+        try ( Connection con = dbCon.connectToDatabase()) {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            // loops until it reads all rows from database
+            while (rs.next()) {
+                // use rs.getInt and rs.getString to get data from each row
+                // use String.valueOf() to convert int to a String
+
+                // getting data for each column
+                String eqID = rs.getString("eqID");
+                String eqName = rs.getString("eqName");
+                String eqType = rs.getString("eqType");
+                String eqStatus = rs.getString("eqStatus");
+                String parentID = rs.getString("parentID");
+                String evID = rs.getString("evID");
+                String evName = rs.getString("evName");
+                String eqSentDT = String.valueOf(rs.getTimestamp("eqSentDateTime"));
+                String eqReturnDT = String.valueOf(rs.getTimestamp("eqReturnDateTime"));
+                String mntReceived = String.valueOf(rs.getTimestamp("mntReceived"));
+                String mntDateRepaired = String.valueOf(rs.getTimestamp("mntDateRepaired"));
+
+                // An array to store data into jTable
+                String tableData[] = {eqID, eqName, eqType, eqStatus, parentID, evID, evName, eqSentDT, eqReturnDT, mntReceived, mntDateRepaired};
+
+                // Add the String arary into the jTable
+                model.addRow(tableData);
+            }
+            // Clear out ResultSet
+            rs.close();
+
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+        
 }

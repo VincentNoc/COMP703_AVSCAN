@@ -4,6 +4,14 @@
  */
 package com.mycompany.avscan;
 
+import Database.DatabaseUtils;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author vince-kong
@@ -15,6 +23,10 @@ public class TrashView extends javax.swing.JFrame {
      */
     public TrashView() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        loadTrashBin();
+        
+        
     }
 
     /**
@@ -28,8 +40,11 @@ public class TrashView extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -57,25 +72,72 @@ public class TrashView extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(3).setMaxWidth(60);
         }
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1091, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 1091, 165));
+
+        jButton1.setText("Home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, -1, 40));
+
+        deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(1025, 218, -1, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loadTrashBin(){
+        try {
+            DatabaseUtils dbUtils = new DatabaseUtils();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            dbUtils.loadTrashBin(model);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new MainMenu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+         try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            DatabaseUtils dbUtils = new DatabaseUtils();
+
+            int[] selectedRows = jTable1.getSelectedRows();
+
+            if (selectedRows.length == 0) {
+                JOptionPane.showMessageDialog(this, "Error deleting, please select at least one row!");
+                return;
+            }
+
+            // Delete rows from the Booking table
+            dbUtils.deleteTrash(model, selectedRows);
+
+            // Remove rows from the model in reverse order to avoid index issues
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                int selectedRow = selectedRows[i];
+                if (selectedRow >= 0) {
+                    model.removeRow(selectedRow);
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Successfully been deleted from trash", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -113,6 +175,8 @@ public class TrashView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables

@@ -19,8 +19,6 @@ import java.awt.EventQueue;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 public class MainMenu extends javax.swing.JFrame {
     private static String loggedInStaffID; 
@@ -34,12 +32,15 @@ public class MainMenu extends javax.swing.JFrame {
         StaffIDTracker staffIDTracker = new StaffIDTracker();
         String loggedInStaffID = staffIDTracker.getLoggedInStaffID();
         loadEquipmentLog();
-        System.out.println(loggedInStaffID);
+        
         
         if("admin".equalsIgnoreCase(StaffRole.getUserRole())){
             viewStaff.setVisible(true);
+            viewTrash.setVisible(true); 
         }else{
             viewStaff.setVisible(false);
+            viewTrash.setVisible(false); 
+
         }
         
         
@@ -68,7 +69,7 @@ public class MainMenu extends javax.swing.JFrame {
         newEqButton = new javax.swing.JButton();
         maintenanceButton = new javax.swing.JButton();
         viewStaff = new javax.swing.JButton();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        viewTrash = new javax.swing.JToggleButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         DarkModeButton = new javax.swing.JCheckBoxMenuItem();
@@ -177,10 +178,10 @@ public class MainMenu extends javax.swing.JFrame {
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 301, -1, -1));
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/115789_trash_icon.png"))); // NOI18N
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        viewTrash.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/115789_trash_icon.png"))); // NOI18N
+        viewTrash.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                viewTrashActionPerformed(evt);
             }
         });
 
@@ -207,7 +208,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1120, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(viewTrash, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -216,7 +217,7 @@ public class MainMenu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(viewTrash, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -320,11 +321,11 @@ public class MainMenu extends javax.swing.JFrame {
         sv.setVisible(true);
     }//GEN-LAST:event_viewStaffActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void viewTrashActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTrashActionPerformed
         // TODO add your handling code here:
         new TrashView().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_viewTrashActionPerformed
 
     /**
      * @param args the command line arguments
@@ -352,11 +353,11 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JButton maintenanceButton;
     private javax.swing.JButton newEqButton;
     private javax.swing.JLabel recentlyIssuedEquipment;
     private javax.swing.JButton viewStaff;
+    private javax.swing.JToggleButton viewTrash;
     private javax.swing.JLabel welcometxt;
     // End of variables declaration//GEN-END:variables
 }
